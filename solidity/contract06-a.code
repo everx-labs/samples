@@ -1,0 +1,171 @@
+
+.globl	constructor_external
+.type	constructor_external, @function
+DROP
+PUSHINT $constructor$
+CALL 1
+
+.globl	constructor
+.type	constructor, @function
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Function: constructor
+NEWDICT
+NEWC STSLICE ENDC
+POPROOT
+;; tvm_sender_pubkey
+;; stack=0
+PUSH c5
+CTOS
+LDU 256
+DROP
+;; decl: pubkey
+LOGSTR after_pubkey
+;; pubkey
+;; stack=1
+DUP
+;; assign m_ownerPubkey
+NEWC STU 256 ENDC CTOS
+PUSHINT 1
+PUSHROOT CTOS
+PUSHINT 256
+DICTUSET
+NEWC STSLICE ENDC
+POPROOT
+
+.globl	ensureOwner
+.type	ensureOwner, @function
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Function: ensureOwner
+;; tvm_sender_pubkey
+;; stack=0
+PUSH c5
+CTOS
+LDU 256
+DROP
+;; m_ownerPubkey
+;; stack=1
+PUSHINT 1
+PUSHROOT CTOS
+PUSHINT 256
+DICTUGET
+PUSHCONT { LDU 256 ENDS }
+PUSHCONT { PUSHINT 0 }
+IFELSE
+;; ==
+EQUAL
+;; require
+;; stack=1
+THROWIFNOT 100
+
+.globl	setAllowance_external
+.type	setAllowance_external, @function
+LDU 256
+LDU 64
+DROP
+PUSHINT $setAllowance$
+CALL 1
+
+.globl	setAllowance
+.type	setAllowance, @function
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Function: setAllowance
+;; param: anotherContract
+;; param: amount
+PUSHINT $ensureOwner$
+CALL 1
+;; fetch m_allowed
+PUSHINT 0
+PUSHROOT CTOS
+PUSHINT 256
+DICTUGET
+PUSHCONT { NEWDICT }
+IFNOT
+;; anotherContract
+;; stack=3
+PUSH s2
+SWAP
+OVER OVER
+PUSHINT 256
+DICTUGET
+PUSHCONT { NEWDICT }
+IFNOT
+;; ContractInfo.allowed
+PUSHINT 0
+SWAP
+;; amount
+;; stack=6
+PUSH s4
+NEWC STU 256 ENDC CTOS
+ROTREV
+PUSHINT 8
+DICTUSET
+ROTREV
+PUSHINT 256
+DICTUSET
+;; assign m_allowed
+PUSHINT 0
+PUSHROOT CTOS
+PUSHINT 256
+DICTUSET
+NEWC STSLICE ENDC
+POPROOT
+
+.globl	getCredit_external
+.type	getCredit_external, @function
+DROP
+PUSHINT $getCredit$
+CALL 1
+
+.globl	getCredit
+.type	getCredit, @function
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Function: getCredit
+;; get member sender
+PUSHINT $get_msg_sender$
+CALL 1
+;; IMyContractCallback
+;; stack=1
+;; IMyContractCallback.getCreditCallback
+;; balance
+;; get member allowed
+;; ContractInfo.allowed
+PUSHINT 0
+;; m_allowed
+;; stack=2
+PUSHINT 0
+PUSHROOT CTOS
+PUSHINT 256
+DICTUGET
+PUSHCONT { NEWDICT }
+IFNOT
+;; get member sender
+PUSHINT $get_msg_sender$
+CALL 1
+;; index
+SWAP
+PUSHINT 256
+DICTUGET
+PUSHCONT { NEWDICT }
+IFNOT
+PUSHINT 8
+DICTUGET
+PUSHCONT { LDU 256 ENDS }
+PUSHCONT { PUSHINT 0 }
+IFELSE
+PUSHINT $getCreditCallback_external$
+PUSHINT 0
+NEWC
+STU 8
+STU 32
+;; balance
+STU 64
+ENDC CTOS
+PUSHINT $send_int_msg_2$
+CALL 1
+;; return
+DROP
+RET
+
+.globl	getCreditCallback_external
+.type	getCreditCallback_external, @function
+RET
