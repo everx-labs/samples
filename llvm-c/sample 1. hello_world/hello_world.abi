@@ -1,0 +1,8 @@
+{
+    "ABI version" : 0,
+    "functions" : [{
+        "name": "compute", "signed": false,
+        "inputs": [],
+        "outputs": [{ "name": "result", "type": "uint64" }]
+    }]
+}
