@@ -2,7 +2,7 @@ pragma solidity ^0.5.0;
 
 // the interface of a remote contract
 contract AnotherContract {
-	function remoteMethod(uint64 value) pure public;
+	function remoteMethod(uint64 value) public;
 }
 
 // this contract implement 'AnotherContract' interface
