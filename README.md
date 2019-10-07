@@ -16,4 +16,3 @@
 * [example-3-transfer-80000001](https://github.com/tonlabs/samples/tree/c-project/example-3-transfer-80000001): sends 0xAAAA nanograms (43960 in decimal) to the 0x80000001 account. This contract shows how to create and send internal messages.
 
 For additional guidelines, go to [https://ton.dev/quickstart](https://ton.dev/quickstart) and to ReadMe's of each sample.
-
