@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-## Loan Amount Approval Sample
-MyContract (contract06-a) stores information about loan allowances for different contracts.
-This data is stored in the following field:
-
-	mapping(address => ContractInfo) m_allowed;
-	
-A contract owner is supposed to call the **setAllowance()** external method to specify limits.
-It also proccesses **getCredit()** internal messages and sends the allowed loan amount in response.
-
-RemoteContract (contract06-b) is a client that makes a loan request. It can take **getMyCredit()** external requests, forward those to a specified **IMyContract** type account and store the answer in a **m_answer** member field.
-
-The latter field can be checked via the **getaccount** feature of test-lite-client.
-
-=======
 # Sample Contracts for TON Labs ToolChain 
 
 ## New sample contracts in Solidity:
@@ -31,4 +16,4 @@ The latter field can be checked via the **getaccount** feature of test-lite-clie
 * [example-3-transfer-80000001](https://github.com/tonlabs/samples/tree/c-project/example-3-transfer-80000001): sends 0xAAAA nanograms (43960 in decimal) to the 0x80000001 account. This contract shows how to create and send internal messages.
 
 For additional guidelines, go to [https://ton.dev/quickstart](https://ton.dev/quickstart) and to ReadMe's of each sample.
->>>>>>> refs/remotes/origin/master
+
