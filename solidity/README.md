@@ -14,17 +14,18 @@ solc --tvm_abi MyContract.sol >MyContract.abi.json
 
 tvm_linker compile MyContract.code --lib <path to>stdlib_sol.tvm --abi-json MyContract.abi.json
 
-Binary code of your contract is recorded into <VeryLongNumber.tvc> file.
+Binary code of your contract is recorded into <MyContractAddress>.tvc file, where 
+<MyContractAddress> is the address of the contract.
 Contract is ready to be deployed onto local node or blockchain.
 
 NB: You can test your contracts locally without even starting node:
 
-tvm_linker test --abi-json <MyContract.abi.json> --abi-method <"myMethod"> --abi-params '{"parameter":"value"}' 
+tvm_linker test <MyContractAddress> --abi-json <MyContract.abi.json> --abi-method <"myMethod"> --abi-params '{"parameter":"value"}' 
 
 This set of smart-contract samples illustrates common functionality of smart-contracts developed in Solidity,
-Staring with very basic and gradually evolving into code snippets which may come handy in production smart-contracts.
+starting with very basic and gradually evolving into code snippets which may come handy in production smart-contracts.
 
-Interaction with the contract in each of the samples described below starts with calling its public function of the contract
+Interaction with the contract in each of the samples described below starts with calling one of its public functions
 with parameters. 
 In the descriptions below :
 "Calling public function <myFunction> of the contract <MyContract> with an argument name <parameter> of type <type>."
@@ -40,13 +41,13 @@ Resulting state of the account can be examined by conventional means.
 
 contract 02: calling another contract
 
-Contracts can call other remote contracts too. 	Call "MyContract.method(uint anotherContract)". Invokes public function of another contract MyContract (contract02-a). 
-The remote contract (contract02-b) saves this integer in persistent variable.
+Contracts can call other remote contracts too. 	Call "MyContract.method(uint anotherContract)". Invokes public function of another contract. 
+The remote contract (contract02-b) saves the integer value of the argument in its state variable.
 
 contract 03: doing both at once
 
 Call "MyContract.method(uint anotherContract)" combines work of examples 1 and 2. 
-Calls a remote contract which records the call and saves the address of the caller in a state variable.
+Calls a remote contract which records the call and saves the address of the caller in its state variable.
 
 contract 04: gram transfer
 
