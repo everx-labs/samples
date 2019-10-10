@@ -1,4 +1,4 @@
-﻿##Solidity contract workflow
+﻿## Solidity contract workflow
 
 Start with source code of the contract in <MyContract.sol>
 
@@ -31,7 +31,7 @@ In the descriptions below :
 "Calling public function <myFunction> of the contract <MyContract> with an argument name <parameter> of type <type>."
 is expressed as "Call <MyContract>.<myFunction(<type> <parameter>)"
 
-##Contract examples
+## Contract examples
            
 [contract 01](https://github.com/tonlabs/samples/blob/master/solidity/contract01.sol): persistent storage
 
