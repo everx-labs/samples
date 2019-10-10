@@ -4,15 +4,15 @@ Start with source code of the contract in <MyContract.sol>
 
 1) Compile Solidity source to TVM assembler: 
 
-solc --tvm MyContract.sol >MyContract.code
+*solc --tvm MyContract.sol >MyContract.code*
 
 2) Generate public interface for the contract in JSON format: 
 
-solc --tvm_abi MyContract.sol >MyContract.abi.json
+*solc --tvm_abi MyContract.sol >MyContract.abi.json*
 
 3) Assemble and link with libraries of your choice into TVM bytecode: 
 
-tvm_linker compile MyContract.code --lib <path to>stdlib_sol.tvm --abi-json MyContract.abi.json
+*tvm_linker compile MyContract.code --lib <path to>stdlib_sol.tvm --abi-json MyContract.abi.json*
 
 Binary code of your contract is recorded into <MyContractAddress>.tvc file, where 
 <MyContractAddress> is the address of the contract.
@@ -20,7 +20,7 @@ Contract is ready to be deployed onto local node or blockchain.
 
 NB: You can test your contracts locally without even starting node:
 
-tvm_linker test <MyContractAddress> --abi-json <MyContract.abi.json> --abi-method <"myMethod"> --abi-params '{"parameter":"value"}' 
+*tvm_linker test <MyContractAddress> --abi-json <MyContract.abi.json> --abi-method <"myMethod"> --abi-params '{"parameter":"value"}'*
 
 This set of smart-contract samples illustrates common functionality of smart-contracts developed in Solidity,
 starting with very basic and gradually evolving into code snippets which may come handy in production smart-contracts.
@@ -53,13 +53,13 @@ Calls a remote [contract](https://github.com/tonlabs/samples/blob/master/solidit
 
 This sample demonstrates how Gram transfer works. Call "MyContract.method(uint anotherContract, uint amount)". 
 This requests <amount> of Grams from the contract deployed at the specified address. 
-The remote contract ([contract04-b](https://github.com/tonlabs/samples/blob/master/solidity/contract04-b.sol)) transfers <amount> of Grams to the caller via msg.sender.transfer(value).
+The remote contract ([contract04-b](https://github.com/tonlabs/samples/blob/master/solidity/contract04-b.sol)) transfers <amount> of Grams to the caller via **msg.sender.transfer(value)**.
 Both contracts keep record of the number of transactions performed by bumping transaction counter and storing it in the persistent memory.
 
 [contract 05](https://github.com/tonlabs/samples/blob/master/solidity/contract05-a.sol): callback implementation
 
 Call "MyContract.method(address anotherContract, uint16 x)". Calls "RemoteContract.remoteMethod(uint16 x)"
-The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract05-b.sol) obtains caller's address via msg.sender, stores it in its state variable, and calls back.
+The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract05-b.sol) obtains caller's address via **msg.sender**, stores it in its state variable, and calls back.
 
 [contract06](https://github.com/tonlabs/samples/blob/master/solidity/contract06-a.sol): loan amount approval
 
