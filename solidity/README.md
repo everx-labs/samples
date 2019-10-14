@@ -1,29 +1,30 @@
-﻿## Solidity contract workflow
+## Solidity contract workflow
 
-Start with source code of the contract in <MyContract.sol>
+Start with source code of the contract in \<MyContract.sol\>
 
 1) Compile Solidity source to TVM assembler: 
 ```
 
-solc --tvm MyContract.sol >MyContract.code
+solc --tvm MyContract.sol > MyContract.code
 
 ```
+
 2) Generate public interface for the contract in JSON format: 
 ```
 
-solc --tvm_abi MyContract.sol >MyContract.abi.json
+solc --tvm_abi MyContract.sol > MyContract.abi.json
 
 ```
 
 3) Assemble and link with libraries of your choice into TVM bytecode: 
 ```
 
-tvm_linker compile MyContract.code --lib <path to>stdlib_sol.tvm --abi-json MyContract.abi.json
+tvm_linker compile MyContract.code --lib <path to>/stdlib_sol.tvm --abi-json MyContract.abi.json
 
 ```
 
-Binary code of your contract is recorded into <MyContractAddress>.tvc file, where 
-<MyContractAddress> is the address of the contract.
+Binary code of your contract is recorded into \<MyContractAddress\>.tvc file, where 
+\<MyContractAddress\> is the address of the contract.
 Contract is ready to be deployed onto local node or blockchain.
 
 NB: You can test your contracts locally without even starting node:
@@ -32,17 +33,18 @@ NB: You can test your contracts locally without even starting node:
 tvm_linker test <MyContractAddress> --abi-json <MyContract.abi.json> --abi-method <"myMethod"> --abi-params '{"parameter":"value"}'
 
 ```
+
 This set of smart-contract samples illustrates common functionality of smart-contracts developed in Solidity,
 starting with very basic and gradually evolving into code snippets which may come handy in production smart-contracts.
 
 Interaction with the contract in each of the samples described below starts with calling one of its public functions
 with parameters. 
 In the descriptions below :
-"Calling public function <myFunction> of the contract <MyContract> with an argument name <parameter> of type <type>."
-is expressed as "Call <MyContract>.<myFunction(<type> <parameter>)"
+"Calling public function \<myFunction\> of the contract \<MyContract\> with an argument name \<parameter\> of type \<type\>."
+is expressed as "Call \<MyContract\>.\<myFunction\>(\<type\> \<parameter\>)".
 
 ## Contract examples
-           
+
 [contract 01](https://github.com/tonlabs/samples/blob/master/solidity/contract01.sol): persistent storage
 
 Smart-contracts deployed to the blockchain store their state variables in a persistent storage.
