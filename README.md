@@ -15,4 +15,4 @@
 * [example-2-echo](https://github.com/tonlabs/samples/tree/c-project/example-2-echo): stores the last input value in a persistent variable. Value changes allow a user to track method invocation results by using the ***getaccount*** command.
 * [example-3-transfer-80000001](https://github.com/tonlabs/samples/tree/c-project/example-3-transfer-80000001): sends 0xAAAA nanograms (43960 in decimal) to the 0x80000001 account. This contract shows how to create and send internal messages.
 
-For additional guidelines, go to [https://ton.dev/quickstart](https://ton.dev/quickstart) and to ReadMe's of each sample.
+For additional guidelines, go to [https://docs.ton.dev/](https://docs.ton.dev/) and to ReadMe's of each sample.
