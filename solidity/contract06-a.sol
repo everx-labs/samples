@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-// A sample contract demontrating /*signatures,*/ mappings, structures and intercontract communtications
+// A sample contract demonstrating /*signatures,*/ mappings, structures and intercontract communications
 
 contract IMyContract {
 	function getCredit() public;
