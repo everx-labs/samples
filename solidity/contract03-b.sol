@@ -11,7 +11,7 @@ contract MyContract is AnotherContract {
 	address m_value;
 	
 	// A method to be called from another contract
-	// This method save address of calleer in persistent variable 'm_value' of this contract
+	// This method save address of caller in persistent variable 'm_value' of this contract
 	function remoteMethod() public {
 		m_value = msg.sender;
 		return; 

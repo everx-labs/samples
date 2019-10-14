@@ -46,7 +46,7 @@ is expressed as "Call <MyContract>.<myFunction(<type> <parameter>)"
 [contract 01](https://github.com/tonlabs/samples/blob/master/solidity/contract01.sol): persistent storage
 
 Smart-contracts deployed to the blockchain store their state variables in a persistent storage.
-Сall "Test01.main(uint32 a)". It adds "a" to its state variable "m_accumulator", then records the result to "m_accumulator".
+Call "Test01.main(uint32 a)". It adds "a" to its state variable "m_accumulator", then records the result to "m_accumulator".
 Resulting state of the account can be examined by conventional means.
 
 [contract 02](https://github.com/tonlabs/samples/blob/master/solidity/contract02-a.sol): calling another [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract02-b.sol)
@@ -76,5 +76,5 @@ The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/co
 Call "MyContract.setAllowance(address anotherContract, uint64 amount)".
 MyContract (contract06-a) stores information about loan allowances for different contracts. This data is recorded in the following field:
 mapping(address => ContractInfo) m_allowed;
-A contract owner is supposed to call the setAllowance() external method to specify limits. It also proccesses getCredit() internal messages and sends the allowed loan amount in response.
+A contract owner is supposed to call the setAllowance() external method to specify limits. It also processes getCredit() internal messages and sends the allowed loan amount in response.
 RemoteContract ([contract06-b](https://github.com/tonlabs/samples/blob/master/solidity/contract06-b.sol)) is a client that makes a loan request. It can take getMyCredit() external requests, forward those to a specified IMyContract type account and store the answer in a m_answer member field.

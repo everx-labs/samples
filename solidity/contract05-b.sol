@@ -14,7 +14,7 @@ contract RemoteContract is IRemoteContract {
 	
 	// A method to be called from another contract
 	function remoteMethod(uint16 x) public {
-		// save paramets x in persistent variable 'm_value'
+		// save parameter x in persistent variable 'm_value'
 		m_value = x;
 		// cast address of caller to IRemoteContractCallback interface and
 		// call its 'remoteMethodCallback' method
