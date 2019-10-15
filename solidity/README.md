@@ -83,18 +83,20 @@ RemoteContract ([contract06-b](https://github.com/tonlabs/samples/blob/master/so
 
 ## Contract deployment
 
-The process of contract deployment is described by example of deployment of the contact written in Solidity \<MyContract\>.sol onto the TON Blockchain Test Network (testnet) using Lite Client.
+Here we describe \<MyContract.sol\> deployment onto the TON Blockchain Test Network (testnet) using Lite Client.
 
 ### 1) Compilation
-At first step we should compile and link our Solidity source file to TVM bytecode as described above:
+Compile and link the Solidity source file to TVM bytecode as described above:
 ```
 solc --tvm MyContract.sol > MyContract.code
 solc --tvm_abi MyContract.sol > MyContract.abi.json
-tvm_linker compile MyContract.code -w 0 --lib <path to>/stdlib_sol.tvm --abi-json MyContract.abi.json
+tvm_linker compile MyContract.code -w 0 --lib <path_to>/stdlib_sol.tvm --abi-json MyContract.abi.json [--genkey <path_to_save_keyfile>]
 ```
 
-Notice that we've added argument "-w 0" to the tvm_linker, where "0" - is the id of workchain (by default it is set to -1).
-The last command of the list above will print all possible addresses of our contract:
+Notice that we've added argument "-w 0" to the tvm_linker, where "0" - is the id of workchain (default is -1).
+By default tvm\_linker compiles contract with zero key, so we can add argument "--genkey <path_to_save_keyfile>" to generate new keypair for the contract and save it to the file.
+If we already have a keypair, we can use existing pair with argument "--setkey <path_to_keyfile>".
+The last command of the list above prints all possible addresses of the contract:
 ```
 Saved contract to file <MyContractAddress>.tvc
 testnet:
@@ -108,20 +110,20 @@ Bounceable address (for later access): <MyContractBounceMainAddress>
 Save the output, we will need some of the addresses later.
 
 ### 2) Constructor message generation
-We use tvm_linker to create a constructor message that we will send to the testnet to deploy our contract:
+We use tvm_linker to create a constructor message that we will send to deploy the contract to the testnet:
 
 ```
-tvm_linker message <MyContractAddress> --init -w 0
+tvm_linker message <MyContractAddress> --init -w 0 [--setkey <path_to_keyfile>]
 ```
 
-Here we also use an argument "-w" to set the workchain id. 
-The command above will generate the .boc file with name \<\*-msg-init.boc\>.
+Here we also use an argument "-w" to set the workchain id and argument "--setkey" with keyfile generated on **step 1** to sign the message.
+The command generates **.boc** file with name \<\*-msg-init.boc\>.
 
 ### 3) Account preparation
-Out contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some grams to our future contract address before deploying it. To make it use addresses obtained on the step 1. 
+Out contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some grams to our future contract address before deploying the contract. For transfer use one of the addresses obtained on the **step 1**. 
 
 ### 4) Contract deployment
-When we have a constructor message BOC file for our contract and we have replenished the balance of the address we are going deploy to, we can run the Lite Client with configuration file for the TON Blockchain Test Network:
+When we have a constructor message **.boc** file for the contract and we have replenished the balance of the address we are going deploy to, we can run the Lite Client with [configuration file for the TON Blockchain Test Network](https://test.ton.org/ton-lite-client-test1.config.json):
 ```
 lite-client -C ton-lite-client-test1.config.json
 ```
@@ -134,16 +136,17 @@ getaccount 0:<MyContractAddress>
 We use "0" as the workchain id in the command above. If everything is OK, you will see an output containing similar data: 
 ```
            value:(currencies
-           grams:(nanograms
-           amount:(var_uint len:5 value:5000000000))
+             grams:(nanograms
+               amount:(var_uint len:5 value:5000000000))
 ```
 
-It means, that we have some grams on the balance and can deploy the contract:
+It means that we have some grams on the balance and can deploy the contract:
 ```
-sendfile <path to file <*-msg-init.boc> obtained on step 2>
+sendfile <path_to_file_<*-msg-init.boc>>
 ```
 
-After that we can check the state of the account again and see, that the output now contains the state of the contract:
+<*-msg-init.boc> is the file we obtained on the **step 2**.
+After that we can check the account again and see, that the output now contains the state of the contract:
 ```
 getaccount 0:<MyContractAddress>
 ```
@@ -151,8 +154,8 @@ getaccount 0:<MyContractAddress>
 ### 5) Contract function call
 To call a function of the contract we should prepare a special message and then send it to the testnet:
 ```
-tvm_linker message <MyContractAddress> -w 0 --abi-json MyContract.abi.json --abi-method '<FunctionName>' --abi-params '{<FunctionArguments>}'
+tvm_linker message <MyContractAddress> -w 0 --abi-json MyContract.abi.json --abi-method '<FunctionName>' --abi-params '{<FunctionArguments>}' [--setkey <path_to_keyfile>]
 ```
 
 \'\{\<FunctionArguments\>\}\' should have the folowing form: \'\{"<Argument1_Name>":"Argument1_Value", "<Argument2_Name>":"Argument2_Value", ... \}\'
-The command above will create a .boc file which we should send to the testnet as it was described on step 4.
+The command above will create a .boc file which we should send to the testnet as it was described on **step 4**.
