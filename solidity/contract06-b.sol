@@ -1,28 +1,19 @@
 pragma solidity ^0.5.0;
 
-contract IMyContract {
-	function getCredit() public;
-}
+import "contract06.sol";
 
-contract IMyContractCallback {
-	function getCreditCallback(uint64 balance) public;
-}
+contract MyRemoteContract is IMyRemoteContract {
 
-contract RemoteContract is IMyContractCallback {
-
-	uint64 m_credit;
+	uint256 m_value;
+	uint256 m_balance;
 	
-	// external methods
-	
-	function getMyCredit(IMyContract bank) public {
-		bank.getCredit();
-		return;
-	}
-	
-	// interface IMyContractCallback
-	
-	function getCreditCallback(uint64 balance) public {
-		m_credit = balance;
+	// A function to be called from another contract
+	// Function gets the balance of the message and stores it and the balance
+	// of the contact in state variables.
+	function remoteMethod() public payable {
+		m_value = msg.value;
+		m_balance = address(this).balance;
+		return; 
 	}
 	
 }
