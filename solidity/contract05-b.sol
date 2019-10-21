@@ -1,25 +1,25 @@
 pragma solidity ^0.5.0;
 
-contract IRemoteContract {
-	function remoteMethod(uint16 x) public;
-}
+// Import the interface file
+import "contract05.sol";
 
-contract IRemoteContractCallback {
-	function remoteMethodCallback(uint16 x) public;
-}
+contract RemoteContract is IMyContractCallback {
 
-contract RemoteContract is IRemoteContract {
-
-	uint16 m_value;
+	uint64 m_credit;
 	
-	// A method to be called from another contract
-	function remoteMethod(uint16 x) public {
-		// save parameter x in persistent variable 'm_value'
-		m_value = x;
-		// cast address of caller to IRemoteContractCallback interface and
-		// call its 'remoteMethodCallback' method
-		IRemoteContractCallback(msg.sender).remoteMethodCallback(x * 16);
-		return; 
+	// external functions
+	
+	function getMyCredit(IMyContract bank) public {
+		// call remote contract method 
+		bank.getCredit();
+		return;
+	}
+	
+	// interface IMyContractCallback
+	
+	function getCreditCallback(uint64 balance) public {
+		// save the credit balance (received from another contract) in a state variable
+		m_credit = balance;
 	}
 	
 }

@@ -5,16 +5,20 @@ contract AnotherContract {
 	function remoteMethod(uint64 value) public;
 }
 
-// this contract implement 'AnotherContract' interface
+// this contract implements 'AnotherContract' interface
 contract MyContract is AnotherContract {
 
 	uint64 m_value;
+	address m_address;
 
-	// A method to be called from another contract.
-	// This method receive parameter 'value' from another contract and
-	// and save this value in persistent variable 'm_value' of this contract
+	// A function to be called from another contract.
+	// This function receives parameter 'value' from another contract and
+	// saves this value in the state variable 'm_value' of this contract.
+	// Also this function saves the address of the contract that called 'remoteMethod'
+	// in the state variable 'm_address'.
 	function remoteMethod(uint64 value) public {
 		m_value = value;
+		m_address = msg.sender;
 		return;
 	}
 

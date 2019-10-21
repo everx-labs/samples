@@ -1,25 +1,24 @@
 pragma solidity ^0.5.0;
 
-// the interface of a remote contract
-contract AnotherContract {
-	function remoteMethod(uint value) public;
+contract IRemoteContract {
+	function remoteMethod(uint16 x) public;
 }
 
+contract IRemoteContractCallback {
+	function remoteMethodCallback(uint16 x) public;
+}
 
-contract MyContract is AnotherContract {
+contract RemoteContract is IRemoteContract {
 
-	// persistent variable storing the number of function 'remoteMethod' was called
-	uint m_counter;
-
-	function tvm_logstr(bytes32 logstr) private {}
-
-	// A method to be called from another contract
-	// This method receive parameter 'value' from another contract and
-	// and transfer to caller value
-	function remoteMethod(uint value) public {
-		tvm_logstr("SendMoney");
-		msg.sender.transfer(value);
-		m_counter = m_counter + 1;
+	uint16 m_value;
+	
+	// A function to be called from another contract
+	function remoteMethod(uint16 x) public {
+		// save parameter x in the state variable 'm_value'
+		m_value = x;
+		// cast address of caller to IRemoteContractCallback interface and
+		// call its 'remoteMethodCallback' method
+		IRemoteContractCallback(msg.sender).remoteMethodCallback(x * 16);
 		return; 
 	}
 	
