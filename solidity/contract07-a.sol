@@ -8,8 +8,8 @@ contract MyContract {
 
 	uint64 m_result;
 
-	function sendMoneyAndNumber(address remote, uint64 number) public {
-		IRemoteContract(remote).acceptMoneyAndNumber.value(3000000)(number);
+	function sendMoneyAndNumber(address anotherContract, uint64 number) public {
+		IRemoteContract(anotherContract).acceptMoneyAndNumber.value(3000000)(number);
 		return;
 	}
 }

@@ -8,7 +8,7 @@ contract Wallet {
      */
     uint256 owner;
 
-/*
+    /*
      Exception codes:
       100 - message sender is not a wallet owner.
       101 - limit is overrun.
@@ -20,7 +20,6 @@ contract Wallet {
      * Runtime functions
     */
     function tvm_sender_pubkey() private view returns (uint256) {}
-    function tvm_logstr(bytes32 logstr) private view {}
     function tvm_transfer(address payable addr, uint128 value, bool bounce, uint16 flags) private {}
 
     /*
@@ -29,7 +28,6 @@ contract Wallet {
 
     /// @dev Contract constructor.
     constructor() public {
-        //TODO: tvm_accept();
         owner = tvm_sender_pubkey();
     }
 
@@ -40,7 +38,6 @@ contract Wallet {
         require(tvm_sender_pubkey() == owner, 100);
         require(value > 0 && value < address(this).balance, 102);
         require(dest != address(0), 103);
-        //TODO: tvm_accept();
         tvm_transfer(dest, value, bounce, 0);
     }
 

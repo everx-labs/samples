@@ -46,32 +46,62 @@ Resulting state of the account can be examined by conventional means.
 [contract 02](https://github.com/tonlabs/samples/blob/master/solidity/contract02-a.sol): calling another [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract02-b.sol)
 
 Contracts can also call other remote contracts. Call "MyContract.method(uint anotherContract) to invoke a public function of another contract.
-The remote contract (contract02-b) saves the integer value of the argument in its state variable.
+The remote contract (contract02-b) saves the integer value of the argument and the caller address in its state variables.
 
-[contract 03](https://github.com/tonlabs/samples/blob/master/solidity/contract03-a.sol): doing both at once
+[contract 03](https://github.com/tonlabs/samples/blob/master/solidity/contract03-a.sol): gram transfer
 
-Call "MyContract.method(uint anotherContract)" combines work of examples 1 and 2. 
-Calls a remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract03-b.sol) which saves the caller address in its state variable.
-
-[contract 04](https://github.com/tonlabs/samples/blob/master/solidity/contract04-a.sol): gram transfer
-
-This sample demonstrates how Gram transfer works. Call "MyContract.method(uint anotherContract, uint amount)". 
-This requests <amount> of Grams from the contract deployed at the specified address. 
-The remote contract ([contract04-b](https://github.com/tonlabs/samples/blob/master/solidity/contract04-b.sol)) transfers <amount> of Grams to the caller via **msg.sender.transfer(value)**.
+This sample demonstrates how Gram transfer works. Call "MyContract.method(address anotherContract, uint amount)". 
+This requests \<amount\> of Grams from the contract deployed at the specified address. 
+The remote contract ([contract03-b](https://github.com/tonlabs/samples/blob/master/solidity/contract03-b.sol)) transfers \<amount\> of Grams to the caller via **msg.sender.transfer(value)**.
 Each contract has an internal transaction counter. The counter value is increased after each transaction and stored in the persistent memory.
 
-[contract 05](https://github.com/tonlabs/samples/blob/master/solidity/contract05-a.sol): callback implementation
+[contract 04](https://github.com/tonlabs/samples/blob/master/solidity/contract04-a.sol): callback implementation
 
-Call "MyContract.method(address anotherContract, uint16 x)". This method allows interacting with a remote contract by calling its method: "RemoteContract.remoteMethod(uint16 x)".
-The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract05-b.sol) obtains caller's address via **msg.sender**, stores it in its state variable, and performs a callback.
+Call "MyContract.method(address anotherContract, uint16 x)". This function allows interacting with a remote contract by calling its function: "RemoteContract.remoteMethod(uint16 x)".
+The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract04-b.sol) obtains caller's address via **msg.sender**, stores it in its state variable, and performs a callback.
 
-[contract06](https://github.com/tonlabs/samples/blob/master/solidity/contract06-a.sol): loan amount approval
+[contract05](https://github.com/tonlabs/samples/blob/master/solidity/contract05-a.sol): loan amount approval
 
 Call "MyContract.setAllowance(address anotherContract, uint64 amount)".
-MyContract (contract06-a) stores information about loan allowances for different contracts. This data is recorded in the following field:
+MyContract (contract05-a) stores information about loan allowances for different contracts. This data is recorded in the following state variable:
 mapping(address => ContractInfo) m_allowed;
-A contract owner is supposed to call the setAllowance() external method to specify limits. It also processes getCredit() internal messages and sends the allowed loan amount in response.
-RemoteContract ([contract06-b](https://github.com/tonlabs/samples/blob/master/solidity/contract06-b.sol)) is a client that makes a loan request. It can take getMyCredit() external requests, forward those to a specified IMyContract type account and store the answer in a m_answer member field.
+A contract owner is supposed to call the setAllowance() external function to specify limits. It also processes getCredit() internal messages and sends the allowed loan amount in response.
+RemoteContract ([contract05-b](https://github.com/tonlabs/samples/blob/master/solidity/contract05-b.sol)) is a client that makes a loan request. It can take getMyCredit() external requests, forward those to a specified IMyContract type account and store the answer in a m_answer state variable.
+
+[contract06](https://github.com/tonlabs/samples/blob/master/solidity/contract06-a.sol): balance information
+
+Call "MyContract.method(address anotherContract)". This function calls a remote contract.
+The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract06-b.sol) obtains the balance of the inbound message via **msg.value** and its own balance via **address(this).balance** and stores both of them in state variables.
+
+[contract07](https://github.com/tonlabs/samples/blob/master/solidity/contract07-a.sol): send grams and value to a specified contract
+
+Call "MyContract.sendMoneyAndNumber(address anotherContract, uint64 number)". This function send the \<number\> to contract with specified address and attaches fixed amount of grams to the message. 
+The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract07-b.sol) recieves value and amount of grams and stores them in state variables.
+
+[contract08](https://github.com/tonlabs/samples/blob/master/solidity/contract08-a.sol): exchange of different types of values
+
+One of contract functions call allows to send to the [remote contract](https://github.com/tonlabs/samples/blob/master/solidity/contract08-b.sol) different values:
+- uint64 array;
+- two uint64 arrays;
+- five uint arrays;
+- five uint256;
+- struct array.
+
+[contract09](https://github.com/tonlabs/samples/blob/master/solidity/contract09.sol): fallback funciton
+
+Call "Caller.sendMoney(address anotherContract, uint cmd)". This function allows to send grams to different recipients and obtain situations when the fallback function should be called. One of cases uses [CrashContract](https://github.com/tonlabs/samples/blob/master/solidity/contract09-a.sol) which crashes under certain conditions and can cause fallback function call.
+
+[contract10](https://github.com/tonlabs/samples/blob/master/solidity/contract10.sol): customizable constructor
+
+This sample demonstrates how user can write his own contract constructor.
+
+[contract11](https://github.com/tonlabs/samples/blob/master/solidity/contract11-a.sol): selfdestruct function
+
+Call "Kamikaze.sendAllMoney(address anotherContract)". This function deletes the contract and sends all its grams to the specified [remote contract](https://github.com/tonlabs/samples/blob/master/solidity/contract11-b.sol).
+
+[Wallet](https://github.com/tonlabs/samples/blob/master/solidity/Wallet.sol): Simple wallet
+
+Call "Wallet.sendTransaction(address payable dest, uint128 value, bool bounce)". This funciton allows to transfer grams to a specified account.
 
 ## Contract deployment
 
@@ -151,4 +181,5 @@ tvm_linker message <MyContractAddress> -w 0 --abi-json MyContract.abi.json --abi
 
 \'\{\<FunctionArguments\>\}\' should have the folowing form: \'\{"<Argument1_Name>":"Argument1_Value", "<Argument2_Name>":"Argument2_Value", ... \}\'
 The command above will create a .boc file which we should send to the testnet as it was described on **step 4**.
+
 
