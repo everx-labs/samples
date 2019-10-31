@@ -5,11 +5,17 @@ import "contract05.sol";
 
 contract RemoteContract is IMyContractCallback {
 
+	function tvm_accept() private pure {}
+	
+	modifier alwaysAccept {
+		tvm_accept(); _;
+	}
+	
 	uint64 m_credit;
 	
 	// external functions
 	
-	function getMyCredit(IMyContract bank) public {
+	function getMyCredit(IMyContract bank) public alwaysAccept {
 		// call remote contract method 
 		bank.getCredit();
 		return;
@@ -17,7 +23,7 @@ contract RemoteContract is IMyContractCallback {
 	
 	// interface IMyContractCallback
 	
-	function getCreditCallback(uint64 balance) public {
+	function getCreditCallback(uint64 balance) public alwaysAccept {
 		// save the credit balance (received from another contract) in a state variable
 		m_credit = balance;
 	}

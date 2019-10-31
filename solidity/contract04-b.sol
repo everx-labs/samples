@@ -10,10 +10,16 @@ contract IRemoteContractCallback {
 
 contract RemoteContract is IRemoteContract {
 
+	function tvm_accept() private pure {}
+	
+	modifier alwaysAccept {
+		tvm_accept(); _;
+	}
+
 	uint16 m_value;
 	
 	// A function to be called from another contract
-	function remoteMethod(uint16 x) public {
+	function remoteMethod(uint16 x) public alwaysAccept {
 		// save parameter x in the state variable 'm_value'
 		m_value = x;
 		// cast address of caller to IRemoteContractCallback interface and
