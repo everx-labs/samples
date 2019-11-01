@@ -7,6 +7,12 @@ import "contract05.sol";
 
 contract MyContract is IMyContract {
 
+	function tvm_accept() private pure {}
+	
+	modifier alwaysAccept {
+		tvm_accept(); _;
+	}
+	
 	// struct for storing the credit information.
 	struct ContractInfo {
 		uint64 allowed;
@@ -18,13 +24,13 @@ contract MyContract is IMyContract {
 	// External messages
 	
 	// set the credit limit for the address
-	function setAllowance(address anotherContract, uint64 amount) public {
+	function setAllowance(address anotherContract, uint64 amount) public alwaysAccept {
 		m_allowed[anotherContract].allowed = amount;
 	}
 	
 	// Internal messages
 	
-	function getCredit() public {
+	function getCredit() public alwaysAccept {
 		// cast calleer to IMyContractCallback and call method getCreditCallback
 		// with value obtained from state variable
 		IMyContractCallback(msg.sender).getCreditCallback(m_allowed[msg.sender].allowed);

@@ -7,11 +7,17 @@ import "contract08.sol";
 
 contract Sender {
 
+	function tvm_accept() private pure {}
+	
+	modifier alwaysAccept {
+		tvm_accept(); _;
+	}
+	
 	uint m_counter;
 
 	// Function sends an array of uint64 with size 'count' to the contract 
 	// with address 'reciever'
-	function send_uint64(address receiver, uint64 count) public {
+	function send_uint64(address receiver, uint64 count) public alwaysAccept {
 		uint64[] memory arr = new uint64[](count);
 		for (uint64 i = 0; i < count; i++) {
 			arr[i] = i+1;
@@ -22,7 +28,7 @@ contract Sender {
 
 	// Function sends two arrays of uint64 with size 'count' to the contract 
 	// with address 'reciever'
-	function send_uint64_two(address receiver, uint64 count) public {
+	function send_uint64_two(address receiver, uint64 count) public alwaysAccept {
 		uint64[] memory arr0 = new uint64[](count);
 		for (uint64 i = 0; i < count; i++) {
 			arr0[i] = i+1;
@@ -36,7 +42,7 @@ contract Sender {
 	}
 
 	// Function sends five arrays of uint to the contract with address 'reciever'
-	function send_arrays(address receiver) public {
+	function send_arrays(address receiver) public alwaysAccept {
 		uint256[] memory arr0 = new uint[](1);
 		arr0[0] = 1;
 		uint256[] memory arr1 = new uint[](1);
@@ -52,7 +58,7 @@ contract Sender {
 	}
 
 	// Function sends five uint256 to the contract with address 'reciever'
-	function send_uint256(address receiver) public {
+	function send_uint256(address receiver) public alwaysAccept {
 		uint256 a0 = 5;
 		uint256 a1 = 4;
 		uint256 a2 = 3;
@@ -73,7 +79,7 @@ contract Sender {
 	}
 
 	// Function sends an array of structures to the contract with address 'reciever'
-	function send_MyStruct(address receiver) public {
+	function send_MyStruct(address receiver) public alwaysAccept {
 		IReceiver.MyStruct[] memory arr = createStructArray();
 		IReceiver(receiver).on_MyStruct(arr);
 		m_counter++;
