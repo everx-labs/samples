@@ -1,0 +1,18 @@
+{
+    "ABI version": 1,
+    "functions": [{
+        "name": "initialize_target", "signed": false,
+        "inputs": [{"name":"target", "type":"uint64"}],
+        "outputs": []
+    },
+    {
+        "name": "transfer", "signed": false,
+        "inputs": [{"name":"destination_account", "type":"uint256"}],
+        "outputs": []
+    },
+    {
+        "name": "constructor", "signed": false,
+        "inputs": [],
+        "outputs": []
+    }]
+}
