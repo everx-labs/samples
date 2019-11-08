@@ -1,11 +1,7 @@
-# Sample Contracts for TON Labs ToolChain 
+# Sample Contracts for TON Labs ToolChain
 
-## [New sample contracts in Solidity](https://github.com/tonlabs/samples/tree/master/solidity)
-    
-## Sample contracts in C
+## [Sample contracts in Solidity](https://github.com/tonlabs/samples/tree/master/solidity)
 
-* [example-1-hello-world](https://github.com/tonlabs/samples/tree/c-project/example-1-hello-world): the simplest contract in the repository, it adds 2 and 2 and returns the sum as an external message. Use it as a starting point.
-* [example-2-echo](https://github.com/tonlabs/samples/tree/c-project/example-2-echo): stores the last input value in a persistent variable. Value changes allow a user to track method invocation results by using the ***getaccount*** command.
-* [example-3-transfer-80000001](https://github.com/tonlabs/samples/tree/c-project/example-3-transfer-80000001): sends 0xAAAA nanograms (43960 in decimal) to the 0x80000001 account. This contract shows how to create and send internal messages.
+## [Sample contracts in C](https://github.com/tonlabs/samples/tree/master/c)
 
-For additional guidelines, go to [https://docs.ton.dev/](https://docs.ton.dev/) and to ReadMe's of each sample.
+For additional guidelines, go to [https://docs.ton.dev/](https://docs.ton.dev/) and to ReadMe of each sample.
