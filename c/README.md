@@ -3,13 +3,13 @@ This directory contains contracts that demonstrate how to use C to write contrac
 
 ## Prerequisites
 TVM Toolchain for C to build and test contracts locally. It includes:
-* Clang for TVM available in Node SE and at (https://github.com/tonlabs/TON-Compiler)[https://github.com/tonlabs/TON-Compiler]
+* Clang for TVM available in Node SE and at [https://github.com/tonlabs/TON-Compiler](https://github.com/tonlabs/TON-Compiler)
 * C runtime library distributed with Clang (`stdlib/stdlib_c.tvm`)
 * TON SDK for C distributed with Clang (`stdlib/ton-sdk`)
 * ABI parser tool distributed with Clang (`stdlib/abi_parser`)
 * Assembler & linker tool, tvm_linker; currently available as a binary in Node SE.
 
-To deploy contracts in testnet, you also need Lite Client tool available at (http://test.ton.org)[http://test.ton.org]
+To deploy contracts in testnet, you also need Lite Client tool available at [http://test.ton.org](http://test.ton.org)
 
 ## Example of usage
 We use example-4-piggybank to show the building process.
@@ -19,33 +19,40 @@ It is assumed that tools are located in the 'PATH'.
 cd example-4-piggybank
 abi_parser.py piggybank
 ```
+
 2. Compile the contract sources.
 ```
 clang -target tvm -S -O3 *.s -I/path/to/stdlib
 ```
+
 If Clang fails to recognize the TVM target, make sure that you are using Clang for TVM, not the system Clang.
+
 3. Compile the SDK sources.
 ```
 clang -target tvm -S -O3 /path/to/ton-std/*.c -I/path/to/stdlib
 ```
+
 4. Merge the assemblies together ('tvm_linker' does not support multiple inputs now).
 ```
 cat *.s > piggybank.combined.s
 ```
+
 5. Assemble and link the contract.
 ```
 tvm_linker compile piggybank.combined.s --abi-json piggybank.abi --lib /path/to/stdlib_c.tvm
 ```
+
 The linker produces a .tvc file. Its name corresponds to the contract address.
 Test the contract locally.
 You can invoke a public function specified in the ABI and see the output using 'tvm_linker' tool:
 ```
 tvm_linker test <contract address> --abi-json piggybank.abi --abi-method initialize_target --abi-params "{\"target\":\"100\"}"
 ```
-To learn more about ABI, refer to (https://docs.ton.dev/86757ecb2/p/15062d)[https://docs.ton.dev/86757ecb2/p/15062d]
+
+To learn more about ABI, refer to [https://docs.ton.dev/86757ecb2/p/15062d](https://docs.ton.dev/86757ecb2/p/15062d)
 
 ## Contract deployment
-Contract deploy guidelines do not depend on the language. You can use the one at (https://github.com/tonlabs/samples/tree/master/solidity)[https://github.com/tonlabs/samples/tree/master/solidity].
+Contract deploy guidelines do not depend on the language. You can use the one at [https://github.com/tonlabs/samples/tree/master/solidity](https://github.com/tonlabs/samples/tree/master/solidity).
 
 ## C language limitations and performance issues
 * Each contract has a limited gas supply; once it is exceeded, a contract terminates with an error.
