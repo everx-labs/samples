@@ -11,7 +11,6 @@ contract Wallet {
     /*
      Exception codes:
       100 - message sender is not a wallet owner.
-      101 - limit is overrun.
       102 - invalid transfer value.
       103 - destination address is zero.
      */
@@ -20,6 +19,7 @@ contract Wallet {
      * Runtime functions
     */
     function tvm_sender_pubkey() private view returns (uint256) {}
+    function tvm_my_public_key() private pure returns (uint256) {}
     function tvm_transfer(address payable addr, uint128 value, bool bounce, uint16 flags) private {}
     function tvm_accept() private pure {}
     function tvm_make_address(int8 wid, uint256 addr) private pure returns (address payable) {}
@@ -34,7 +34,7 @@ contract Wallet {
 
     /// @dev Contract constructor.
     constructor() public {
-        owner = tvm_sender_pubkey();
+        owner = tvm_my_public_key();
     }
 
     /// @dev Allows to transfer grams to destination account.
