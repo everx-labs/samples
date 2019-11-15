@@ -18,8 +18,8 @@ contract Wallet {
     /*
      * Runtime functions
     */
-    function tvm_sender_pubkey() private view returns (uint256) {}
-    function tvm_my_public_key() private pure returns (uint256) {}
+    function tvm_sender_pubkey() private view returns (uint256) {}	// this function is used to obtain inbound message's signification public key
+    function tvm_my_public_key() private pure returns (uint256) {}	// this function is used to obtain the contract's public key
     function tvm_transfer(address payable addr, uint128 value, bool bounce, uint16 flags) private {}
     function tvm_accept() private pure {}
     function tvm_make_address(int8 wid, uint256 addr) private pure returns (address payable) {}
@@ -34,14 +34,14 @@ contract Wallet {
 
     /// @dev Contract constructor.
     constructor() public {
-        owner = tvm_my_public_key();
+        owner = tvm_my_public_key();	// save contract's public key in a state variable
     }
 
     /// @dev Allows to transfer grams to destination account.
     /// @param dest Transfer target address.
     /// @param value Nanograms value to transfer.
     function sendTransaction(address payable dest, uint128 value, bool bounce) public alwaysAccept {
-        require(tvm_sender_pubkey() == owner, 100);
+        require(tvm_sender_pubkey() == owner, 100);	// compare sender's public key with owner's one to allow access only to the owner
         require(value > 0 && value < address(this).balance, 102);
         require(dest != tvm_make_address(0,0), 103);
         tvm_transfer(dest, value, bounce, 0);
