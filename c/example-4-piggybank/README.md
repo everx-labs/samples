@@ -14,7 +14,7 @@ the contract C file) when the contract accumulates the target amount of money or
 #### Input values
 ##### Argument `target`
 * ABI type: `uint64`
-* C type: `unisnged`
+* C type: `unsigned`
 * Description: specifies target amount of money.
 
 #### Output values
@@ -30,7 +30,7 @@ previous one, the method will fail.
 #### Input values
 ##### Argument `destination_account`
 * ABI type: `uint256`
-* C type: `unisnged`
+* C type: `unsigned`
 * Description: specifies the account for funds transfer.
 
 #### Output values

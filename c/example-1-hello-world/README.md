@@ -9,7 +9,7 @@ This contract adds 2 and 2 and returns the sum as an external message.
 None
 #### Output value
 * ABI type: `uint64`
-* C type: `unsinged`
+* C type: `unsigned`
 * Value description: 4 (sum of 2 and 2)
 #### Notes
 To call this method, send a message to the contract.

@@ -13,13 +13,13 @@ contract source code and readme for additional info.
 #### Input values
 ##### Argument `x`
 * ABI type: `uint64`
-* C type: `unisnged`
+* C type: `unsigned`
 * Description: value to be copied into persistent memory and
 returned in external message.
 
 #### Output values
 * ABI type: `uint64`
-* C type: `unisnged`
+* C type: `unsigned`
 * Description: equal to the input value `x`.
 
 #### Notes
