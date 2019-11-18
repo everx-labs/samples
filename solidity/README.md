@@ -103,6 +103,17 @@ Call "Kamikaze.sendAllMoney(address anotherContract)". This function deletes the
 
 Call "Wallet.sendTransaction(address payable dest, uint128 value, bool bounce)". This funciton allows to transfer grams to a specified account.
 
+[PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/PiggyBank.sol): Piggy bank with two clients
+
+This sample consists of 3 contracts:
+- [PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/PiggyBank.sol) - piggy bank itself.
+- [PiggyBank_Owner](https://github.com/tonlabs/samples/blob/master/solidity/PiggyBank_Owner.sol) - piggy bank's owner - valid user, who can add to piggy bank's deposit and withdraw.
+- [PiggyBank_Stranger](https://github.com/tonlabs/samples/blob/master/solidity/PiggyBank_Stranger.sol) - stranger - invalid user, who can add to piggy bank but can't withdraw.
+
+Call "PiggyBank_Owner.addToDeposit(PiggyBank bankAddress, uint amount)" or "PiggyBank_Stranger.addToDeposit(PiggyBank bankAddress, uint amount)" to transfer grams from the contract to PiggyBank.
+
+Call "PiggyBank_Owner.withdrawDeposit(PiggyBank bankAddress)" of "PiggyBank_Stranger.withdrawDeposit(PiggyBank bankAddress)" to try to withdraw the deposit from PiggyBank. Transfer would occur only for the owner.
+
 ## Contract deployment
 
 Here we describe \<MyContract.sol\> deployment to the TON Blockchain Test Network (testnet) using Lite Client.
