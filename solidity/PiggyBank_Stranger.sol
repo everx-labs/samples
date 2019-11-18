@@ -17,13 +17,12 @@ contract Stranger {
 		_;
 	}
 
-	uint m_depositCounter = 1000;
-	uint m_balance;
+	uint depositCounter = 1000;
 
 	// function to deposit money to piggy bank.
 	function addToDeposit(PiggyBank bankAddress, uint amount) public alwaysAccept {
 		bankAddress.deposit.value(amount)();
-		m_depositCounter++;
+		depositCounter++;
 	}
 
 	// function to withdraw money from piggy bank.

@@ -17,13 +17,12 @@ contract Owner {
 		_;
 	}
 
-	uint m_depositCounter;
-	uint m_balance;
+	uint depositCounter;
 
 	// function to deposit money to piggy bank.
 	function addToDeposit(PiggyBank bankAddress, uint amount) public alwaysAccept {
 		bankAddress.deposit.value(amount)();
-		m_depositCounter++;
+		depositCounter++;
 	}
 
 	// function to withdraw money from piggy bank.
