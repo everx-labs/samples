@@ -12,6 +12,9 @@ TVM Toolchain for C to build and test contracts locally. It includes:
 To deploy contracts in testnet, you also need Lite Client tool available at [http://test.ton.org](http://test.ton.org)
 
 ## Example of usage
+
+Check our [youtube tutorial](https://www.youtube.com/watch?v=Srfor1s1eLM).
+
 We use example-4-piggybank to show the building process.
 It is assumed that tools are located in the 'PATH'.
 1. Generate wrappers and headers from contracts' ABI.
@@ -22,7 +25,7 @@ abi_parser.py piggybank
 
 2. Compile the contract sources.
 ```
-clang -target tvm -S -O3 *.s -I/path/to/stdlib
+clang -target tvm -S -O3 *.c -I/path/to/stdlib
 ```
 
 If Clang fails to recognize the TVM target, make sure that you are using Clang for TVM, not the system Clang.
@@ -68,6 +71,6 @@ Contract deploy guidelines do not depend on the language. You can use the one at
 * Free store memory allocation / deallocation
 
 ## Getting support
-Texts, videos and samples illustrating how to use the compiler will soon appear at https://ton.dev/ and https://www.youtube.com/channel/UC9kJ6DKaxSxk6T3lEGdq-Gg. Stay tuned.
-You can also get support in TON Dev Telegram channel: https://t.me/tondev_en.
+Texts, videos and samples illustrating how to use the compiler will soon appear at [https://ton.dev/](https://ton.dev/) and [Youtube channel](https://www.youtube.com/channel/UC9kJ6DKaxSxk6T3lEGdq-Gg). Stay tuned.
+You can also get support in [TON Dev Telegram channel](https://t.me/tondev_en).
 In case you found a bug, raise an issue in the repository. Please attach the source file, the command to reproduce the failure and your machine description.
