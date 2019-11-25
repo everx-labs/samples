@@ -1,23 +1,25 @@
 pragma solidity ^0.5.0;
 
-contract Test01 {
+contract Accumulator {
 
-	// runtime function that allows contract to process external messages, which bring 
-	// no value with themselves.
+	// Runtime function that allows contract to process inbound messages spending 
+	// it's own resources (it's necessary if contract should process all inbound messages,
+	// not only those that carry value with them).
 	function tvm_accept() private pure {}
 
-	// modifier that allows public function to accept all calls before parameters decoding. 
+	// Modifier that allows public function to accept all external calls. 
 	modifier alwaysAccept {
-		tvm_accept(); _;
+		tvm_accept(); 
+		_;
 	}
 
-	// state variable storing the sum of parameters that were
-	// passed to function 'main'
-	uint32 m_accumulator;
+	// State variable storing the sum of arguments that were passed to function 'add', 
+	// initialized with value 0.
+	uint sum = 0;
 
-	function main(uint32 a) public alwaysAccept {
-		uint32 res = m_accumulator + a;
-		m_accumulator = res;
+	// Function that adds its argument to the state variable. 
+	function add(uint value) public alwaysAccept {
+		sum += value;
 	}
 
 }

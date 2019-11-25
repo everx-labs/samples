@@ -40,7 +40,7 @@ is expressed as "Call \<MyContract\>.\<myFunction\>(\<type\> \<parameter\>)".
 [contract 01](https://github.com/tonlabs/samples/blob/master/solidity/contract01.sol): persistent storage
 
 Smart-contracts deployed to the blockchain store their state variables in a persistent storage.
-Call "Test01.main(uint32 a)". It adds "a" to its state variable "m_accumulator", then records the result to "m_accumulator".
+Call "Accumulator.add(uint value)". It adds "value" to its state variable "sum".
 Resulting state of the account can be examined by conventional means.
 
 [contract 02](https://github.com/tonlabs/samples/blob/master/solidity/contract02-a.sol): calling another [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract02-b.sol)
