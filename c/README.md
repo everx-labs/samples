@@ -4,9 +4,9 @@ This directory contains contracts that demonstrate how to use C to write contrac
 ## Prerequisites
 TVM Toolchain for C to build and test contracts locally. It includes:
 * Clang for TVM available in Node SE and at [https://github.com/tonlabs/TON-Compiler](https://github.com/tonlabs/TON-Compiler)
-* C runtime library distributed with Clang (`stdlib/stdlib_c.tvm`)
-* TON SDK for C distributed with Clang (`stdlib/ton-sdk`)
-* ABI parser tool distributed with Clang (`stdlib/abi_parser`)
+  * C runtime library distributed with Clang [https://github.com/tonlabs/TON-Compiler/blob/master/stdlib/stdlib_c.tvm](https://github.com/tonlabs/TON-Compiler/blob/master/stdlib/stdlib_c.tvm)
+  * TON SDK for C distributed with Clang [https://github.com/tonlabs/TON-Compiler/blob/master/stdlib/abi_parser.py](https://github.com/tonlabs/TON-Compiler/blob/master/stdlib/abi_parser.py)
+  * ABI parser tool distributed with Clang [](`stdlib/abi_parser`)
 * Assembler & linker tool, tvm_linker; currently available as a binary in Node SE.
 
 To deploy contracts in testnet, you also need Lite Client tool available at [http://test.ton.org](http://test.ton.org)
