@@ -153,7 +153,7 @@ Here we also use an argument "-w" to set the workchain id and argument "--setkey
 The command generates **.boc** file with name \<\*-msg-init.boc\>.
 
 ### 3) Account preparation
-Out contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some grams to our future contract address before deploying the contract. Some of the ways to get grams are described below in paragraph **Getting grams**.
+Out contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some grams to our future contract address before deploying the contract. Some of the ways to get test grams are described below in paragraph **Getting test grams**.
 
 ### 4) Contract deployment
 When we have a constructor message **.boc** file for the contract and we have replenished the balance of the address we are going deploy to, we can run the Lite Client with [configuration file for the TON Blockchain Test Network](https://test.ton.org/ton-lite-client-test1.config.json):
@@ -193,15 +193,15 @@ tvm_linker message <MyContractAddress> -w 0 --abi-json MyContract.abi.json --abi
 \'\{\<FunctionArguments\>\}\' should have the folowing form: \'\{"<Argument1_Name>":"Argument1_Value", "<Argument2_Name>":"Argument2_Value", ... \}\'
 The command above will create a .boc file which we should send to the testnet as it was described on **step 4**.
 
-## Getting grams
+## Getting test grams
 
-At present we can describe two ways to obtain grams:
+At present we can describe two ways to obtain test grams:
 
-### 1) Ask your mate to send grams to your address.
-If you have a mate who works with TON smart contracts he may have some extra grams and a contract with transfer function (e.g. it could be a Wallet contract, that can send grams to a given address). In this situation you can ask him to send some grams to your address.
+### 1) Ask your mate to send test grams to your address.
+If you have a mate who works with TON smart contracts he may have some extra test grams and a contract with transfer function (e.g. it could be a Wallet contract, that can send test grams to a given address). In this situation you can ask him to send some test grams to your address.
 
 ### 2) Use giver contract.
-If you know that there is a giver contract in your TON network and you know its address and posiibly keys you can ask giver to transfer some grams to your address.
+If you know that there is a giver contract in your TON network and you know its address and posiibly keys you can ask giver to transfer some test grams to your address.
 
 2.1) If you need to use keys with your giver save them into 2 files:
   **secret.key** - 64 bytes concatenation of secret key and public key;
