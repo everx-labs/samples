@@ -210,9 +210,10 @@ If you know that there is a giver contract in your TON network and you know its 
 2.2) Use tvm_linker to create message that we will call giver's function. Use giver's abi to create this message (in this example giver's abi was saved to file giver.abi.json and function name and arguments were taken from it).
 
 ```
-tvm_linker message <GiverAddress> -w 0 --abi-json giver.abi.json --abi-method 'sendTransaction' --abi-params '{"dest":"0:<MyContractAddress>","value":<number of nanograms>,"bounce":"false"}' --setkey secret.key
+tvm_linker message <GiverAddress> -w 0 --abi-json giver.abi.json --abi-method 'sendTransaction' --abi-params '{"dest":"0:<MyContractAddress>","value":"<number of nanograms>","bounce":"false"}' --setkey secret.key
 ```
 
+\<GiverAddress\> - address of the giver contract in HEX format without workchain id.
 The command generates **.boc** file with name \<\*-msg-body.boc\>.
 
 2.3) Use lite_client to send **.boc** file obtained on step **2.2**.
