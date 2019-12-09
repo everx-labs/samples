@@ -161,19 +161,7 @@ When we have a constructor message **.boc** file for the contract and we have re
 lite-client -C ton-lite-client-test1.config.json
 ```
 
-We can check whether the balance replenishment was successful: 
-```
-getaccount 0:<MyContractAddress>
-```
-
-We use "0" as the workchain id in the command above. If everything is OK, you will see an output containing similar data: 
-```
-           value:(currencies
-             grams:(nanograms
-               amount:(var_uint len:5 value:5000000000))
-```
-
-It means that we have some grams on the balance and can deploy the contract:
+If we have some grams on the balance we can deploy the contract:
 ```
 sendfile <path_to_file_<*-msg-init.boc>>
 ```
@@ -229,15 +217,58 @@ Send out **.boc** file.
 sendfile <path_to_file_<*-msg-body.boc>>
 ```
 2.4) Check whether the balance replenishment was successful: 
-In lite_client run:
+We can perform this check in different ways:
+
+2.4.1) Using gramscan service:
+
+Go to https://gram-scan-test.firebaseapp.com/accounts?section=account-details&id=0:<MyContractAddress\> using your contract address.
+
+2.4.2) Using GraphQL:
+
+Go to testnet.ton.dev/graphql and run that code:
+
+```
+{
+  accounts
+  (filter:{id:{eq:"0:<MyContractAddress>"}})
+  {
+    acc_type
+    balance
+    code
+  }
+}
+```
+
+In case of success you will see the code similar to this:
+```
+{
+  "data": {
+    "accounts": [
+      {
+        "acc_type": 0,
+        "balance": "0x60cc460",
+        "code": null
+      }
+    ]
+  }
+}
+```
+
+2.4.3) Using lite_client:
+
+Run lite_client and execute folowing command:
+
 ```
 getaccount 0:<MyContractAddress>
 ```
 
-If everything is OK, you will see an output containing similar data: 
+If everything is OK, you will see an output containing the similar data:
+
 ```
+...
            value:(currencies
              grams:(nanograms
                amount:(var_uint len:5 value:5000000000))
+...
 ```
 
