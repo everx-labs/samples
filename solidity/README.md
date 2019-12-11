@@ -153,16 +153,12 @@ Here we also use an argument "-w" to set the workchain id and argument "--setkey
 The command generates **.boc** file with name \<\*-msg-init.boc\>.
 
 ### 3) Account preparation
-Out contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some grams to our future contract address before deploying the contract. Some of the ways to get test grams are described below in paragraph **Getting test grams**.
+The contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some coins to the future contract address before deploying the contract. Some of the ways to get test coins are covered in **Getting test grams**.
 
 ### 4) Contract deployment
-When we have a constructor message **.boc** file for the contract and we have replenished the balance of the address we are going deploy to, we can run the Lite Client with [configuration file for the TON Blockchain Test Network](https://test.ton.org/ton-lite-client-test1.config.json):
+When we have a constructor message **.boc** file for the contract and we have replenished the balance of the address we are going deploy to, we can run the Lite Client with [configuration file for the TON Blockchain Test Network](https://test.ton.org/ton-lite-client-test1.config.json) and send the file:
 ```
 lite-client -C ton-lite-client-test1.config.json
-```
-
-If we have some grams on the balance we can deploy the contract:
-```
 sendfile <path_to_file_<*-msg-init.boc>>
 ```
 
@@ -246,7 +242,7 @@ In case of success you will see the code similar to this:
     "accounts": [
       {
         "acc_type": 0,
-        "balance": "0x60cc460",
+        "balance": "<NumberOfNanograms>",
         "code": null
       }
     ]
@@ -268,7 +264,7 @@ If everything is OK, you will see an output containing the similar data:
 ...
            value:(currencies
              grams:(nanograms
-               amount:(var_uint len:5 value:5000000000))
+               amount:(var_uint len:5 value:<NumberOfNanograms>))
 ...
 ```
 
