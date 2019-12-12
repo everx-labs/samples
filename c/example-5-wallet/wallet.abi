@@ -1,0 +1,15 @@
+{
+    "ABI version": 1,
+    "functions": [{
+        "name": "constructor",
+        "inputs": [],
+        "outputs": []
+    },
+    {
+        "name": "sendTransaction",
+        "inputs": [{"name":"dest", "type":"uint256"},
+                   {"name":"value", "type":"uint128"},
+                   {"name":"bounce", "type":"uint1"}],
+        "outputs": []
+    }]
+}
