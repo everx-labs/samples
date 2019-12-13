@@ -37,46 +37,45 @@ In the descriptions below :
 "Calling public function \<myFunction\> of the contract \<MyContract\> with an argument name \<parameter\> of type \<type\>."
 is expressed as "Call \<MyContract\>.\<myFunction\>(\<type\> \<parameter\>)".
 
-[contract 01](https://github.com/tonlabs/samples/blob/master/solidity/contract01.sol): persistent storage
+[Accumulator](https://github.com/tonlabs/samples/blob/master/solidity/1_Accumulator.sol): persistent storage
 
 Smart-contracts deployed to the blockchain store their state variables in a persistent storage.
 Call "Accumulator.add(uint value)". It adds "value" to its state variable "sum".
 Resulting state of the account can be examined by conventional means.
 
-[contract 02](https://github.com/tonlabs/samples/blob/master/solidity/contract02-a.sol): calling another [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract02-b.sol)
+[StorageClient](https://github.com/tonlabs/samples/blob/master/solidity/2_StorageClient.sol): calling another [contract](https://github.com/tonlabs/samples/blob/master/solidity/2_UintStorage.sol)
 
-Contracts can also call other remote contracts. Call "MyContract.method(uint anotherContract) to invoke a public function of another contract.
-The remote contract (contract02-b) saves the integer value of the argument and the caller address in its state variables.
+Contracts can also call other remote contracts. Call "StorageClient.store(Storage storageAddress) to invoke a public function of another contract.
+The remote contract (UintStorage) saves the integer value of the argument and the caller address in its state variables.
 
-[contract 03](https://github.com/tonlabs/samples/blob/master/solidity/contract03-a.sol): gram transfer
+[Borrower](https://github.com/tonlabs/samples/blob/master/solidity/3_Borrower.sol): gram transfer
 
-This sample demonstrates how Gram transfer works. Call "MyContract.method(address anotherContract, uint amount)". 
-This requests \<amount\> of Grams from the contract deployed at the specified address. 
-The remote contract ([contract03-b](https://github.com/tonlabs/samples/blob/master/solidity/contract03-b.sol)) transfers \<amount\> of Grams to the caller via **msg.sender.transfer(value)**.
+This sample demonstrates how currency transfer works. Call "Borrower.askForALoan(Loaner loanerAddress, uint amount)". 
+This requests \<amount\> of currency from the contract deployed at the specified address. 
+The remote contract ([LoanerContract](https://github.com/tonlabs/samples/blob/master/solidity/3_Loaner.sol)) transfers \<amount\> of currency to the caller via **msg.sender.transfer(amount)**.
 Each contract has an internal transaction counter. The counter value is increased after each transaction and stored in the persistent memory.
 
-[contract 04](https://github.com/tonlabs/samples/blob/master/solidity/contract04-a.sol): callback implementation
+[CurrencyExchange](https://github.com/tonlabs/samples/blob/master/solidity/4_CurrencyExchange.sol): callback implementation
 
-Call "MyContract.method(address anotherContract, uint16 x)". This function allows interacting with a remote contract by calling its function: "RemoteContract.remoteMethod(uint16 x)".
-The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract04-b.sol) obtains caller's address via **msg.sender**, stores it in its state variable, and performs a callback.
+Call "CurrencyExchange.updateExchangeRate(address bankAddress, uint16 code)". This function allows interacting with a remote contract by calling its function: "ICentralBank.GetExchangeRate(uint16 code)".
+The remote contract [CentralBank](https://github.com/tonlabs/samples/blob/master/solidity/4_CentralBank.sol) obtains caller's address via **msg.sender** and performs a callback.
 
-[contract05](https://github.com/tonlabs/samples/blob/master/solidity/contract05-a.sol): loan amount approval
+[Bank](https://github.com/tonlabs/samples/blob/master/solidity/5_Bank.sol): loan interaction between Bank and [BankClient](https://github.com/tonlabs/samples/blob/master/solidity/5_BankClient.sol)
 
-Call "MyContract.setAllowance(address anotherContract, uint64 amount)".
-MyContract (contract05-a) stores information about loan allowances for different contracts. This data is recorded in the following state variable:
-mapping(address => ContractInfo) m_allowed;
-A contract owner is supposed to call the setAllowance() external function to specify limits. It also processes getCredit() internal messages and sends the allowed loan amount in response.
-RemoteContract ([contract05-b](https://github.com/tonlabs/samples/blob/master/solidity/contract05-b.sol)) is a client that makes a loan request. It can take getMyCredit() external requests, forward those to a specified IMyContract type account and store the answer in a m_answer state variable.
+Call "Bank.setAllowance(address bankClientAddress, uint amount)".
+Bank stores information about loan allowances and current debts for different contracts. This data is recorded in the following state variable:
+mapping(address => CreditInfo) clientDB;
+A contract owner is supposed to call the setAllowance() function to specify limits. 
 
-[contract06](https://github.com/tonlabs/samples/blob/master/solidity/contract06-a.sol): balance information
+[BankClient](https://github.com/tonlabs/samples/blob/master/solidity/5_BankClient.sol)) is a client that can interact with Bank.
 
-Call "MyContract.method(address anotherContract)". This function calls a remote contract.
-The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract06-b.sol) obtains the balance of the inbound message via **msg.value** and its own balance via **address(this).balance** and stores both of them in state variables.
+Call "BankClient.getMyCredit(IBank bank)".
+This function calls the remote contract Bank to receive allowed credit limit via Bank invoking the callback function "setCreditLimit(uint limit)".
 
-[contract07](https://github.com/tonlabs/samples/blob/master/solidity/contract07-a.sol): send grams and value to a specified contract
-
-Call "MyContract.sendMoneyAndNumber(address anotherContract, uint64 number)". This function send the \<number\> to contract with specified address and attaches fixed amount of grams to the message. 
-The remote [contract](https://github.com/tonlabs/samples/blob/master/solidity/contract07-b.sol) recieves value and amount of grams and stores them in state variables.
+Call "BankClient.askForALoan(IBank bank, uint amount).
+This function call the remote contract Bank to get an amount of credit. According to the current credit info of the BankClient contract Bank will approve the credit via calling the callback function "receiveLoan(uint n_totalDebt)" or refuse the credit via calling the callback function "refusalCallback(uint availableLimit)". 
+**receiveLoan** function also obtains balance of the contract via **address(this).balance** and balance of the inbound message via **msg.value** and saves them in state variables.
+**refusalCallback** function saves the argument (available credut limit) in the state variable.
 
 [contract08](https://github.com/tonlabs/samples/blob/master/solidity/contract08-a.sol): exchange of different types of values
 
