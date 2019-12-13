@@ -31,13 +31,11 @@ contract CurrencyExchange is ICurrencyExchange {
 	// function 'GetExchangeRate' with parameter <code>.
 	function updateExchangeRate(address bankAddress, uint16 code) public alwaysAccept {
 		ICentralBank(bankAddress).GetExchangeRate(code);
-		return;
 	}
 	
 	// A callback function to set exchangeRate.
 	function setExchangeRate(uint32 n_exchangeRate) public alwaysAccept {
 		// save parameter n_exchangeRate in state variable 'exchangeRate'.
 		exchangeRate = n_exchangeRate;
-		return;
 	}
 }

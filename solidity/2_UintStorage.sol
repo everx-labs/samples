@@ -31,7 +31,6 @@ contract UintStorage is Storage {
 	function storeValue(uint n_value) public alwaysAccept {
 		value = n_value;
 		client_address = msg.sender;
-		return;
 	}
 
 }

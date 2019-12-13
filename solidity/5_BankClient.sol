@@ -24,25 +24,22 @@ contract BankClient is IBankClient {
 	uint value = 0;          // inbound message value.
 
 
-	// This function calls a remote IBankDataBase contract to get the cresit limit.
+	// This function calls a remote IBankDataBase contract to get the credit limit.
 	function getMyCredit(IBank bank) public alwaysAccept {
 		// Call remote contract function.
 		bank.getCreditLimit();
-		return;
 	}
 
 	// A callback function to set the credit limit.
 	function setCreditLimit(uint limit) public alwaysAccept {
 		// Save the credit limit (received from another contract) in the state variable.
 		creditLimit = limit;
-		return;
 	}
 
 	//This function calls bank contract to ask for a loan.
 	function askForALoan(IBank bank, uint amount) public alwaysAccept {
 		balance = address(this).balance;
 		bank.loan(amount);
-		return;
 	}
 
 	// A callback payable function to recieve requested loan. Function recieves the total debt as an argument.

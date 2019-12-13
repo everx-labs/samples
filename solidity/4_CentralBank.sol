@@ -26,14 +26,13 @@ contract CentralBank is ICentralBank {
 	uint16 currencyCode;
 	
 	// This function recieves the code of currency and returns to the sender exchange rate
-    // via calling a callback function.
+	// via calling a callback function.
 	function GetExchangeRate(uint16 code) public alwaysAccept {
 		// Save parameter <code> in the state variable <currencyCode>
 		currencyCode = code;
 		// Cast address of caller to ICurrencyExchange interface and
 		// call its 'setExchangeRate' function.
 		ICurrencyExchange(msg.sender).setExchangeRate(code * 16);
-		return; 
 	}
 	
 }

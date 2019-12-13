@@ -70,7 +70,7 @@ A contract owner is supposed to call the setAllowance() function to specify limi
 [BankClient](https://github.com/tonlabs/samples/blob/master/solidity/5_BankClient.sol)) is a client that can interact with Bank.
 
 Call "BankClient.getMyCredit(IBank bank)".
-This function calls the remote contract Bank to recieve allowed credit limit via Bank calling the callback function "setCreditLimit(uint limit)".
+This function calls the remote contract Bank to receive allowed credit limit via Bank invoking the callback function "setCreditLimit(uint limit)".
 
 Call "BankClient.askForALoan(IBank bank, uint amount).
 This function call the remote contract Bank to get an amount of credit. According to the current credit info of the BankClient contract Bank will approve the credit via calling the callback function "receiveLoan(uint n_totalDebt)" or refuse the credit via calling the callback function "refusalCallback(uint availableLimit)". 

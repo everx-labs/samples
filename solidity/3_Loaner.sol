@@ -28,7 +28,6 @@ contract LoanerContract is Loaner {
 	function borrow(uint amount) public alwaysAccept {
 		msg.sender.transfer(amount);
 		callCounter++;
-		return; 
 	}
 	
 }

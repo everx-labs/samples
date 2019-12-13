@@ -28,7 +28,6 @@ contract StorageClient {
 		storageAddress.storeValue(257);
 		// Increment the counter.
 		callCounter++;
-		return;
 	}
 
 }

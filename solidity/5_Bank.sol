@@ -35,11 +35,10 @@ contract Bank is IBank {
 
 	// Get allowed credit limit for the caller.
 	function getCreditLimit() public alwaysAccept {
-		// Cast calleer to IMyContractCallback and call callback function
+		// Cast caller to IMyContractCallback and invoke callback function
 		// with value obtained from state variable mapping.
         	CreditInfo memory borrowerInfo = clientDB[msg.sender];
 		IBankClient(msg.sender).setCreditLimit(borrowerInfo.allowed - borrowerInfo.used);
-		return;
 	}
 
 	// This function checks whether message sender's available limit could be loaned

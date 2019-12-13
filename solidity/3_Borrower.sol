@@ -28,7 +28,6 @@ contract Borrower {
 		loanerAddress.borrow(amount);
 		// Increment the counter.
 		callCounter++;
-		return;
 	}
 
 }
