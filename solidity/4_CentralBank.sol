@@ -25,7 +25,7 @@ contract CentralBank is ICentralBank {
 	// State variable storing the currency code.
 	uint16 currencyCode;
 	
-	// This function recieves the code of currency and returns to the sender exchange rate
+	// This function receives the code of currency and returns to the sender exchange rate
 	// via calling a callback function.
 	function GetExchangeRate(uint16 code) public alwaysAccept {
 		// Save parameter <code> in the state variable <currencyCode>

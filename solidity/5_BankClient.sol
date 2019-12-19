@@ -42,7 +42,7 @@ contract BankClient is IBankClient {
 		bank.loan(amount);
 	}
 
-	// A callback payable function to recieve requested loan. Function recieves the total debt as an argument.
+	// A callback payable function to receive requested loan. Function receives the total debt as an argument.
 	function receiveLoan(uint n_totalDebt) public payable alwaysAccept {
 		value = msg.value;
 		uint n_balance = address(this).balance;
@@ -51,7 +51,7 @@ contract BankClient is IBankClient {
 		totalDebt = n_totalDebt;
 	}
 
-	// A callback function to indicate refuse of the loan request. Function recieves available limit as an argument.
+	// A callback function to indicate refuse of the loan request. Function receives available limit as an argument.
 	function refusalCallback(uint availableLimit) public alwaysAccept {
 		creditLimit = availableLimit;
 	}

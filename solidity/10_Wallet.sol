@@ -17,7 +17,7 @@ contract Wallet {
     /*
      * Runtime functions
     */
-    // Function to obtain inbound message's signification public key.
+    // Function to obtain inbound message's signature public key.
     function tvm_sender_pubkey() private pure returns (uint256) {}
 
     // Function to obtain the contract's owner public key.
