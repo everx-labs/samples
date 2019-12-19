@@ -23,7 +23,7 @@ contract Kamikaze {
 		_;
 	}
 
-    // State variable storing the number of times fallback function was called.
+	// State variable storing the number of times fallback function was called.
 	uint fallbackCounter = 0;
 
 	// State variable storing the owner's public key.

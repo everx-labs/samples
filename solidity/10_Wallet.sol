@@ -17,16 +17,19 @@ contract Wallet {
     /*
      * Runtime functions
     */
-    // Function to obtain inbound message's signature public key.
+
+    // Runtime function that obtains sender's public key.
     function tvm_sender_pubkey() private pure returns (uint256) {}
 
-    // Function to obtain the contract's owner public key.
+    // Runctime function that obtains contract owner's public key.
     function tvm_my_public_key() private view returns (uint256) {}
 
-    // Function to make an arbitrary currency transfer.
+    // Runtime function that allows to make a transfer with arbitrary settings.
     function tvm_transfer(address payable addr, uint128 value, bool bounce, uint16 flags) private pure {}
 
-    // Function to accept inbound messages.
+    // Runtime function that allows contract to process inbound messages spending
+    // it's own resources (it's necessary if contract should process all inbound messages,
+    // not only those that carry value with them).
     function tvm_accept() private pure {}
 
     // Modifier that allows function to accept external call only if it was signed
@@ -35,7 +38,7 @@ contract Wallet {
         require(tvm_sender_pubkey() == owner, 100);
         tvm_accept();
         _;
-	}
+    }
 
     /*
      * Public functions
@@ -43,11 +46,11 @@ contract Wallet {
 
     /// @dev Contract constructor.
     constructor() public {
-        owner = tvm_my_public_key();	// save contract's public key in a state variable.
+        owner = tvm_my_public_key();	// save contract's public key in the state variable.
     }
 
 
-    /// @dev Allows to transfer grams to destination account.
+    /// @dev Allows to transfer grams to the destination account.
     /// @param dest Transfer target address.
     /// @param value Nanograms value to transfer.
     /// @param bounce Flag that enables bounce message in case of target contract error.

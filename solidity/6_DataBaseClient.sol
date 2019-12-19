@@ -6,7 +6,7 @@ import "6_DBClientInterface.sol";
 // This contract implements IDataBaseClient interface.
 contract DataBaseClient is IDataBaseClient {
 
-    // Runtime function that allows contract to process inbound messages spending
+	// Runtime function that allows contract to process inbound messages spending
 	// it's own resources (it's necessary if contract should process all inbound messages,
 	// not only those that carry value with them).
 	function tvm_accept() private pure {}
@@ -20,7 +20,7 @@ contract DataBaseClient is IDataBaseClient {
 	// State variable storing the number of receive* functions were called.
 	uint receiptCounter = 0;
 
-	// State variable that can be used to check reveived values.
+	// State variable that can be used to check received values.
 	uint checkSum = 0;
 
 	// Function receives an array of uint64 values.

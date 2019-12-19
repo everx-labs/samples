@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 // This contract is used to emulate currency transfer destination contract, it can accept incoming transfer via fallback function or emulate crash in function doCrash().
 contract CrashContract {
 
-    // State variable storing the number of times fallback function was called.
+	// State variable storing the number of times fallback function was called.
 	uint fallbackCounter = 0;
 
 	// Fallback function.

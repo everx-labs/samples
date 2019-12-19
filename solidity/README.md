@@ -97,7 +97,7 @@ Call "Giver.transferToAbstractContract(address payable destination, uint amount)
 
 8) [Kamikaze](https://github.com/tonlabs/samples/blob/master/solidity/8_Kamikaze.sol): selfdestruct function
 
-Call "Kamikaze.sendAllMoney(address anotherContract)". This function deletes the contract and sends all its currency to the specified [Heir](https://github.com/tonlabs/samples/blob/master/solidity/8_Heir.sol) contract.
+Call "Kamikaze.sendAllMoney(address anotherContract)". This function deletes the contract and sends all its currency to the specified address of [Heir](https://github.com/tonlabs/samples/blob/master/solidity/8_Heir.sol) contract.
 
 9) [PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank.sol): Piggy bank with two clients
 

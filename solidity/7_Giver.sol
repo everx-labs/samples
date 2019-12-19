@@ -3,17 +3,17 @@ pragma solidity ^0.5.0;
 import "7_CrashContract.sol";
 
 contract AbstractContract {
-	function reciveTransfer(uint64 number) public payable;
+	function receiveTransfer(uint64 number) public payable;
 }
 
 
 //This contract allows to perform diffent kinds of currency transactions and control the result using the fallback function.
 contract Giver {
-    // Runtime function that allows to make a transfer with arbitrary settings
-    // and can be used to send grams to non-existing address.
+	// Runtime function that allows to make a transfer with arbitrary settings
+	// and can be used to send grams to non-existing address.
 	function tvm_transfer(address payable remote_addr, uint128 grams_value, bool bounce, uint16 sendrawmsg_flag) private pure {}
 
-    // Runtime function that allows contract to process inbound messages spending
+	// Runtime function that allows contract to process inbound messages spending
 	// it's own resources (it's necessary if contract should process all inbound messages,
 	// not only those that carry value with them).
 	function tvm_accept() private pure {}
@@ -24,7 +24,7 @@ contract Giver {
 		_;
 	}
 
-    // State variable storing the number of times fallback function was called.
+	// State variable storing the number of times fallback function was called.
 	uint fallbackCounter = 0;
 
 	// Fallback function that is executed on a call to the contract if none of the other
@@ -37,20 +37,20 @@ contract Giver {
 	// This function can transfer currency to an existing contract with payable fallback
 	// function.
 	function transferToAddress(address payable destination, uint amount) public alwaysAccept {
-        destination.transfer(amount);
-    }
+		destination.transfer(amount);
+	}
     
-    // This function calls an AbstractContract which would cause a fallback function
-    // call in case of this contract inexistance.
-    function transferToAbstractContract(address payable destination, uint amount) public alwaysAccept {
-        AbstractContract(destination).reciveTransfer.value(amount)(123);
-    }
+	// This function calls an AbstractContract which would cause a fallback function
+	// call in case of this contract inexistance.
+	function transferToAbstractContract(address payable destination, uint amount) public alwaysAccept {
+		AbstractContract(destination).receiveTransfer.value(amount)(123);
+	}
     
-    // This function call a CrashContract's function which would cause a fallback
-    // function call  after it crashes.
+	// This function call a CrashContract's function which would cause a fallback
+	// function call  after it crashes.
 	function transferToCrashContract(address payable destination, uint amount) public alwaysAccept {
-        CrashContract(destination).doCrash.value(amount)();
-    }
+		CrashContract(destination).doCrash.value(amount)();
+	}
 
 	// Function which allows to make a transfer to an arbitrary address.
 	function do_tvm_transfer(address payable remote_addr, uint128 grams_value, bool bounce, uint16 sendrawmsg_flag) pure public alwaysAccept {
