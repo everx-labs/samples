@@ -37,37 +37,37 @@ In the descriptions below :
 "Calling public function \<myFunction\> of the contract \<MyContract\> with an argument name \<parameter\> of type \<type\>."
 is expressed as "Call \<MyContract\>.\<myFunction\>(\<type\> \<parameter\>)".
 
-[Accumulator](https://github.com/tonlabs/samples/blob/master/solidity/1_Accumulator.sol): persistent storage
+1) [Accumulator](https://github.com/tonlabs/samples/blob/master/solidity/1_Accumulator.sol): persistent storage
 
 Smart-contracts deployed to the blockchain store their state variables in a persistent storage.
 Call "Accumulator.add(uint value)". It adds "value" to its state variable "sum".
 Resulting state of the account can be examined by conventional means.
 
-[StorageClient](https://github.com/tonlabs/samples/blob/master/solidity/2_StorageClient.sol): calling another [contract](https://github.com/tonlabs/samples/blob/master/solidity/2_UintStorage.sol)
+2) [StorageClient](https://github.com/tonlabs/samples/blob/master/solidity/2_StorageClient.sol): calling another [contract](https://github.com/tonlabs/samples/blob/master/solidity/2_UintStorage.sol)
 
 Contracts can also call other remote contracts. Call "StorageClient.store(Storage storageAddress) to invoke a public function of another contract.
 The remote contract (UintStorage) saves the integer value of the argument and the caller address in its state variables.
 
-[Borrower](https://github.com/tonlabs/samples/blob/master/solidity/3_Borrower.sol): gram transfer
+3) [Borrower](https://github.com/tonlabs/samples/blob/master/solidity/3_Borrower.sol): gram transfer
 
 This sample demonstrates how currency transfer works. Call "Borrower.askForALoan(Loaner loanerAddress, uint amount)". 
 This requests \<amount\> of currency from the contract deployed at the specified address. 
 The remote contract ([LoanerContract](https://github.com/tonlabs/samples/blob/master/solidity/3_Loaner.sol)) transfers \<amount\> of currency to the caller via **msg.sender.transfer(amount)**.
 Each contract has an internal transaction counter. The counter value is increased after each transaction and stored in the persistent memory.
 
-[CurrencyExchange](https://github.com/tonlabs/samples/blob/master/solidity/4_CurrencyExchange.sol): callback implementation
+4) [CurrencyExchange](https://github.com/tonlabs/samples/blob/master/solidity/4_CurrencyExchange.sol): callback implementation
 
 Call "CurrencyExchange.updateExchangeRate(address bankAddress, uint16 code)". This function allows interacting with a remote contract by calling its function: "ICentralBank.GetExchangeRate(uint16 code)".
 The remote contract [CentralBank](https://github.com/tonlabs/samples/blob/master/solidity/4_CentralBank.sol) obtains caller's address via **msg.sender** and performs a callback.
 
-[Bank](https://github.com/tonlabs/samples/blob/master/solidity/5_Bank.sol): loan interaction between Bank and [BankClient](https://github.com/tonlabs/samples/blob/master/solidity/5_BankClient.sol)
+5) [Bank](https://github.com/tonlabs/samples/blob/master/solidity/5_Bank.sol): loan interaction between Bank and [BankClient](https://github.com/tonlabs/samples/blob/master/solidity/5_BankClient.sol)
 
 Call "Bank.setAllowance(address bankClientAddress, uint amount)".
 Bank stores information about loan allowances and current debts for different contracts. This data is recorded in the following state variable:
 mapping(address => CreditInfo) clientDB;
 A contract owner is supposed to call the setAllowance() function to specify limits. 
 
-[BankClient](https://github.com/tonlabs/samples/blob/master/solidity/5_BankClient.sol)) is a client that can interact with Bank.
+[BankClient](https://github.com/tonlabs/samples/blob/master/solidity/5_BankClient.sol) is a client that can interact with Bank.
 
 Call "BankClient.getMyCredit(IBank bank)".
 This function calls the remote contract Bank to receive allowed credit limit via Bank invoking the callback function "setCreditLimit(uint limit)".
@@ -77,41 +77,42 @@ This function call the remote contract Bank to get an amount of credit. Accordin
 **receiveLoan** function also obtains balance of the contract via **address(this).balance** and balance of the inbound message via **msg.value** and saves them in state variables.
 **refusalCallback** function saves the argument (available credut limit) in the state variable.
 
-[contract08](https://github.com/tonlabs/samples/blob/master/solidity/contract08-a.sol): exchange of different types of values
+6) [DataBase](https://github.com/tonlabs/samples/blob/master/solidity/8_DataBase.sol): exchange of different types of values
 
-One of contract functions call allows to send to the [remote contract](https://github.com/tonlabs/samples/blob/master/solidity/contract08-b.sol) different values:
+One of contract functions call allows to send to the [DataBaseClient](https://github.com/tonlabs/samples/blob/master/solidity/8_DataBaseClient.sol) different values:
 - uint64 array;
-- two uint64 arrays;
 - five uint arrays;
 - five uint256;
 - struct array.
 
-[contract09](https://github.com/tonlabs/samples/blob/master/solidity/contract09.sol): fallback funciton
+7) [Giver](https://github.com/tonlabs/samples/blob/master/solidity/7_Giver.sol): simple giver contract
 
-Call "Caller.sendMoney(address anotherContract, uint cmd)". This function allows to send grams to different recipients and obtain situations when the fallback function should be called. One of cases uses [CrashContract](https://github.com/tonlabs/samples/blob/master/solidity/contract09-a.sol) which crashes under certain conditions and can cause fallback function call.
+This sample shows usage of different types of currency transactions and usage of a fallback function.
 
-[contract10](https://github.com/tonlabs/samples/blob/master/solidity/contract10.sol): customizable constructor
+Call "Giver.transferToAddress(address payable destination, uint amount)" or "Giver.do_tvm_transfer(address payable remote_addr, uint128 grams_value, bool bounce, uint16 sendrawmsg_flag)" to perform a currency transaction.
 
-This sample demonstrates how user can write his own contract constructor.
+Call "Giver.transferToCrashContract(address payable destination, uint amount)" to implement a crash during transaction. That will cause an exception in [CrashContract](https://github.com/tonlabs/samples/blob/master/solidity/7_CrashContract.sol) and Giver's contract fallback function calling.
 
-[contract11](https://github.com/tonlabs/samples/blob/master/solidity/contract11-a.sol): selfdestruct function
+Call "Giver.transferToAbstractContract(address payable destination, uint amount)" with address of unexisting AbstractContract will also call a fallback function of Giver.
 
-Call "Kamikaze.sendAllMoney(address anotherContract)". This function deletes the contract and sends all its grams to the specified [remote contract](https://github.com/tonlabs/samples/blob/master/solidity/contract11-b.sol).
+8) [Kamikaze](https://github.com/tonlabs/samples/blob/master/solidity/8_Kamikaze.sol): selfdestruct function
 
-[Wallet](https://github.com/tonlabs/samples/blob/master/solidity/Wallet.sol): Simple wallet
+Call "Kamikaze.sendAllMoney(address anotherContract)". This function deletes the contract and sends all its currency to the specified address of [Heir](https://github.com/tonlabs/samples/blob/master/solidity/8_Heir.sol) contract.
 
-Call "Wallet.sendTransaction(address payable dest, uint128 value, bool bounce)". This funciton allows to transfer grams to a specified account.
-
-[PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/PiggyBank.sol): Piggy bank with two clients
+9) [PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank.sol): Piggy bank with two clients
 
 This sample consists of 3 contracts:
-- [PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/PiggyBank.sol) - piggy bank itself.
-- [PiggyBank_Owner](https://github.com/tonlabs/samples/blob/master/solidity/PiggyBank_Owner.sol) - piggy bank's owner - valid user, who can add to piggy bank's deposit and withdraw.
-- [PiggyBank_Stranger](https://github.com/tonlabs/samples/blob/master/solidity/PiggyBank_Stranger.sol) - stranger - invalid user, who can add to piggy bank but can't withdraw.
+- [PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank.sol) - piggy bank itself.
+- [PiggyBank_Owner](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank_Owner.sol) - piggy bank's owner - valid user, who can add to piggy bank's deposit and withdraw.
+- [PiggyBank_Stranger](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank_Stranger.sol) - stranger - invalid user, who can add to piggy bank but can't withdraw.
 
 Call "PiggyBank_Owner.addToDeposit(PiggyBank bankAddress, uint amount)" or "PiggyBank_Stranger.addToDeposit(PiggyBank bankAddress, uint amount)" to transfer grams from the contract to PiggyBank.
 
 Call "PiggyBank_Owner.withdrawDeposit(PiggyBank bankAddress)" of "PiggyBank_Stranger.withdrawDeposit(PiggyBank bankAddress)" to try to withdraw the deposit from PiggyBank. Transfer would occur only for the owner.
+
+10) [Wallet](https://github.com/tonlabs/samples/blob/master/solidity/10_Wallet.sol): Simple wallet
+
+Call "Wallet.sendTransaction(address payable dest, uint128 value, bool bounce)". This funciton allows to transfer grams to a specified account.
 
 ## Contract deployment
 
