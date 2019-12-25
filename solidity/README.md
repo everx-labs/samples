@@ -29,11 +29,11 @@ tvm_linker test <MyContractAddress> --abi-json <MyContract.abi.json> --abi-metho
 ## Contract examples
 
 This set of smart-contract samples illustrates common functionality of smart-contracts developed in Solidity,
-starting with very basic and gradually evolving into code snippets which may come handy in production smart-contracts.
+starting with very basic and gradually evolving into code snippets, which may come handy in production smart-contracts.
 
 Interaction with the contract in each of the samples described below starts with calling one of its public functions
 with parameters. 
-In the descriptions below :
+In the descriptions below:
 "Calling public function \<myFunction\> of the contract \<MyContract\> with an argument name \<parameter\> of type \<type\>."
 is expressed as "Call \<MyContract\>.\<myFunction\>(\<type\> \<parameter\>)".
 
@@ -53,7 +53,7 @@ The remote contract (UintStorage) saves the integer value of the argument and th
 This sample demonstrates how currency transfer works. Call "Borrower.askForALoan(Loaner loanerAddress, uint amount)". 
 This requests \<amount\> of currency from the contract deployed at the specified address. 
 The remote contract ([LoanerContract](https://github.com/tonlabs/samples/blob/master/solidity/3_Loaner.sol)) transfers \<amount\> of currency to the caller via **msg.sender.transfer(amount)**.
-Each contract has an internal transaction counter. The counter value is increased after each transaction and stored in the persistent memory.
+Each contract has an internal transaction counter. The counter value increases with each transaction and is stored in the persistent memory.
 
 4) [CurrencyExchange](https://github.com/tonlabs/samples/blob/master/solidity/4_CurrencyExchange.sol): callback implementation
 
@@ -75,11 +75,11 @@ This function calls the remote contract Bank to receive allowed credit limit via
 Call "BankClient.askForALoan(IBank bank, uint amount).
 This function call the remote contract Bank to get an amount of credit. According to the current credit info of the BankClient contract Bank will approve the credit via calling the callback function "receiveLoan(uint n_totalDebt)" or refuse the credit via calling the callback function "refusalCallback(uint availableLimit)". 
 **receiveLoan** function also obtains balance of the contract via **address(this).balance** and balance of the inbound message via **msg.value** and saves them in state variables.
-**refusalCallback** function saves the argument (available credut limit) in the state variable.
+**refusalCallback** function saves the argument (available credit limit) in the state variable.
 
-6) [DataBase](https://github.com/tonlabs/samples/blob/master/solidity/8_DataBase.sol): exchange of different types of values
+6) [DataBase](https://github.com/tonlabs/samples/blob/master/solidity/6_DataBase.sol): exchange of different types of values
 
-One of contract functions call allows to send to the [DataBaseClient](https://github.com/tonlabs/samples/blob/master/solidity/8_DataBaseClient.sol) different values:
+One of contract functions call allows sending to the [DataBaseClient](https://github.com/tonlabs/samples/blob/master/solidity/6_DataBaseClient.sol) different values:
 - uint64 array;
 - five uint arrays;
 - five uint256;
@@ -93,18 +93,18 @@ Call "Giver.transferToAddress(address payable destination, uint amount)" or "Giv
 
 Call "Giver.transferToCrashContract(address payable destination, uint amount)" to implement a crash during transaction. That will cause an exception in [CrashContract](https://github.com/tonlabs/samples/blob/master/solidity/7_CrashContract.sol) and Giver's contract fallback function calling.
 
-Call "Giver.transferToAbstractContract(address payable destination, uint amount)" with address of unexisting AbstractContract will also call a fallback function of Giver.
+Call "Giver.transferToAbstractContract(address payable destination, uint amount)" with a non-existent address AbstractContract will also call a fallback function of Giver.
 
 8) [Kamikaze](https://github.com/tonlabs/samples/blob/master/solidity/8_Kamikaze.sol): selfdestruct function
 
-Call "Kamikaze.sendAllMoney(address anotherContract)". This function deletes the contract and sends all its currency to the specified address of [Heir](https://github.com/tonlabs/samples/blob/master/solidity/8_Heir.sol) contract.
+Call "Kamikaze.sendAllMoney(address anotherContract)". This function destroys the contract and sends all its funds to the specified address of [Heir](https://github.com/tonlabs/samples/blob/master/solidity/8_Heir.sol) contract.
 
 9) [PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank.sol): Piggy bank with two clients
 
 This sample consists of 3 contracts:
 - [PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank.sol) - piggy bank itself.
 - [PiggyBank_Owner](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank_Owner.sol) - piggy bank's owner - valid user, who can add to piggy bank's deposit and withdraw.
-- [PiggyBank_Stranger](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank_Stranger.sol) - stranger - invalid user, who can add to piggy bank but can't withdraw.
+- [PiggyBank_Stranger](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank_Stranger.sol) - stranger - invalid user, who can add to piggy bank but can not withdraw.
 
 Call "PiggyBank_Owner.addToDeposit(PiggyBank bankAddress, uint amount)" or "PiggyBank_Stranger.addToDeposit(PiggyBank bankAddress, uint amount)" to transfer grams from the contract to PiggyBank.
 
@@ -112,7 +112,7 @@ Call "PiggyBank_Owner.withdrawDeposit(PiggyBank bankAddress)" of "PiggyBank_Stra
 
 10) [Wallet](https://github.com/tonlabs/samples/blob/master/solidity/10_Wallet.sol): Simple wallet
 
-Call "Wallet.sendTransaction(address payable dest, uint128 value, bool bounce)". This funciton allows to transfer grams to a specified account.
+Call "Wallet.sendTransaction(address payable dest, uint128 value, bool bounce)". This function allows transferring grams to the specified account.
 
 ## Contract deployment
 
@@ -126,7 +126,7 @@ solc --tvm_abi MyContract.sol > MyContract.abi.json
 tvm_linker compile MyContract.code -w 0 --lib <path_to>/stdlib_sol.tvm --abi-json MyContract.abi.json [--genkey <path_to_save_keyfile>]
 ```
 
-Notice that we've added argument "-w 0" to the tvm_linker, where "0" - is the id of workchain (default is -1).
+Notice that we have added argument "-w 0" to the tvm_linker, where "0" - is the id of workchain (default is -1).
 By default tvm\_linker compiles contract with zero key, so we can add argument "--genkey <path_to_save_keyfile>" to generate new keypair for the contract and save it to the file.
 If we already have a keypair, we can use existing pair with argument "--setkey <path_to_keyfile>".
 The last command of the list above prints all possible addresses of the contract:
@@ -163,7 +163,7 @@ sendfile <path_to_file_<*-msg-init.boc>>
 ```
 
 <*-msg-init.boc> is the file we obtained on the **step 2**.
-After that we can check the account again and see, that the output now contains the state of the contract:
+After that, we can check the account again and see that the output now contains the state of the contract:
 ```
 getaccount 0:<MyContractAddress>
 ```
@@ -174,18 +174,18 @@ To call a function of the contract we should prepare a special message and then 
 tvm_linker message <MyContractAddress> -w 0 --abi-json MyContract.abi.json --abi-method '<FunctionName>' --abi-params '{<FunctionArguments>}' [--setkey <path_to_keyfile>]
 ```
 
-\'\{\<FunctionArguments\>\}\' should have the folowing form: \'\{"<Argument1_Name>":"Argument1_Value", "<Argument2_Name>":"Argument2_Value", ... \}\'
+\'\{\<FunctionArguments\>\}\' should have the following form: \'\{"<Argument1_Name>":"Argument1_Value", "<Argument2_Name>":"Argument2_Value", ... \}\'
 The command above will create a .boc file which we should send to the testnet as it was described on **step 4**.
 
 ## Getting test grams
 
-At present we can describe two ways to obtain test grams:
+At present, we can describe two ways to obtain test grams:
 
 ### 1) Ask your mate to send test grams to your address.
-If you have a mate who works with TON smart contracts he may have some extra test grams and a contract with transfer function (e.g. it could be a Wallet contract, that can send test grams to a given address). In this situation you can ask him to send some test grams to your address.
+If you have a mate who works with TON smart contracts he may have some extra test grams and a contract with transfer function (e.g. it could be a Wallet contract, which can send test grams to a given address). In this situation, you can ask him/her to send some test grams to your address.
 
 ### 2) Use giver contract.
-If you know that there is a giver contract in your TON network and you know its address and posiibly keys you can ask giver to transfer some test grams to your address.
+If you know that there is a giver contract in your TON network and you know its address and possibly keys you can ask giver to transfer some test grams to your address.
 
 2.1) If you need to use keys with your giver save them into 2 files:
   **secret.key** - 64 bytes concatenation of secret key and public key;
@@ -235,7 +235,7 @@ Go to testnet.ton.dev/graphql and run that code:
 }
 ```
 
-In case of success you will see the code similar to this:
+In case of success, you will see the code similar to this:
 ```
 {
   "data": {
@@ -252,7 +252,7 @@ In case of success you will see the code similar to this:
 
 2.4.3) Using lite_client:
 
-Run lite_client and execute folowing command:
+Run lite_client and execute the following command:
 
 ```
 getaccount 0:<MyContractAddress>
