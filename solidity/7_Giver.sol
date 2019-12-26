@@ -9,6 +9,7 @@ contract AbstractContract {
 
 //This contract allows to perform diffent kinds of currency transactions and control the result using the fallback function.
 contract Giver {
+
 	// Runtime function that allows to make a transfer with arbitrary settings
 	// and can be used to send grams to non-existing address.
 	function tvm_transfer(address payable remote_addr, uint128 grams_value, bool bounce, uint16 sendrawmsg_flag) private pure {}
@@ -39,13 +40,13 @@ contract Giver {
 	function transferToAddress(address payable destination, uint amount) public alwaysAccept {
 		destination.transfer(amount);
 	}
-    
+
 	// This function calls an AbstractContract which would cause a fallback function
 	// call in case of this contract inexistance.
 	function transferToAbstractContract(address payable destination, uint amount) public alwaysAccept {
 		AbstractContract(destination).receiveTransfer.value(amount)(123);
 	}
-    
+
 	// This function call a CrashContract's function which would cause a fallback
 	// function call  after it crashes.
 	function transferToCrashContract(address payable destination, uint amount) public alwaysAccept {

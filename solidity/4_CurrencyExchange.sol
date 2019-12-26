@@ -12,14 +12,14 @@ contract ICurrencyExchange {
 // The contract calls remote bank contract to get the exchange rate via callback function calling.
 contract CurrencyExchange is ICurrencyExchange {
 
-	// Runtime function that allows contract to process inbound messages spending 
+	// Runtime function that allows contract to process inbound messages spending
 	// it's own resources (it's necessary if contract should process all inbound messages,
 	// not only those that carry value with them).
 	function tvm_accept() private pure {}
 
-	// Modifier that allows public function to accept all external calls. 
+	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
-		tvm_accept(); 
+		tvm_accept();
 		_;
 	}
 
@@ -32,7 +32,7 @@ contract CurrencyExchange is ICurrencyExchange {
 	function updateExchangeRate(address bankAddress, uint16 code) public alwaysAccept {
 		ICentralBank(bankAddress).GetExchangeRate(code);
 	}
-	
+
 	// A callback function to set exchangeRate.
 	function setExchangeRate(uint32 n_exchangeRate) public alwaysAccept {
 		// save parameter n_exchangeRate in state variable 'exchangeRate'.

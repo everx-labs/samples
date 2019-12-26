@@ -114,6 +114,25 @@ Call "PiggyBank_Owner.withdrawDeposit(PiggyBank bankAddress)" of "PiggyBank_Stra
 
 Call "Wallet.sendTransaction(address payable dest, uint128 value, bool bounce)". This function allows transferring grams to the specified account.
 
+11) [ContractDeployer](https://github.com/tonlabs/samples/blob/master/solidity/11_ContractDeployer.sol): Deploy Contract from contract
+
+Call "ContractDeployer.setContract(TvmCell memory _contract)" and then "ContractDeployer.deploy(uint256 pubkey, uint128 gram_amount, uint32 constuctor_id, uint32 constuctor_param0, uint constuctor_param1)" to deploy a contract. It's address will be stored in the state variable "contractAddress".
+
+Call "ContractDeployer.setCode(TvmCell memory _code)" and then "ContractDeployer.deploy2(TvmCell memory data, uint128 gram_amount, uint32 constuctor_id, uint32 constuctor_param0, uint constuctor_param1)" to deploy a contract. It's address will be stored in the state variable "contractAddress".
+
+Call "ContractDeployer.setCode(TvmCell memory _code)" and then "ContractDeployer.deploy2(TvmCell memory data, uint128 gram_amount, uint32 constuctor_id, uint32 constuctor_param0, uint constuctor_param1)" to deploy a contract. It's address will be stored in the state variable "contractAddress".
+
+The way to get arguments for the functions above is described in paragraph **Deploy contract from contract**.
+
+12) [BadContract](https://github.com/tonlabs/samples/blob/master/solidity/12_BadContract.sol): Contract upgrade
+
+Contract code could be changed via using **tvm_setcode** function. It could be useful for fixing errors and functionality updating.
+In that example we have a [BadContract](https://github.com/tonlabs/samples/blob/master/solidity/12_BadContract.sol) (it is a [PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank.sol) contract with added upgrade functionality) and new version of that contract [NewVersion](https://github.com/tonlabs/samples/blob/master/solidity/12_NewVersion.sol).
+
+Call "PiggyBank.setCode(TvmCell memory newcode)" with argument that contains code of [NewVersion](https://github.com/tonlabs/samples/blob/master/solidity/12_NewVersion.sol) contract to change the code of the contract.
+
+Call "PiggyBank.after_code_upgrade()" after changing the code of the contract to execute nesessary actions after upgrade.
+
 ## Contract deployment
 
 Here we describe \<MyContract.sol\> deployment to the TON Blockchain Test Network (testnet) using Lite Client.
@@ -268,3 +287,59 @@ If everything is OK, you will see an output containing the similar data:
 ...
 ```
 
+## Deploy contract from contract
+
+User can deploy contract from contract using function tvm_deploy_contract (like in sample [ContractDeployer](https://github.com/tonlabs/samples/blob/master/solidity/11_ContractDeployer.sol)) but it's necessary to generate right arguments.
+How to generate arguments for tvm_deploy_contract:
+
+1) Contract's StateInit:
+Compile contract:
+
+```
+tvm_linker compile <MyContract>.code --lib <path_to_stdlib_sol.tvm> [-w 0] [--abi-json <MyContract>.abi.json] [--genkey <path_to_key_file>]
+```
+
+This commang will print the address of the contract and generate file \<MyContractAddress\>.tvc.
+Get StateInit using python:
+
+```
+with open("<path_to_tvc_file>", "rb") as f:
+   stateInitInBase64 = base64.b64encode(f.read()).decode()
+```
+
+Obtain StateInit in Solidity using contract's code and data:
+
+```
+TvmCell memory contr = tvm_build_state_init(m_code, data);
+TvmCell memory contr = tvm_insert_pubkey(m_contract, pubkey); // insert public key if necessary
+```
+
+2) Contract's code:
+Using tvc file from **step1**:
+
+```
+tvm_linker decode --tvc <MyContractAddress>.tvc
+```
+
+This command will print contract's code and data.
+
+3) Address of the contract:
+Using tvm_linker complie or in Solidity:
+
+```
+address addr = tvm_make_address(0, tvm_hashcu(contr));
+```
+
+4) ID of constructor function:
+Compile contract with tvm_linker and find in linker output log:
+
+```
+Function constructor                   : id=1448013A public=true
+```
+
+5) Payload:
+Generate constructor calling message with tvm_linker:
+
+```
+tvm_linker message <MyContractAddress> --data <[constructor_id] + {list_of_constructor_arguments_in_hex}>
+```

@@ -10,22 +10,27 @@ contract PiggyBank {
 
 contract Stranger {
 
+	// Runtime function that allows contract to process inbound messages spending
+	// it's own resources (it's necessary if contract should process all inbound messages,
+	// not only those that carry value with them).
 	function tvm_accept() private pure {}
-	
+
+	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
 		tvm_accept();
 		_;
 	}
 
+	// State variable storing the number of function addToDeposit was called, initialized with number 1000.
 	uint depositCounter = 1000;
 
-	// function to deposit money to piggy bank.
+	// Function to deposit money to piggy bank.
 	function addToDeposit(PiggyBank bankAddress, uint amount) public alwaysAccept {
 		bankAddress.deposit.value(amount)();
 		depositCounter++;
 	}
 
-	// function to withdraw money from piggy bank.
+	// Function to withdraw money from piggy bank.
 	function withdrawDeposit(PiggyBank bankAddress) public alwaysAccept {
 		bankAddress.withdraw();
 	}

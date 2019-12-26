@@ -11,20 +11,20 @@ contract ICurrencyExchange {
 // This contract implements 'IBank' interface.
 contract CentralBank is ICentralBank {
 
-	// Runtime function that allows contract to process inbound messages spending 
+	// Runtime function that allows contract to process inbound messages spending
 	// it's own resources (it's necessary if contract should process all inbound messages,
 	// not only those that carry value with them).
 	function tvm_accept() private pure {}
 
-	// Modifier that allows public function to accept all external calls. 
+	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
-		tvm_accept(); 
+		tvm_accept();
 		_;
 	}
 
 	// State variable storing the currency code.
 	uint16 currencyCode;
-	
+
 	// This function receives the code of currency and returns to the sender exchange rate
 	// via calling a callback function.
 	function GetExchangeRate(uint16 code) public alwaysAccept {
@@ -34,5 +34,5 @@ contract CentralBank is ICentralBank {
 		// call its 'setExchangeRate' function.
 		ICurrencyExchange(msg.sender).setExchangeRate(code * 16);
 	}
-	
+
 }
