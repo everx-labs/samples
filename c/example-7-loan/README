@@ -1,0 +1,12 @@
+The bank contract keeps per-client information (available credit)
+in the map_persistent dictionary.
+
+A client calls the bank to get a credit.
+
+Interaction sequence:
+1. Setting up the bank:
+  - call constructor,
+  - call set_allowance method for each client address.
+2. Running client contract(s):
+  - call get_my_credit method passing the bank address,
+  - expect a credit_persistent update after the bank calls back.

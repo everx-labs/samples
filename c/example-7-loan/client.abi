@@ -1,0 +1,21 @@
+{
+    "ABI version": 1,
+    "functions": [{
+        "name": "constructor",
+        "inputs": [],
+        "outputs": []
+    },
+    {
+        "name": "get_my_credit",
+        "inputs": [{ "name": "bank", "type": "address" }],
+        "outputs": []
+    },
+    {
+        "name": "get_credit_callback",
+        "inputs": [{ "name": "balance", "type": "uint64" }],
+        "outputs": []
+    },
+    {
+        "name": "get_credit", "inputs": [], "outputs": []
+    }]
+}
