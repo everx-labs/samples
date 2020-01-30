@@ -22,7 +22,7 @@ contract Wallet {
     function tvm_sender_pubkey() private pure returns (uint256) {}
 
     // Runctime function that obtains contract owner's public key.
-    function tvm_my_public_key() private view returns (uint256) {}
+    function tvm_my_public_key() private pure returns (uint256) {}
 
     // Runtime function that allows to make a transfer with arbitrary settings.
     function tvm_transfer(address payable addr, uint128 value, bool bounce, uint16 flags) private pure {}

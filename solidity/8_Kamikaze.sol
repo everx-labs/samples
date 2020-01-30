@@ -13,7 +13,7 @@ contract Kamikaze {
 	function tvm_sender_pubkey() private pure returns (uint256) {}
 
 	// Runctime function that obtains contract owner's public key.
-	function tvm_my_public_key() private view returns (uint256) {}
+	function tvm_my_public_key() private pure returns (uint256) {}
 
 	// Modifier that allows to accept inbound message only if it was signed with owner's public
 	// key.
