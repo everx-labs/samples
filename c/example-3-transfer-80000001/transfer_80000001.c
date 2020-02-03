@@ -33,5 +33,9 @@ void transfer_Impl () {
 
     // Call library function that sends a message generated in a work slice.
     // The function argument is sending flag.
-    send_raw_message (0);
+    send_raw_message (1);
+}
+
+void constructor_Impl () {
+    ACCEPT();
 }

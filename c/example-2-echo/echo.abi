@@ -1,8 +1,13 @@
 {
     "ABI version" : 1,
     "functions" : [{
-            "name": "compute", "signed": false,
+            "name": "compute",
             "inputs": [{ "name": "x", "type": "uint64" }],
             "outputs": [{ "name": "result", "type": "uint64" }]
+    },
+    {
+      "name": "constructor",
+      "inputs": [],
+      "outputs": []
     }]
 }

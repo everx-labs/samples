@@ -26,3 +26,8 @@ unsigned compute_Impl () {
     // to see it.
     return 2 + 2;
 }
+
+// Implementation of the contract's constructor.
+void constructor_Impl () {
+  ACCEPT();
+}
