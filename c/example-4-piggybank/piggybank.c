@@ -20,6 +20,7 @@ enum { MESSAGE_COST = 10000000 };
 int target_persistent = MESSAGE_COST;
 
 void constructor_Impl () {
+    ACCEPT();
 }
 
 // Used to specify the target amount of money (in nanograms).
@@ -52,5 +53,5 @@ void transfer_Impl (unsigned destination_account) {
     MsgAddressInt destination =
         build_msg_address_int (0, destination_account);
     build_internal_message (&destination, balance - MESSAGE_COST);
-    send_raw_message (0);
+    send_raw_message (1);
 }

@@ -11,7 +11,6 @@ int x_persistent = 0;
 // and back is carried out in wrapper by the compute() function.
 unsigned compute_Impl (unsigned x) {
     ACCEPT();
-
     // The function argument is copied into persistent storage and
     // contents of x_persistent can be analyzed manually after the method
     // invocation.
@@ -20,4 +19,9 @@ unsigned compute_Impl (unsigned x) {
     // Except for their save/restore semantics, persistent variables are not
     // different from other variables.
     return x_persistent;
+}
+
+// Implementation of the contract's constructor.
+void constructor_Impl () {
+    ACCEPT();
 }

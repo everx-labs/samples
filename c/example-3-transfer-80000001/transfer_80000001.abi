@@ -1,7 +1,12 @@
 {
     "ABI version": 1,
     "functions": [{
-        "name": "transfer", "signed": false,
+        "name": "transfer",
+        "inputs": [],
+        "outputs": []
+    },
+    {
+        "name": "constructor",
         "inputs": [],
         "outputs": []
     }]
