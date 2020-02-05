@@ -1,0 +1,27 @@
+{
+	"ABI version": 1,
+	"functions": [
+		{
+			"name": "remoteProcedure",
+			"inputs": [{"name":"value","type":"uint64"}],
+			"outputs": []
+		},
+		{
+			"name": "getValue",
+			"inputs": [],
+      "outputs": [{ "name": "result", "type": "uint64" }]
+		},
+		{
+			"name": "getCaller",
+			"inputs": [],
+      "outputs": [{ "name": "result", "type": "uint256" }]
+		},
+		{
+			"name": "constructor",
+			"inputs": [],
+			"outputs": []
+		}
+	],
+	"events": [],
+	"data": []
+}
