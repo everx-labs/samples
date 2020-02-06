@@ -1,0 +1,27 @@
+{
+	"ABI version": 1,
+	"functions": [
+		{
+			"name": "requestGrams",
+			"inputs": [
+				{"name":"remoteContractAddress","type":"address"},
+        {"name":"value", "type":"uint64"}
+			],
+			"outputs": []
+		},
+		{
+			"name": "getGrams",
+			"inputs": [
+				{"name":"value","type":"uint64"}
+			],
+			"outputs": []
+		},
+		{
+			"name": "constructor",
+			"inputs": [],
+			"outputs": []
+		}
+	],
+	"events": [],
+	"data": []
+}
