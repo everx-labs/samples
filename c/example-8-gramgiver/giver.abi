@@ -1,0 +1,17 @@
+{
+	"ABI version": 1,
+	"functions": [
+		{
+			"name": "getGrams",
+			"inputs": [{"name":"value","type":"uint64"}],
+			"outputs": []
+		},
+		{
+			"name": "constructor",
+			"inputs": [],
+			"outputs": []
+		}
+	],
+	"events": [],
+	"data": []
+}
