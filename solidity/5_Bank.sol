@@ -7,14 +7,12 @@ import "5_BankClientInterfaces.sol";
 // The contract allows to store credit limits in mapping and give to the caller it's credit limits.
 contract Bank is IBank {
 
-	// Runtime function that allows contract to process inbound messages spending
-	// it's own resources (it's necessary if contract should process all inbound messages,
-	// not only those that carry value with them).
-	function tvm_accept() private pure {}
-
 	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
-		tvm_accept();
+		// Runtime function that allows contract to process inbound messages spending
+		// its own resources (it's necessary if contract should process all inbound messages,
+		// not only those that carry value with them).
+		tvm.accept();
 		_;
 	}
 

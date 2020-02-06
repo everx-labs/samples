@@ -5,29 +5,18 @@ pragma experimental ABIEncoderV2;
 
 contract PiggyBank {
 
-	// Struct that is used to process TVM internal type Cell.
-	struct TvmCell {
-		uint _;
-	}
-
 	// State variables:
 	address payable owner;		// contract owner's address;
 	uint limit;			// piggybank's minimal limit to withdraw;
 	uint balance;			// piggybank's deposit balance;
 	uint version = 1;		// version of the PiggyBank.
 
-	// Runtime function that allows contract to process inbound messages spending
-	// it's own resources (it's necessary if contract should process all inbound messages,
-	// not only those that carry value with them).
-	function tvm_accept() private pure {}
-
-	// Runtime function that creates an output action that would change this
-	// smart contract code to that given by cell newcode.
-	function tvm_setcode(TvmCell memory newcode) private pure {}
-
 	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
-		tvm_accept();
+		// Runtime function that allows contract to process inbound messages spending
+		// its own resources (it's necessary if contract should process all inbound messages,
+		// not only those that carry value with them).
+		tvm.accept();
 		_;
 	}
 
@@ -63,8 +52,10 @@ contract PiggyBank {
 	}
 
 	// Function that changes the code of current contract.
-	function setCode(TvmCell memory newcode) public view onlyOwner alwaysAccept {
-		tvm_setcode(newcode);
+	function setCode(TvmCell newcode) public view onlyOwner alwaysAccept {
+		// Runtime function that creates an output action that would change this
+		// smart contract code to that given by cell newcode.
+		tvm.setcode(newcode);
 	}
 
 	// After upgrade caused by calling setCode function we may need to do some actions.

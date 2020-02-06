@@ -7,11 +7,6 @@ contract PiggyBank {
 	uint limit;			// piggybank's minimal limit to withdraw;
 	uint balance;			// piggybank's deposit balance.
 
-	// Runtime function that allows contract to process inbound messages spending
-	// it's own resources (it's necessary if contract should process all inbound messages,
-	// not only those that carry value with them).
-	function tvm_accept() private pure {}
-
 	// Constructor saves the address of the contract owner in a state variable and
 	// initializes the limit and the balance.
 	constructor(address payable pb_owner, uint pb_limit) public {
@@ -22,7 +17,10 @@ contract PiggyBank {
 
 	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
-		tvm_accept();
+		// Runtime function that allows contract to process inbound messages spending
+		// its own resources (it's necessary if contract should process all inbound messages,
+		// not only those that carry value with them).
+		tvm.accept();
 		_;
 	}
 
