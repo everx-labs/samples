@@ -13,9 +13,10 @@ contract PiggyBank {
 
 	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
-		tvm.accept(); 	// Runtime function that allows contract to process inbound messages spending
-				// it's own resources (it's necessary if contract should process all inbound messages,
-				// not only those that carry value with them).
+		// Runtime function that allows contract to process inbound messages spending
+		// its own resources (it's necessary if contract should process all inbound messages,
+		// not only those that carry value with them).
+		tvm.accept();
 		_;
 	}
 
@@ -58,8 +59,9 @@ contract PiggyBank {
 
 	// Function that changes the code of current contract.
 	function setCode(TvmCell newcode) public pure alwaysAccept {
-		tvm.setcode(newcode);   // Runtime function that creates an output action that would change this
-					// smart contract code to that given by cell newcode.
+		// Runtime function that creates an output action that would change this
+		// smart contract code to that given by cell newcode.
+		tvm.setcode(newcode);
 	}
 
 	// After upgrade caused by calling setCode function we may need to do some actions.

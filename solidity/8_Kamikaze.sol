@@ -7,10 +7,13 @@ contract Kamikaze {
 	// Modifier that allows to accept inbound message only if it was signed with owner's public
 	// key.
 	modifier checkOwnerAndAccept {
-		require(owners_pubkey == msg.pubkey()); // Runtime function that obtains sender's public key.
-		tvm.accept(); 	// Runtime function that allows contract to process inbound messages spending
-				// it's own resources (it's necessary if contract should process all inbound messages,
-				// not only those that carry value with them).
+		// Runtime function that obtains sender's public key.
+		require(owners_pubkey == msg.pubkey());
+
+		// Runtime function that allows contract to process inbound messages spending
+		// its own resources (it's necessary if contract should process all inbound messages,
+		// not only those that carry value with them).
+		tvm.accept();
 		_;
 	}
 
@@ -22,7 +25,8 @@ contract Kamikaze {
 
 	// Constructor saves the owner's public key in the state variable.
 	constructor() public {
-		owners_pubkey = tvm.pubkey(); // Runctime function that obtains contract owner's public key.
+		// Runctime function that obtains contract owner's public key.
+		owners_pubkey = tvm.pubkey();
 	}
 
 	// Due to the modifier checkOwnerAndAccept function sendAllMoney can be

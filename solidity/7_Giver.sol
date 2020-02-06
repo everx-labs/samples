@@ -12,9 +12,10 @@ contract Giver {
 
 	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
-		tvm.accept(); 	// Runtime function that allows contract to process inbound messages spending
-				// it's own resources (it's necessary if contract should process all inbound messages,
-				// not only those that carry value with them).
+		// Runtime function that allows contract to process inbound messages spending
+		// its own resources (it's necessary if contract should process all inbound messages,
+		// not only those that carry value with them).
+		tvm.accept();
 		_;
 	}
 
@@ -48,9 +49,9 @@ contract Giver {
 
 	// Function which allows to make a transfer to an arbitrary address.
 	function do_tvm_transfer(address payable remote_addr, uint128 grams_value, bool bounce, uint16 sendrawmsg_flag) pure public alwaysAccept {
-		tvm.transfer(remote_addr, grams_value, bounce, sendrawmsg_flag);    // Runtime function that allows to make a transfer with arbitrary settings
-										    // and can be used to send grams to non-existing address.
-
+		// Runtime function that allows to make a transfer with arbitrary settings
+		// and can be used to send grams to non-existing address.
+		tvm.transfer(remote_addr, grams_value, bounce, sendrawmsg_flag);
 	}
 
 }

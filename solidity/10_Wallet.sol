@@ -18,10 +18,13 @@ contract Wallet {
     // with contract owner's public key.
     modifier checkOwnerAndAccept {
         // Check that inbound message was signed with owner's public key.
-        require(msg.pubkey() == owner, 100); // Runtime function that obtains sender's public key.
-		tvm.accept(); 	// Runtime function that allows contract to process inbound messages spending
-				        // it's own resources (it's necessary if contract should process all inbound messages,
-				        // not only those that carry value with them).
+        // Runtime function that obtains sender's public key.
+        require(msg.pubkey() == owner, 100);
+
+		// Runtime function that allows contract to process inbound messages spending
+		// its own resources (it's necessary if contract should process all inbound messages,
+		// not only those that carry value with them).
+		tvm.accept();
 		_;
 	}
 
@@ -32,7 +35,8 @@ contract Wallet {
     /// @dev Contract constructor.
     constructor() public {
         // save contract's public key in the state variable.
-        owner = tvm.pubkey();	// Runctime function that obtains contract owner's public key.
+        // Runctime function that obtains contract owner's public key.
+        owner = tvm.pubkey();
     }
 
 
@@ -42,7 +46,8 @@ contract Wallet {
     /// @param bounce Flag that enables bounce message in case of target contract error.
     function sendTransaction(address payable dest, uint128 value, bool bounce) public view checkOwnerAndAccept {
         require(value > 0 && value < address(this).balance, 101);
-        tvm.transfer(dest, value, bounce, 0);   // Runtime function that allows to make a transfer with arbitrary settings.
+         // Runtime function that allows to make a transfer with arbitrary settings.
+        tvm.transfer(dest, value, bounce, 0);
     }
 
 }

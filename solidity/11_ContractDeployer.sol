@@ -26,12 +26,12 @@ contract ContractDeployer {
 
 	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
-		tvm.accept(); 	// Runtime function that allows contract to process inbound messages spending
-				// it's own resources (it's necessary if contract should process all inbound messages,
-				// not only those that carry value with them).
+		// Runtime function that allows contract to process inbound messages spending
+		// its own resources (it's necessary if contract should process all inbound messages,
+		// not only those that carry value with them).
+		tvm.accept();
 		_;
 	}
-
 
 	// First variant of contract deploying
 
@@ -45,6 +45,7 @@ contract ContractDeployer {
 	function deploy(uint256 pubkey, uint128 gram_amount,
 					uint32 constuctor_id, uint32 constuctor_param0, uint constuctor_param1) public alwaysAccept returns (address) {
 		TvmCell contractWithKey = tvm_insert_pubkey(contractStateInit, pubkey);
+		// tvm.hash() - Runtime function that computes the representation hash ot TvmCell.
 		address addr = address(tvm.hash(contractWithKey));
 		tvm_deploy_contract(contractWithKey, addr, gram_amount, constuctor_id, constuctor_param0, constuctor_param1); //create internal msg
 		contractAddress = addr;
@@ -64,6 +65,7 @@ contract ContractDeployer {
 	function deploy2(TvmCell data, uint128 gram_amount, uint32 constuctor_id,
 		             uint32 constuctor_param0, uint constuctor_param1) public alwaysAccept returns (address) {
 		TvmCell contr = tvm_build_state_init(contractCode, data);
+		// tvm.hash() - Runtime function that computes the representation hash ot TvmCell.
 		address addr = address(tvm.hash(contr));
 		tvm_deploy_contract(contr, addr, gram_amount, constuctor_id, constuctor_param0, constuctor_param1); //create internal msg
 		contractAddress = addr;
@@ -74,7 +76,6 @@ contract ContractDeployer {
 
 	function deploy3(TvmCell contr, address addr, uint128 gram_amount, TvmCell payload) public alwaysAccept returns (address) {
 		// payload - is body of message
-		//address addr = address(tvm_hashcu(contr));
 		tvm_deploy_contract(contr, addr, gram_amount, payload); //create internal msg
 		contractAddress = addr;
 		return addr;

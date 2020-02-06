@@ -9,11 +9,11 @@ contract IBankClient {
 contract BankCollector {
 
 	// Modifier that allows public function to accept all external calls.
-	modifier onlyOwner {
-                require (msg.pubkey() == tvm.pubkey(), 101);
-		tvm.accept(); 	// Runtime function that allows contract to process inbound messages spending
-				// it's own resources (it's necessary if contract should process all inbound messages,
-				// not only those that carry value with them).
+	modifier alwaysAccept {
+		// Runtime function that allows contract to process inbound messages spending
+		// its own resources (it's necessary if contract should process all inbound messages,
+		// not only those that carry value with them).
+		tvm.accept();
 		_;
 	}
 
