@@ -1,0 +1,8 @@
+{
+  "ABI version": 1,
+  "functions": [
+    { "name": "constructor", "inputs": [], "outputs": [] },
+    { "name": "run", "inputs": [], "outputs": [{ "name": "computed", "type": "uint32" }] },
+    { "name": "setcode", "inputs": [{ "name": "code", "type": "cell" }], "outputs": [] }
+  ]
+}
