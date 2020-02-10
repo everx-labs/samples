@@ -1,0 +1,26 @@
+{
+	"ABI version": 1,
+	"functions": [
+		{
+			"name": "sendTo",
+			"inputs": [
+				{"name":"remoteContractAddress","type":"address"}
+			],
+			"outputs": []
+		},
+		{
+			"name": "remoteProcedure",
+			"inputs": [
+				{"name":"value","type":"uint64"}
+			],
+			"outputs": []
+		},
+		{
+			"name": "constructor",
+			"inputs": [],
+			"outputs": []
+		}
+	],
+	"events": [],
+	"data": []
+}
