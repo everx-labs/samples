@@ -1,0 +1,6 @@
+Original code of a contract can be replaced by the SETCODE instruction.
+
+The intended sequence of actions to demonstrate code replacement:
+1. Deploy setcode.c contract.
+2. Call setcode() method passing binary code of setcode_new.c as parameter.
+3. Observe the value computed by run() method has changed.
