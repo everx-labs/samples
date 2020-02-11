@@ -2,6 +2,7 @@
 
 ## [Sample contracts in Solidity](https://github.com/tonlabs/samples/tree/master/solidity)
 ## [Sample contracts in C](https://github.com/tonlabs/samples/tree/master/c)
+## [Sample contracts in C++](https://github.com/tonlabs/samples/tree/master/cpp)
 
 ## TON Labs compilers and tools in open source
 
