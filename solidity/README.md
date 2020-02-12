@@ -187,7 +187,7 @@ After that, we can check the account again and see that the output now contains 
 getaccount 0:<MyContractAddress>
 ```
 
-### 5) Contract function call
+### 5) Calling a contract function
 To call a function of the contract we should prepare a special message and then send it to the testnet:
 ```
 tvm_linker message <MyContractAddress> -w 0 --abi-json MyContract.abi.json --abi-method '<FunctionName>' --abi-params '{<FunctionArguments>}' [--setkey <path_to_keyfile>]
@@ -196,7 +196,7 @@ tvm_linker message <MyContractAddress> -w 0 --abi-json MyContract.abi.json --abi
 \'\{\<FunctionArguments\>\}\' should have the following form: \'\{"<Argument1_Name>":"Argument1_Value", "<Argument2_Name>":"Argument2_Value", ... \}\'
 The command above will create a .boc file which we should send to the testnet as it was described on **step 4**.
 
-## Getting test grams
+## Getting test Grams
 
 At present, we can describe two ways to obtain test grams:
 
@@ -216,7 +216,7 @@ If you know that there is a giver contract in your TON network and you know its 
 tvm_linker message <GiverAddress> -w 0 --abi-json giver.abi.json --abi-method 'sendTransaction' --abi-params '{"dest":"0:<MyContractAddress>","value":"<number of nanograms>","bounce":"false"}' --setkey secret.key
 ```
 
-\<GiverAddress\> - address of the giver contract in HEX format without workchain id.
+\<GiverAddress\> - giver contract address in HEX format without workchain id.
 The command generates **.boc** file with name \<\*-msg-body.boc\>.
 
 2.3) Use lite_client to send **.boc** file obtained on step **2.2**.
@@ -254,7 +254,7 @@ Go to testnet.ton.dev/graphql and run that code:
 }
 ```
 
-In case of success, you will see the code similar to this:
+In case of success, you get the similar code:
 ```
 {
   "data": {
@@ -277,7 +277,7 @@ Run lite_client and execute the following command:
 getaccount 0:<MyContractAddress>
 ```
 
-If everything is OK, you will see an output containing the similar data:
+If everything is OK, you get the following output:
 
 ```
 ...
@@ -289,25 +289,25 @@ If everything is OK, you will see an output containing the similar data:
 
 ## Deploy contract from contract
 
-User can deploy contract from contract using function tvm_deploy_contract (like in sample [ContractDeployer](https://github.com/tonlabs/samples/blob/master/solidity/11_ContractDeployer.sol)) but it's necessary to generate right arguments.
+You can definitely use the function tvm_deploy_contract (like in [ContractDeployer](https://github.com/tonlabs/samples/blob/master/solidity/11_ContractDeployer.sol)) to deploy a contract from contract,  but it's necessary to generate right arguments.
 How to generate arguments for tvm_deploy_contract:
 
-1) Contract's StateInit:
-Compile contract:
+1) The contract StateInit:
+Compile your contract:
 
 ```
 tvm_linker compile <MyContract>.code --lib <path_to_stdlib_sol.tvm> [-w 0] [--abi-json <MyContract>.abi.json] [--genkey <path_to_key_file>]
 ```
 
-This commang will print the address of the contract and generate file \<MyContractAddress\>.tvc.
-Get StateInit using python:
+This commang will print the contract address and generate the \<MyContractAddress\>.tvc file.
+Get StateInit using Python:
 
 ```
 with open("<path_to_tvc_file>", "rb") as f:
    stateInitInBase64 = base64.b64encode(f.read()).decode()
 ```
 
-Obtain StateInit in Solidity using contract's code and data:
+Obtain StateInit in Solidity using the contract code and data:
 
 ```
 TvmCell memory contr = tvm_build_state_init(m_code, data);
@@ -315,13 +315,13 @@ TvmCell memory contr = tvm_insert_pubkey(m_contract, pubkey); // insert public k
 ```
 
 2) Contract's code:
-Using tvc file from **step1**:
+Using the .tvc file obtained at **step1**:
 
 ```
 tvm_linker decode --tvc <MyContractAddress>.tvc
 ```
 
-This command will print contract's code and data.
+This command will print the contract code and data.
 
 3) Address of the contract:
 Using tvm_linker complie or in Solidity:
@@ -330,8 +330,8 @@ Using tvm_linker complie or in Solidity:
 address addr = tvm_make_address(0, tvm_hashcu(contr));
 ```
 
-4) ID of constructor function:
-Compile contract with tvm_linker and find in linker output log:
+4) Constructor function ID:
+Compile contract with tvm_linker and find the following in the linker output log:
 
 ```
 Function constructor                   : id=1448013A public=true
