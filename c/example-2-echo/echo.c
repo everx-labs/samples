@@ -10,7 +10,7 @@ int x_persistent = 0;
 // conversion from unit64 to 256-bit unsigned integer
 // and back is carried out in wrapper by the compute() function.
 unsigned compute_Impl (unsigned x) {
-    ACCEPT();
+    tvm_accept();
     // The function argument is copied into persistent storage and
     // contents of x_persistent can be analyzed manually after the method
     // invocation.
@@ -21,7 +21,7 @@ unsigned compute_Impl (unsigned x) {
     return x_persistent;
 }
 
-// Implementation of the contract's constructor.
+// Contract constructor implementation.
 void constructor_Impl () {
-    ACCEPT();
+    tvm_accept();
 }

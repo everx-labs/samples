@@ -7,7 +7,7 @@ void get_credit_callback_Impl(int balance) { }
 __tvm_cell map_persistent;
 
 void constructor_Impl() {
-  ACCEPT();
+  tvm_accept();
 
   // Construct empty dict
   map_persistent = __builtin_tvm_endc(__builtin_tvm_stdict(
@@ -15,7 +15,7 @@ void constructor_Impl() {
 }
 
 void set_allowance_Impl(MsgAddressInt addr, int amount) {
-  ACCEPT();
+  tvm_accept();
 
   // Wrap amount into slice s
   __tvm_builder b = __builtin_tvm_newc();
@@ -35,7 +35,7 @@ void set_allowance_Impl(MsgAddressInt addr, int amount) {
 TVM_CUSTOM_EXCEPTION(INVALID_ADDRESS, 101);
 
 void get_credit_Impl() {
-  ACCEPT();
+  tvm_accept();
 
   MsgAddressInt sender = get_sender_address();
   tvm_assert(sender.anycast == 0, INVALID_ADDRESS);

@@ -4,7 +4,7 @@
 
 // Implementation of the contract's constructor.
 void constructor_Impl () {
-  ACCEPT();
+  tvm_accept();
 }
 
 #ifndef NODE_RUN
@@ -12,7 +12,7 @@ void constructor_Impl () {
 #endif
 
 void getGrams_Impl(unsigned value) {
-  ACCEPT();
+  tvm_accept();
 #ifdef NODE_RUN
   // This is how sender's address should be obtained when running on a node.
   MsgAddressInt sender = get_sender_address();
@@ -22,5 +22,5 @@ void getGrams_Impl(unsigned value) {
   MsgAddressInt sender = { 0, 0, client_address };
 #endif
   build_internal_message(&sender, value);
-  send_raw_message(1);
+  send_raw_message(MSG_PAY_FEES_SEPARATELY);
 }

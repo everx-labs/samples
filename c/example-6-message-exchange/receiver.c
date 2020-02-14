@@ -7,21 +7,21 @@ unsigned caller_persistent = 77;
 
 // Implementation of the contract's constructor.
 void constructor_Impl () {
-  ACCEPT();
+  tvm_accept();
 }
 
 void remoteProcedure_Impl(unsigned value) {
-  ACCEPT();
+  tvm_accept();
   value_persistent = value;
   caller_persistent = get_sender_address().address;
 }
 
 unsigned getValue_Impl() {
-  ACCEPT();
+  tvm_accept();
   return value_persistent;
 }
 
 unsigned getCaller_Impl() {
-  ACCEPT();
+  tvm_accept();
   return caller_persistent;
 }
