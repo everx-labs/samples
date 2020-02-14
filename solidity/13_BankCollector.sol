@@ -8,8 +8,17 @@ contract IBankClient {
 // The contract allows to store information about bank clients and iterate over them to filter clients.
 contract BankCollector {
 
+	address owner;		// state variable storing contract owner's address;
+
+	constructor(address payable _owner) public {
+		owner = _owner;
+	}
+
 	// Modifier that allows public function to accept all external calls.
-	modifier alwaysAccept {
+	modifier onlyOwner {
+                // Runtime function to obtain message sender address.
+		require(msg.sender == owner);
+
 		// Runtime function that allows contract to process inbound messages spending
 		// its own resources (it's necessary if contract should process all inbound messages,
 		// not only those that carry value with them).
