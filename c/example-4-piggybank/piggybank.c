@@ -20,16 +20,16 @@ enum { MESSAGE_COST = 10000000 };
 int target_persistent = MESSAGE_COST;
 
 void constructor_Impl () {
-    ACCEPT();
+    tvm_accept();
 }
 
-// Used to specify the target amount of money (in nanograms).
+// Used to specify the target amount of money in nanograms.
 // The money cannot be decreased: if method initialize_limit
 // was invoked with a larger value, its re-initialization with
 // smaller value results in error.
 void initialize_target_Impl (unsigned target) {
     tvm_assert (target_persistent > target, ALREADY_INITIALIZED);
-    ACCEPT();
+    tvm_accept();
     target_persistent = target;
 }
 
@@ -38,7 +38,7 @@ void initialize_target_Impl (unsigned target) {
 // "target" amount of money. If not, the method throws
 // NOT_ENOUGH_MONEY exception.
 void transfer_Impl (unsigned destination_account) {
-    ACCEPT();
+    tvm_accept();
     // Check that we have collected enough money to transfer it.
     // Info about the current account state (including current contract
     // gram balance) is stored in SmartContractInfo structure -
@@ -53,5 +53,5 @@ void transfer_Impl (unsigned destination_account) {
     MsgAddressInt destination =
         build_msg_address_int (0, destination_account);
     build_internal_message (&destination, balance - MESSAGE_COST);
-    send_raw_message (1);
+    send_raw_message (MSG_PAY_FEES_SEPARATELY);
 }

@@ -54,5 +54,5 @@ void send_message(MsgAddressInt dest, unsigned rpaddr, unsigned value) {
   msg.value = value;
 
   Serialize_Message_uint64(&msg);
-  send_raw_message(0);
+  send_raw_message(MSG_NO_FLAGS);
 }

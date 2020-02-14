@@ -19,15 +19,15 @@
 // defined according to ABI definitions, their prototypes are declared in
 // auto-generated hello_world.h file.
 unsigned compute_Impl () {
-    ACCEPT();
+    tvm_accept();
 
-    // Return value is packed into external message and sent at the exit
-    // from the method. Unluckily, now blockchain does not have instruments
+    // The return value is packed into an external message and sent at the exit
+    // from the method. Unfortunately, now blockchain does not have instruments
     // to see it.
     return 2 + 2;
 }
 
-// Implementation of the contract's constructor.
+// Contract constructor implementation
 void constructor_Impl () {
-  ACCEPT();
+    tvm_accept();
 }

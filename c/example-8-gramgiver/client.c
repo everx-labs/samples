@@ -31,14 +31,14 @@ int numCalls_persistent;
 
 // Implementation of the contract's constructor.
 void constructor_Impl () {
-  ACCEPT();
+  tvm_accept();
 }
 
 void requestGrams_Impl(MsgAddressInt remoteContractAddr, unsigned value) {
-  ACCEPT();
+  tvm_accept();
   // increment the counter
   numCalls_persistent++;
   // call remote contract function with parameter
   build_internal_uint64_message (&remoteContractAddr, value);
-  send_raw_message (1);
+  send_raw_message (MSG_PAY_FEES_SEPARATELY);
 }
