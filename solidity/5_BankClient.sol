@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // Import the interface file
 import "5_BankClientInterfaces.sol";
@@ -29,7 +29,7 @@ contract BankClient is IBankClient {
 	}
 
 	// A callback function to set the credit limit.
-	function setCreditLimit(uint limit) public alwaysAccept {
+	function setCreditLimit(uint limit) public override alwaysAccept {
 		// Save the credit limit (received from another contract) in the state variable.
 		creditLimit = limit;
 	}
@@ -41,7 +41,7 @@ contract BankClient is IBankClient {
 	}
 
 	// A callback payable function to receive requested loan. Function receives the total debt as an argument.
-	function receiveLoan(uint n_totalDebt) public payable alwaysAccept {
+	function receiveLoan(uint n_totalDebt) public payable override alwaysAccept {
 		value = msg.value;
 		uint n_balance = address(this).balance;
 		require(n_balance > balance);
@@ -50,7 +50,7 @@ contract BankClient is IBankClient {
 	}
 
 	// A callback function to indicate refuse of the loan request. Function receives available limit as an argument.
-	function refusalCallback(uint availableLimit) public alwaysAccept {
+	function refusalCallback(uint availableLimit) public override alwaysAccept {
 		creditLimit = availableLimit;
 	}
 }

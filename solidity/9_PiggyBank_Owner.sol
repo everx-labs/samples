@@ -1,11 +1,11 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // This contract describes the owner of PiggyBank who can add to deposit and withdraw deposit.
 
 // PiggyBank interface
-contract PiggyBank {
-	function deposit() public payable;
-	function withdraw() public;
+abstract contract PiggyBank {
+	function deposit() public payable virtual;
+	function withdraw() public virtual;
 }
 
 contract Owner {

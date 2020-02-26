@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // The contract receives all the balance of Kamikaze contract after its self-destuction.
 contract Heir {
@@ -7,7 +7,7 @@ contract Heir {
 	uint heritageCounter;
 
 	// Fallback function that will be called after Kamikaze contract self-destruction.
-	function() external payable {
+	fallback() external payable {
 		heritageCounter++;
 	}
 }

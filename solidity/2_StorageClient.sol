@@ -1,8 +1,8 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // Remote contract interface.
-contract Storage {
-	function storeValue(uint value) public;
+abstract contract Storage {
+	function storeValue(uint value) public virtual;
 }
 
 // This contract calls the remote contract function with parameter to store a uint value in the remote contract's

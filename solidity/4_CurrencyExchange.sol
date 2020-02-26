@@ -1,11 +1,11 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
-contract ICentralBank {
-	function GetExchangeRate(uint16 code) public;
+abstract contract ICentralBank {
+	function GetExchangeRate(uint16 code) public virtual;
 }
 
-contract ICurrencyExchange {
-	function setExchangeRate(uint32 n_exchangeRate) public;
+abstract contract ICurrencyExchange {
+	function setExchangeRate(uint32 n_exchangeRate) public virtual;
 }
 
 // This contract implements 'ICurrencyExchange' interface.
@@ -32,7 +32,7 @@ contract CurrencyExchange is ICurrencyExchange {
 	}
 
 	// A callback function to set exchangeRate.
-	function setExchangeRate(uint32 n_exchangeRate) public alwaysAccept {
+	function setExchangeRate(uint32 n_exchangeRate) public override alwaysAccept {
 		// save parameter n_exchangeRate in state variable 'exchangeRate'.
 		exchangeRate = n_exchangeRate;
 	}

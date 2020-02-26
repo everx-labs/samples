@@ -1,7 +1,4 @@
-pragma solidity ^0.5.0;
-
-// Type TvmCell is only supported in the new experimental ABI encoder.
-pragma experimental ABIEncoderV2;
+pragma solidity >=0.5.0;
 
 contract PiggyBank {
 
