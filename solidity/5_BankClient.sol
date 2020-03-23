@@ -23,7 +23,7 @@ contract BankClient is IBankClient {
 
 
 	// This function calls a remote IBankDataBase contract to get the credit limit.
-	function getMyCredit(IBank bank) public alwaysAccept {
+	function getMyCredit(IBank bank) public pure alwaysAccept {
 		// Call remote contract function.
 		bank.getCreditLimit();
 	}

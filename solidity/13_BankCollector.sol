@@ -77,7 +77,7 @@ contract BankCollector {
         }
 
         // Function to demand all expired debts.
-        function demandExpiredDebts() public onlyOwner {
+        function demandExpiredDebts() public view onlyOwner {
                 uint32 curTime = uint32(now);
                 // Mapping member function to obtain minmal key and associated value from mapping if it exists.
                 (address addr, ClientInfo memory info, bool exists) = clientDB.min();

@@ -29,6 +29,10 @@ contract Giver {
 		fallbackCounter += 1;
 	}
 
+	receive() external payable {
+		fallbackCounter += 1;
+	}
+
 	// This function can transfer currency to an existing contract with payable fallback
 	// function.
 	function transferToAddress(address payable destination, uint amount) public alwaysAccept {

@@ -29,7 +29,7 @@ contract Stranger {
 	}
 
 	// Function to withdraw money from piggy bank.
-	function withdrawDeposit(PiggyBank bankAddress) public alwaysAccept {
+	function withdrawDeposit(PiggyBank bankAddress) public pure alwaysAccept {
 		bankAddress.withdraw();
 	}
 }

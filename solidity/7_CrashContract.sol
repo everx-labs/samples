@@ -11,6 +11,10 @@ contract CrashContract {
 		fallbackCounter += 1;
 	}
 
+	receive() external payable {
+		fallbackCounter += 1;
+	}
+
 	// Function that crashes after call.
 	function doCrash() public payable {
 		require(false, 73);

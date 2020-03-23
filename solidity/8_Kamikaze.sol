@@ -39,4 +39,8 @@ contract Kamikaze {
 	fallback() external payable {
 		fallbackCounter++;
 	}
+
+	receive() external payable {
+		fallbackCounter++;
+	}
 }
