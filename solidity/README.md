@@ -126,12 +126,18 @@ The way to get arguments for the functions above is described in paragraph **Dep
 
 12) [BadContract](https://github.com/tonlabs/samples/blob/master/solidity/12_BadContract.sol): Contract upgrade
 
-Contract code could be changed via using **tvm_setcode** function. It could be useful for fixing errors and functionality updating.
+Contract code could be changed via using **tvm.setcode** function. It could be useful for fixing errors and functionality updating.
 In that example we have a [BadContract](https://github.com/tonlabs/samples/blob/master/solidity/12_BadContract.sol) (it is a [PiggyBank](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank.sol) contract with added upgrade functionality) and new version of that contract [NewVersion](https://github.com/tonlabs/samples/blob/master/solidity/12_NewVersion.sol).
 
 Call "PiggyBank.setCode(TvmCell memory newcode)" with argument that contains code of [NewVersion](https://github.com/tonlabs/samples/blob/master/solidity/12_NewVersion.sol) contract to change the code of the contract.
 
-Call "PiggyBank.after_code_upgrade()" after changing the code of the contract to execute nesessary actions after upgrade.
+13) [BankCollector](https://github.com/tonlabs/samples/blob/master/solidity/13_BankCollector.sol): Mapping methods
+
+Developer can work with mappings using methods: **fetch**, **min**, **next**. This methods allow to check existance of the key, obtain lexographicaly minimal key and lexicographicaly next key respectively.
+
+14) [CustomReplayProtection](https://github.com/tonlabs/samples/blob/master/solidity/14_CustomReplayProtection.sol): Custom replay protection
+
+Developer can redefine function **afterSignatureCheck** to create his own replay protection function instead of default one.
 
 ## Contract deployment
 
