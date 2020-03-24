@@ -9,7 +9,6 @@ pragma AbiHeader expire;
 contract CustomReplaySample {
 
         // State variables:
-        uint64 contractExpirationTime;          // contract's expiration time;
         mapping(uint => bool) messages;         // mapping to store hashes of inbound messages;
         uint value;                             // dummy variable to demonstrate contract functionality.
 
@@ -22,11 +21,6 @@ contract CustomReplaySample {
 		_;
 	}
 
-        // Constractor saves the expiration time of the contract in the state variable.
-        constructor (uint64 expire) public {
-                contractExpirationTime = expire;
-        }
-
         // Dummy function to demonstrate contract functionality.
         function storeValue(uint new_value) public alwaysAccept {
                 value = new_value;
@@ -35,13 +29,13 @@ contract CustomReplaySample {
         // Function with predefined name which is used to replace custom replay protection.
         function afterSignatureCheck(TvmSlice body, TvmCell message) private inline returns (TvmSlice) {
                 // Via TvmSlice methods we read header fields from the message body
-                uint64 time = body.decode(uint64);
+                
+                body.decode(uint64); // The first 64 bits contain timestamp which is usually used to differentiate messages. 
                 uint32 expireAt = body.decode(uint32);
 
-                require(time >= contractExpirationTime, 57); // Check that time from message doesn't exceed the expiration time of the contract.
                 require(expireAt >= now, 57);   // Check that message is not expired.
 
-                // Runtime function tvm.hash() allows to count the hash of the message.
+                // Runtime function tvm.hash() allows to calculate the hash of the message.
                 uint hash = tvm.hash(message);
 
                 // Check that the message is unique.

@@ -18,8 +18,9 @@ contract PiggyBank {
 	}
 
 	// Modifier that allows public function to be called only from the owners address.
-	modifier onlyOwner {
+	modifier checkOwnerAndAccept {
 		require(msg.sender == owner);
+		tvm.accept();
 		_;
 	}
 
@@ -43,13 +44,13 @@ contract PiggyBank {
 	}
 
 	// Function that can be called only by the owner after reaching the limit.
-	function withdraw() public onlyOwner alwaysAccept checkBalance {
+	function withdraw() public checkBalance checkOwnerAndAccept  {
 		msg.sender.transfer(balance);
 		balance = 0;
 	}
 
 	// Function that changes the code of current contract.
-	function setCode(TvmCell newcode) public view onlyOwner alwaysAccept returns (uint) {
+	function setCode(TvmCell newcode) public view checkOwnerAndAccept {
 		// Runtime function that creates an output action that would change this
 		// smart contract code to that given by cell newcode.
 		tvm.setcode(newcode);
@@ -58,13 +59,12 @@ contract PiggyBank {
 		tvm.setCurrentCode(newcode);
 
 		// Call function onCodeUpgrade of the 'new' code.
-		return onCodeUpgrade();
+		onCodeUpgrade();
 	}
 
 	// After code upgrade caused by calling setCode function we may need to do some actions.
 	// We can add them into this function with constant id.
-	function onCodeUpgrade() private view returns (uint) {
-		return version;
+	function onCodeUpgrade() private pure {
 	}
 
 }

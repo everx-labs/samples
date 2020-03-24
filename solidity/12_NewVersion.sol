@@ -55,7 +55,7 @@ contract PiggyBank {
 	}
 
 	// Function that changes the code of current contract.
-	function setCode(TvmCell newcode) public checkOwnerAndAccept returns (uint) {
+	function setCode(TvmCell newcode) public checkOwnerAndAccept {
 		// Runtime function that creates an output action that would change this
 		// smart contract code to that given by cell newcode.
 		tvm.setcode(newcode);
@@ -64,15 +64,14 @@ contract PiggyBank {
 		tvm.setCurrentCode(newcode);
 
 		// Call function onCodeUpgrade of the 'new' code.
-		return onCodeUpgrade();
+		onCodeUpgrade();
 	}
 
 	// After code upgrade caused by calling setCode function we may need to do some actions.
 	// We can add them into this function with constant id.
-	function onCodeUpgrade() private returns (uint) {
+	function onCodeUpgrade() private {
 		version = 2;
 		setLimit(limit * 2);
-		return version;
 	}
 
 }
