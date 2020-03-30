@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // Import the interface file
 import "5_BankClientInterfaces.sol";
@@ -32,7 +32,7 @@ contract Bank is IBank {
 	}
 
 	// Get allowed credit limit for the caller.
-	function getCreditLimit() public alwaysAccept {
+	function getCreditLimit() public override alwaysAccept {
 		// Cast caller to IMyContractCallback and invoke callback function
 		// with value obtained from state variable mapping.
         	CreditInfo memory borrowerInfo = clientDB[msg.sender];
@@ -41,7 +41,7 @@ contract Bank is IBank {
 
 	// This function checks whether message sender's available limit could be loaned
 	// and sends currency.
-	function loan(uint amount) public alwaysAccept {
+	function loan(uint amount) public override alwaysAccept {
 		CreditInfo memory borrowerInfo = clientDB[msg.sender];
 		if (borrowerInfo.used + amount > borrowerInfo.allowed)
 		    IBankClient(msg.sender).refusalCallback(borrowerInfo.allowed - borrowerInfo.used);

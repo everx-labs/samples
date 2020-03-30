@@ -1,8 +1,8 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // Interface to the bank client.
-contract IBankClient {
-        function demandDebt(uint amount) public;
+abstract contract IBankClient {
+        function demandDebt(uint amount) public virtual;
 }
 
 // The contract allows to store information about bank clients and iterate over them to filter clients.
@@ -77,7 +77,7 @@ contract BankCollector {
         }
 
         // Function to demand all expired debts.
-        function demandExpiredDebts() public onlyOwner {
+        function demandExpiredDebts() public view onlyOwner {
                 uint32 curTime = uint32(now);
                 // Mapping member function to obtain minmal key and associated value from mapping if it exists.
                 (address addr, ClientInfo memory info, bool exists) = clientDB.min();

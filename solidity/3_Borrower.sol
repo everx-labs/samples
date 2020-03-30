@@ -1,8 +1,8 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // Remote contract interface.
-contract Loaner {
-	function borrow(uint amount) public;
+abstract contract Loaner {
+	function borrow(uint amount) public virtual;
 }
 
 // This contract calls the remote contract function with parameter to ask remote contract to transfer

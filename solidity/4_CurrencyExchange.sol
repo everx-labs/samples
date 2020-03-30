@@ -1,11 +1,11 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
-contract ICentralBank {
-	function GetExchangeRate(uint16 code) public;
+abstract contract ICentralBank {
+	function GetExchangeRate(uint16 code) public virtual;
 }
 
-contract ICurrencyExchange {
-	function setExchangeRate(uint32 n_exchangeRate) public;
+abstract contract ICurrencyExchange {
+	function setExchangeRate(uint32 n_exchangeRate) public virtual;
 }
 
 // This contract implements 'ICurrencyExchange' interface.
@@ -27,12 +27,12 @@ contract CurrencyExchange is ICurrencyExchange {
 	// This function gets an address of the contract and code of the currency <code>,
 	// casts the address to IRemoteContract interface and calls
 	// function 'GetExchangeRate' with parameter <code>.
-	function updateExchangeRate(address bankAddress, uint16 code) public alwaysAccept {
+	function updateExchangeRate(address bankAddress, uint16 code) public pure alwaysAccept {
 		ICentralBank(bankAddress).GetExchangeRate(code);
 	}
 
 	// A callback function to set exchangeRate.
-	function setExchangeRate(uint32 n_exchangeRate) public alwaysAccept {
+	function setExchangeRate(uint32 n_exchangeRate) public override alwaysAccept {
 		// save parameter n_exchangeRate in state variable 'exchangeRate'.
 		exchangeRate = n_exchangeRate;
 	}

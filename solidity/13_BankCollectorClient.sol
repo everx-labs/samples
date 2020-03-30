@@ -1,18 +1,18 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // Interface to the bank client.
-contract IBankClient {
-        function demandDebt(uint amount) public;
+abstract contract IBankClient {
+        function demandDebt(uint amount) public virtual;
 }
 
 // Interface to the bank collector.
-contract IBankCollector {
-        function recievePayment() public payable {}
+abstract contract IBankCollector {
+        function recievePayment() public payable  virtual;
 }
 
 // This contract implements 'IBankClient' interface.
 contract BankClient is IBankClient {
-        function demandDebt(uint amount) public {
+        function demandDebt(uint amount) public override {
                 IBankCollector(msg.sender).recievePayment.value(amount)();
         }
 }

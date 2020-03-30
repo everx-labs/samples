@@ -1,8 +1,8 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // Remote contract interface.
-contract Storage {
-	function storeValue(uint value) public;
+abstract contract Storage {
+	function storeValue(uint value) public virtual;
 }
 
 // This contract implements 'Storage' interface.
@@ -26,7 +26,7 @@ contract UintStorage is Storage {
 	// saves this value in the state variable 'value' of this contract.
 	// Also this function saves the address of the contract that called 'storeValue' function
 	// in the state variable 'client_address'.
-	function storeValue(uint n_value) public alwaysAccept {
+	function storeValue(uint n_value) public override alwaysAccept {
 		value = n_value;
 		client_address = msg.sender;
 	}

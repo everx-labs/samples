@@ -1,11 +1,11 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // This contract describes the Stranger who can add to deposit of PiggyBank but can't withdraw deposit.
 
 // PiggyBank interface
-contract PiggyBank {
-	function deposit() public payable;
-	function withdraw() public;
+abstract contract PiggyBank {
+	function deposit() public payable virtual;
+	function withdraw() public virtual;
 }
 
 contract Stranger {
@@ -29,7 +29,7 @@ contract Stranger {
 	}
 
 	// Function to withdraw money from piggy bank.
-	function withdrawDeposit(PiggyBank bankAddress) public alwaysAccept {
+	function withdrawDeposit(PiggyBank bankAddress) public pure alwaysAccept {
 		bankAddress.withdraw();
 	}
 }

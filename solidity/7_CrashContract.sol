@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // This contract is used to emulate currency transfer destination contract, it can accept incoming transfer via fallback function or emulate crash in function doCrash().
 contract CrashContract {
@@ -7,7 +7,11 @@ contract CrashContract {
 	uint fallbackCounter = 0;
 
 	// Fallback function.
-	function() external payable {
+	fallback() external payable {
+		fallbackCounter += 1;
+	}
+
+	receive() external payable {
 		fallbackCounter += 1;
 	}
 

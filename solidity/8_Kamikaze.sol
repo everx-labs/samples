@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 // This sample demonstrates usage of selfdestruct function.
 
@@ -36,7 +36,11 @@ contract Kamikaze {
 	}
 
 	// Fallback function.
-	function() external payable {
+	fallback() external payable {
+		fallbackCounter++;
+	}
+
+	receive() external payable {
 		fallbackCounter++;
 	}
 }

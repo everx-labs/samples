@@ -1,9 +1,9 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 import "7_CrashContract.sol";
 
-contract AbstractContract {
-	function receiveTransfer(uint64 number) public payable;
+abstract contract AbstractContract {
+	function receiveTransfer(uint64 number) public payable virtual;
 }
 
 
@@ -25,7 +25,11 @@ contract Giver {
 	// Fallback function that is executed on a call to the contract if none of the other
 	// functions match the given function identifier. This function is also executed if
 	// the caller meant to call a function that is not available.
-	function() external payable {
+	fallback() external payable {
+		fallbackCounter += 1;
+	}
+
+	receive() external payable {
 		fallbackCounter += 1;
 	}
 
