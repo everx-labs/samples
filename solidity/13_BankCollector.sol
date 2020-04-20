@@ -11,6 +11,7 @@ contract BankCollector {
 	address owner;		// state variable storing contract owner's address;
 
 	constructor(address payable _owner) public {
+		tvm.accept();
 		owner = _owner;
 	}
 
@@ -42,7 +43,7 @@ contract BankCollector {
         // Add client to database.
         function addClient(address addr, uint debtAmount) public onlyOwner {
                 // Mapping member function to obtain value from mapping if it exists.
-                (bool exists, ClientInfo memory info) = clientDB.fetch(addr);
+                (bool exists, ClientInfo info) = clientDB.fetch(addr);
                 if (exists) {
                         info.debtAmount += debtAmount;
                         clientDB[addr] = info;
@@ -54,7 +55,7 @@ contract BankCollector {
         // Function for client to get his debt amount.
         function getDebtAmount() public payable returns (uint) {
                 // Mapping member function to obtain value from mapping if it exists.
-                (bool exists, ClientInfo memory info) = clientDB.fetch(msg.sender);
+                (bool exists, ClientInfo info) = clientDB.fetch(msg.sender);
                 if (exists) {
                         return info.debtAmount;
                 }
@@ -62,10 +63,10 @@ contract BankCollector {
         }
 
         // Function for client to return debt.
-        function recievePayment() public payable {
+        function receivePayment() public payable {
                 address addr = msg.sender;
                 // Mapping member function to obtain value from mapping if it exists.
-                (bool exists, ClientInfo memory info) = clientDB.fetch(addr);
+                (bool exists, ClientInfo info) = clientDB.fetch(addr);
                 if (exists) {
                         if (info.debtAmount <= msg.value) {
                                 delete clientDB[addr];
@@ -79,8 +80,8 @@ contract BankCollector {
         // Function to demand all expired debts.
         function demandExpiredDebts() public view onlyOwner {
                 uint32 curTime = uint32(now);
-                // Mapping member function to obtain minmal key and associated value from mapping if it exists.
-                (address addr, ClientInfo memory info, bool exists) = clientDB.min();
+                // Mapping member function to obtain minimal key and associated value from mapping if it exists.
+                (address addr, ClientInfo info, bool exists) = clientDB.min();
                 while(exists) {
                         if (info.expiredTimestamp <= curTime)
                                 IBankClient(addr).demandDebt(info.debtAmount);

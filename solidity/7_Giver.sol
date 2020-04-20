@@ -35,7 +35,7 @@ contract Giver {
 
 	// This function can transfer currency to an existing contract with payable fallback
 	// function.
-	function transferToAddress(address payable destination, uint amount) public alwaysAccept {
+	function transferToAddress(address payable destination, uint128 amount) public pure alwaysAccept {
 		destination.transfer(amount);
 	}
 
@@ -55,7 +55,7 @@ contract Giver {
 	function do_tvm_transfer(address payable remote_addr, uint128 grams_value, bool bounce, uint16 sendrawmsg_flag) pure public alwaysAccept {
 		// Runtime function that allows to make a transfer with arbitrary settings
 		// and can be used to send grams to non-existing address.
-		tvm.transfer(remote_addr, grams_value, bounce, sendrawmsg_flag);
+		remote_addr.transfer(grams_value, bounce, sendrawmsg_flag);
 	}
 
 }

@@ -2,7 +2,7 @@ pragma solidity >=0.5.0;
 
 // Remote contract interface.
 abstract contract Loaner {
-	function borrow(uint amount) public virtual;
+	function borrow(uint128 amount) public virtual;
 }
 
 // This contract calls the remote contract function with parameter to ask remote contract to transfer
@@ -21,7 +21,7 @@ contract Borrower {
 	// State variable storing the number of times 'askForALoan' function was called.
 	uint callCounter = 0;
 
-	function askForALoan(Loaner loanerAddress, uint amount) public alwaysAccept {
+	function askForALoan(Loaner loanerAddress, uint128 amount) public alwaysAccept {
 		// Call the remote contract function with parameter.
 		loanerAddress.borrow(amount);
 		// Increment the counter.

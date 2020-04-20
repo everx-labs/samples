@@ -7,12 +7,12 @@ abstract contract IBankClient {
 
 // Interface to the bank collector.
 abstract contract IBankCollector {
-        function recievePayment() public payable  virtual;
+        function receivePayment() public payable  virtual;
 }
 
 // This contract implements 'IBankClient' interface.
 contract BankClient is IBankClient {
         function demandDebt(uint amount) public override {
-                IBankCollector(msg.sender).recievePayment.value(amount)();
+                IBankCollector(msg.sender).receivePayment.value(amount)();
         }
 }

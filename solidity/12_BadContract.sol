@@ -5,7 +5,7 @@ contract PiggyBank {
 	// State variables:
 	address payable owner;		// contract owner's address;
 	uint limit;			// piggybank's minimal limit to withdraw;
-	uint balance;			// piggybank's deposit balance;
+	uint128 balance;			// piggybank's deposit balance;
 	uint version = 1;		// version of the PiggyBank.
 
 	// Modifier that allows public function to accept all external calls.
@@ -32,7 +32,7 @@ contract PiggyBank {
 
 	// Constructor saves the address of the contract owner in a state variable and
 	// initializes the limit and the balance.
-	constructor(address payable pb_owner, uint pb_limit) public {
+	constructor(address payable pb_owner, uint pb_limit) public alwaysAccept {
 		owner = pb_owner;
 		limit = pb_limit;
 		balance = 0;
@@ -40,7 +40,7 @@ contract PiggyBank {
 
 	// Function that can be called by anyone.
 	function deposit() public payable alwaysAccept {
-		balance += msg.value;
+		balance += uint128(msg.value);
 	}
 
 	// Function that can be called only by the owner after reaching the limit.

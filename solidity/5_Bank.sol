@@ -35,14 +35,14 @@ contract Bank is IBank {
 	function getCreditLimit() public override alwaysAccept {
 		// Cast caller to IMyContractCallback and invoke callback function
 		// with value obtained from state variable mapping.
-        	CreditInfo memory borrowerInfo = clientDB[msg.sender];
+        	CreditInfo borrowerInfo = clientDB[msg.sender];
 		IBankClient(msg.sender).setCreditLimit(borrowerInfo.allowed - borrowerInfo.used);
 	}
 
 	// This function checks whether message sender's available limit could be loaned
 	// and sends currency.
 	function loan(uint amount) public override alwaysAccept {
-		CreditInfo memory borrowerInfo = clientDB[msg.sender];
+		CreditInfo borrowerInfo = clientDB[msg.sender];
 		if (borrowerInfo.used + amount > borrowerInfo.allowed)
 		    IBankClient(msg.sender).refusalCallback(borrowerInfo.allowed - borrowerInfo.used);
 		// '.value(amount)' allows to attach arbitrary amount of currency to the message
