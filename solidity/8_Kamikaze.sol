@@ -25,6 +25,7 @@ contract Kamikaze {
 
 	// Constructor saves the owner's public key in the state variable.
 	constructor() public {
+		tvm.accept();
 		// Runctime function that obtains contract owner's public key.
 		owners_pubkey = tvm.pubkey();
 	}

@@ -2,17 +2,12 @@
 
 Start with source code of the contract in \<MyContract.sol\>
 
-1) Compile Solidity source to TVM assembler: 
+1) Compile Solidity source to TVM assembler and generate public interface for the contract in JSON format:
 ```
-solc --tvm MyContract.sol > MyContract.code
-```
-
-2) Generate public interface for the contract in JSON format: 
-```
-solc --tvm_abi MyContract.sol > MyContract.abi.json
+solc MyContract.sol
 ```
 
-3) Assemble and link with necessary libraries into TVM bytecode: 
+2) Assemble and link with necessary libraries into TVM bytecode: 
 ```
 tvm_linker compile MyContract.code --lib <path to>/stdlib_sol.tvm --abi-json MyContract.abi.json
 ```
@@ -146,8 +141,7 @@ Here we describe \<MyContract.sol\> deployment to the TON Blockchain Test Networ
 ### 1) Compilation
 Compile and link the Solidity source file to TVM bytecode as described above:
 ```
-solc --tvm MyContract.sol > MyContract.code
-solc --tvm_abi MyContract.sol > MyContract.abi.json
+solc MyContract.sol
 tvm_linker compile MyContract.code -w 0 --lib <path_to>/stdlib_sol.tvm --abi-json MyContract.abi.json [--genkey <path_to_save_keyfile>]
 ```
 

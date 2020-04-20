@@ -22,7 +22,7 @@ contract DataBase {
 	// Function sends an array of uint64  with size 'count' to the contract
 	// with address 'receiver'.
 	function sendArray(address receiver, uint64 count) public alwaysAccept {
-		uint64[] memory arr = new uint64[](count);
+		uint64[] arr = new uint64[](count);
 		for (uint64 i = 0; i < count; i++) {
 			arr[i] = i + 1;
 		}
@@ -32,15 +32,15 @@ contract DataBase {
 
 	// Function sends five arrays of uint to the contract with address 'receiver'.
 	function sendFiveArrays(address receiver) public alwaysAccept {
-		uint256[] memory arr0 = new uint[](1);
+		uint256[] arr0 = new uint[](1);
 		arr0[0] = 1;
-		uint256[] memory arr1 = new uint[](1);
+		uint256[] arr1 = new uint[](1);
 		arr1[0] = 2;
-		uint256[] memory arr2 = new uint[](1);
+		uint256[] arr2 = new uint[](1);
 		arr2[0] = 3;
-		uint256[] memory arr3 = new uint[](1);
+		uint256[] arr3 = new uint[](1);
 		arr3[0] = 4;
-		uint256[] memory arr4 = new uint[](1);
+		uint256[] arr4 = new uint[](1);
 		arr4[0] = 5;
 		IDataBaseClient(receiver).receiveFiveArrays(arr0, arr1, arr2, arr3, arr4);
 		sendCounter++;
@@ -58,8 +58,8 @@ contract DataBase {
 	}
 
 	// Private function to create an array of structures, that will be sent to another contract.
-	function createStructArray() private pure returns (IDataBaseClient.MyStruct[] memory) {
-		IDataBaseClient.MyStruct[] memory arr;
+	function createStructArray() private pure returns (IDataBaseClient.MyStruct[]) {
+		IDataBaseClient.MyStruct[] arr;
 		arr[0].ID = 1;
 		arr[0].value = 2;
 		arr[1].ID = 3;
@@ -69,7 +69,7 @@ contract DataBase {
 
 	// Function sends an array of structures to the contract with address 'receiver'.
 	function sendStructArray(address receiver) public alwaysAccept {
-		IDataBaseClient.MyStruct[] memory arr = createStructArray();
+		IDataBaseClient.MyStruct[] arr = createStructArray();
 		IDataBaseClient(receiver).receiveStructArray(arr);
 		sendCounter++;
 	}

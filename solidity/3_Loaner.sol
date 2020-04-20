@@ -2,7 +2,7 @@ pragma solidity >=0.5.0;
 
 // Remote contract interface
 abstract contract Loaner {
-	function borrow(uint amount) public virtual;
+	function borrow(uint128 amount) public virtual;
 }
 
 // This contract implements 'Loaner' interface.
@@ -23,7 +23,7 @@ contract LoanerContract is Loaner {
 	// A function to be called from another contract
 	// This function receives parameter 'amount' from another contract and
 	// transfers 'amount' of currency to the caller.
-	function borrow(uint amount) public override alwaysAccept {
+	function borrow(uint128 amount) public override alwaysAccept {
 		msg.sender.transfer(amount);
 		callCounter++;
 	}

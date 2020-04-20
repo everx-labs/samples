@@ -34,6 +34,7 @@ contract Wallet {
 
     /// @dev Contract constructor.
     constructor() public {
+        tvm.accept();
         // save contract's public key in the state variable.
         // Runctime function that obtains contract owner's public key.
         owner = tvm.pubkey();
@@ -47,7 +48,7 @@ contract Wallet {
     function sendTransaction(address payable dest, uint128 value, bool bounce) public view checkOwnerAndAccept {
         require(value > 0 && value < address(this).balance, 101);
          // Runtime function that allows to make a transfer with arbitrary settings.
-        tvm.transfer(dest, value, bounce, 0);
+        dest.transfer(value, bounce, 0);
     }
 
 }
