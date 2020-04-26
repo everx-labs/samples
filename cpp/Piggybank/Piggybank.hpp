@@ -5,7 +5,7 @@
 namespace tvm { namespace schema {
 
 // Piggybank interface
-__interface IPiggybank {
+struct IPiggybank {
   __attribute__((internal, external))
   void constructor(lazy<MsgAddress> owner, uint_t<256> limit) = 1;
 
@@ -14,6 +14,9 @@ __interface IPiggybank {
 
   __attribute__((internal))
   void withdraw() = 3;
+
+  __attribute__((getter))
+  uint_t<256> get_balance() = 4;
 };
 
 // Piggybank persistent data
@@ -23,5 +26,7 @@ struct DPiggybank {
   uint_t<256> balance;
 };
 
-}} // namespace tvm::schema
+// Piggybank events
+struct EPiggybank {};
 
+}} // namespace tvm::schema
