@@ -1,7 +1,7 @@
 ## Prerequisites
 
 To compile a contract, you first need to get the following libraries and tools.
-- [C++ for TVM compiler, C++ runtime, C++ SDK libraries, C++ driver](https://github.com/tonlabs/TON-Compiler). All thesibraries and tools are in the same repository.
+- [C++ for TVM compiler, C++ runtime, C++ SDK libraries, C++ driver](https://github.com/tonlabs/TON-Compiler). All libraries and tools are in the same repository.
 - [TVM linker and TVM deploying tool](https://github.com/tonlabs/TVM-linker/).
 
 ## Contract in C++
