@@ -3,22 +3,23 @@ pragma solidity >=0.5.0;
 // Interface to the bank client.
 abstract contract IBankClient {
         function demandDebt(uint amount) public virtual;
+        function setDebtAmount(uint amount) public virtual;
 }
 
+// Interface to the bank collector.
+abstract contract IBankCollector {
+        function receivePayment() public payable  virtual;
+        function getDebtAmount() public payable virtual;
+}
+
+
 // The contract allows to store information about bank clients and iterate over them to filter clients.
-contract BankCollector {
-
-	address owner;		// state variable storing contract owner's address;
-
-	constructor(address payable _owner) public {
-		tvm.accept();
-		owner = _owner;
-	}
+contract BankCollector is IBankCollector {
 
 	// Modifier that allows public function to accept all external calls.
 	modifier onlyOwner {
-                // Runtime function to obtain message sender address.
-		require(msg.sender == owner);
+                // Runtime functions to obtain message sender pubkey and contract pubkey.
+		require(msg.pubkey() == tvm.pubkey());
 
 		// Runtime function that allows contract to process inbound messages spending
 		// its own resources (it's necessary if contract should process all inbound messages,
@@ -53,17 +54,18 @@ contract BankCollector {
         }
 
         // Function for client to get his debt amount.
-        function getDebtAmount() public payable returns (uint) {
+        function getDebtAmount() public payable override {
                 // Mapping member function to obtain value from mapping if it exists.
                 (bool exists, ClientInfo info) = clientDB.fetch(msg.sender);
                 if (exists) {
-                        return info.debtAmount;
+                        IBankClient(msg.sender).setDebtAmount(info.debtAmount);
+                } else {
+                        IBankClient(msg.sender).setDebtAmount(0);
                 }
-                return 0;
         }
 
         // Function for client to return debt.
-        function receivePayment() public payable {
+        function receivePayment() public payable override {
                 address addr = msg.sender;
                 // Mapping member function to obtain value from mapping if it exists.
                 (bool exists, ClientInfo info) = clientDB.fetch(addr);

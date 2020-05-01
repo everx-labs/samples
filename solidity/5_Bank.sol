@@ -45,10 +45,12 @@ contract Bank is IBank {
 		CreditInfo borrowerInfo = clientDB[msg.sender];
 		if (borrowerInfo.used + amount > borrowerInfo.allowed)
 		    IBankClient(msg.sender).refusalCallback(borrowerInfo.allowed - borrowerInfo.used);
-		// '.value(amount)' allows to attach arbitrary amount of currency to the message
-		// if it is not set amount would be set to 10 000 000
-		IBankClient(msg.sender).receiveLoan.value(amount)(borrowerInfo.used + amount);
-		clientDB[msg.sender].used += amount;
+		else {
+		    // '.value(amount)' allows to attach arbitrary amount of currency to the message
+		    // if it is not set amount would be set to 10 000 000
+		    IBankClient(msg.sender).receiveLoan.value(amount)(borrowerInfo.used + amount);
+		    clientDB[msg.sender].used += amount;
+		}
 	}
 
 }

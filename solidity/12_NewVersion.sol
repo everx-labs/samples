@@ -17,6 +17,13 @@ contract PiggyBank {
 		_;
 	}
 
+	// Modifier that allows public function to be called only by message signed with owner's pubkey.
+	modifier checkPubkeyAndAccept {
+		require(msg.pubkey() == tvm.pubkey());
+		tvm.accept();
+		_;
+	}
+
 	// Modifier that allows public function to be called only from the owners address.
 	modifier checkOwnerAndAccept {
 		require(msg.sender == owner);
@@ -55,7 +62,7 @@ contract PiggyBank {
 	}
 
 	// Function that changes the code of current contract.
-	function setCode(TvmCell newcode) public checkOwnerAndAccept {
+	function setCode(TvmCell newcode) public checkPubkeyAndAccept {
 		// Runtime function that creates an output action that would change this
 		// smart contract code to that given by cell newcode.
 		tvm.setcode(newcode);
@@ -72,6 +79,11 @@ contract PiggyBank {
 	function onCodeUpgrade() private {
 		version = 2;
 		setLimit(limit * 2);
+	}
+
+	// Function to obtain contract version.
+	function getVersion() public view alwaysAccept returns (uint) {
+		return version;
 	}
 
 }

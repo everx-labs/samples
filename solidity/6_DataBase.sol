@@ -17,6 +17,11 @@ contract DataBase {
 	// State variable storing the number of send* functions were called.
 	uint sendCounter = 0;
 
+	//Function to obtain state variables.
+	function getData() public view alwaysAccept returns (uint) {
+		return (sendCounter);
+	}
+
 	// Contract can store or generate different coefficients and provide them
 	// upon request as an array of integers.
 	// Function sends an array of uint64  with size 'count' to the contract
@@ -59,7 +64,7 @@ contract DataBase {
 
 	// Private function to create an array of structures, that will be sent to another contract.
 	function createStructArray() private pure returns (IDataBaseClient.MyStruct[]) {
-		IDataBaseClient.MyStruct[] arr;
+		IDataBaseClient.MyStruct[] arr = new IDataBaseClient.MyStruct[](2);
 		arr[0].ID = 1;
 		arr[0].value = 2;
 		arr[1].ID = 3;
