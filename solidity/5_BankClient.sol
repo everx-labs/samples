@@ -21,9 +21,12 @@ contract BankClient is IBankClient {
 	uint balance = 0;        // contract balance;
 	uint value = 0;          // inbound message value.
 
+	function getData() public view alwaysAccept returns (uint, uint, uint, uint) {
+		return (creditLimit, totalDebt, balance, value);
+	}
 
-	// This function calls a remote IBankDataBase contract to get the credit limit.
-	function getMyCredit(IBank bank) public pure alwaysAccept {
+	// This function calls a remote IBank contract to get the credit limit.
+	function getMyCreditLimit(IBank bank) public pure alwaysAccept {
 		// Call remote contract function.
 		bank.getCreditLimit();
 	}

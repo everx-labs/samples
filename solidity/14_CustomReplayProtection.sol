@@ -1,7 +1,7 @@
 pragma solidity >=0.5.0;
 
 // Abiheader section allows to define which fields are expected to be in the header of inbound message.
-// This fields have to be read in the replay protection function.
+// This fields must be read in the replay protection function.
 pragma AbiHeader time;
 pragma AbiHeader expire;
 

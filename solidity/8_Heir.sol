@@ -10,4 +10,14 @@ contract Heir {
 	fallback() external payable {
 		heritageCounter++;
 	}
+
+	// Receive function to receive plain transfers.
+	receive() external payable {
+		heritageCounter++;
+	}
+
+	function getCounter() public view returns(uint) {
+		tvm.accept();
+		return heritageCounter;
+	}
 }

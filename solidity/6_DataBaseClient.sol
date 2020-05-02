@@ -20,6 +20,11 @@ contract DataBaseClient is IDataBaseClient {
 	// State variable that can be used to check received values.
 	uint checkSum = 0;
 
+	//Function to obtain state variables.
+	function getData() public view alwaysAccept returns (uint,uint) {
+		return (receiptCounter, checkSum);
+	}
+
 	// Function receives an array of uint64 values.
 	function receiveArray(uint64[] arr) public override alwaysAccept {
 		uint sum = 0;

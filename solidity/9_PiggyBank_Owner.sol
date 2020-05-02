@@ -10,6 +10,10 @@ abstract contract PiggyBank {
 
 contract Owner {
 
+	// Receive function to receive plain transfers
+	receive() external payable {
+	}
+
 	// Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
 		// Runtime function that allows contract to process inbound messages spending

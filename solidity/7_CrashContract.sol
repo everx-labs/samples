@@ -15,6 +15,12 @@ contract CrashContract {
 		fallbackCounter += 1;
 	}
 
+	// Function to obtain fallback counter
+	function getCounter() public view returns (uint) {
+		tvm.accept();
+		return fallbackCounter;
+	}
+
 	// Function that crashes after call.
 	function doCrash() public payable {
 		require(false, 73);

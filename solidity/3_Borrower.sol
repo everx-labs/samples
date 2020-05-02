@@ -18,6 +18,9 @@ contract Borrower {
 		_;
 	}
 
+	// Receive function to receive plain currency transactions.
+	receive() external payable {}
+
 	// State variable storing the number of times 'askForALoan' function was called.
 	uint callCounter = 0;
 

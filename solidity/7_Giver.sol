@@ -20,18 +20,28 @@ contract Giver {
 	}
 
 	// State variable storing the number of times fallback function was called.
-	uint fallbackCounter = 0;
+	uint Counter = 0;
 
 	// Fallback function that is executed on a call to the contract if none of the other
 	// functions match the given function identifier. This function is also executed if
 	// the caller meant to call a function that is not available.
 	fallback() external payable {
-		fallbackCounter += 1;
+		Counter += 1;
 	}
 
 	receive() external payable {
-		fallbackCounter += 1;
+		Counter += 1;
 	}
+
+	onBounce(TvmSlice /*slice*/) external {
+		Counter += 1;
+	}
+
+	// Function to obtain fallback counter
+	function getCounter() public view alwaysAccept returns (uint) {
+		return Counter;
+	}
+
 
 	// This function can transfer currency to an existing contract with payable fallback
 	// function.
@@ -39,14 +49,13 @@ contract Giver {
 		destination.transfer(amount);
 	}
 
-	// This function calls an AbstractContract which would cause a fallback function
-	// call in case of this contract inexistance.
+	// This function calls an AbstractContract which would case a crash and call of onBounce function.
 	function transferToAbstractContract(address payable destination, uint amount) public alwaysAccept {
 		AbstractContract(destination).receiveTransfer.value(amount)(123);
 	}
 
-	// This function call a CrashContract's function which would cause a fallback
-	// function call  after it crashes.
+	// This function call a CrashContract's function which would cause a crash during transaction
+	// and call of onBounce function.
 	function transferToCrashContract(address payable destination, uint amount) public alwaysAccept {
 		CrashContract(destination).doCrash.value(amount)();
 	}
