@@ -134,6 +134,11 @@ Developer can work with mappings using methods: **fetch**, **min**, **next**. Th
 
 Developer can redefine function **afterSignatureCheck** to create his own replay protection function instead of default one.
 
+15) [MessageSender](https://github.com/tonlabs/samples/blob/master/solidity/15_MessageSender.sol): Message construction and parsing
+
+Developer can use TVM specific types to build message manually and special api function **tvm.sendrawmsg()** to send it. Contract [MessageSender](https://github.com/tonlabs/samples/blob/master/solidity/15_MessageSender.sol) performs such actions to build a message which will call the function of another contract [MessageReceiver](https://github.com/tonlabs/samples/blob/master/solidity/15_MessageReceiver.sol). [MessageReceiver](https://github.com/tonlabs/samples/blob/master/solidity/15_MessageReceiver.sol) also shows how to parse a cell.
+
+
 ## Contract deployment
 
 Here we describe \<MyContract.sol\> deployment to the TON Blockchain Test Network (testnet) using Lite Client.
