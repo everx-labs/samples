@@ -138,6 +138,10 @@ Developer can redefine function **afterSignatureCheck** to create his own replay
 
 Developer can use TVM specific types to build message manually and special api function **tvm.sendrawmsg()** to send it. Contract [MessageSender](https://github.com/tonlabs/samples/blob/master/solidity/15_MessageSender.sol) performs such actions to build a message which will call the function of another contract [MessageReceiver](https://github.com/tonlabs/samples/blob/master/solidity/15_MessageReceiver.sol). [MessageReceiver](https://github.com/tonlabs/samples/blob/master/solidity/15_MessageReceiver.sol) also shows how to parse a cell.
 
+16) [onBounceHandler](https://github.com/tonlabs/samples/blob/master/solidity/16_onBounceHandler.sol): Working with bounced messages
+
+Developer can define **onBounce** function to work with bounced messages. If an error occures while message trnsfering or handling it can be bounced back to the source contract. This sample demonstrates how you can handle such bounced message.
+
 
 ## Contract deployment
 
