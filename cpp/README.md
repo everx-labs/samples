@@ -43,12 +43,11 @@ If the compilation is successful, `*.tvc` file is created in the directory where
 
 ## Contract deployment
 
-Here we describe a contract deployment to the TON Blockchain Test Network (testnet) using `tonlabs-cli` tool.
-Note: for MacOS X replace `tonlabs-cli` with `cargo run` in the following instruction, and the run is supposed to be made from the directory where `tonlabs-cli` is built.
+Here we describe a contract deployment to the TON Blockchain Test Network (testnet) using `tonlabs-cli` tool. The following commands must be run from the directory where tonlabs-cli is located.
 
 1. Generate contract address
 ```
-tonlabs-cli genaddr Contract.tvc Contract.abi --genkey key
+cargo run genaddr Contract.tvc Contract.abi --genkey key
 ```
 
 The command generates and print lists all possible addresses of the contract:
@@ -69,14 +68,14 @@ The contract is going to store its code and data in the blockchain, but it costs
 
 3. Deploy the contract
 ```
-tonlabs-cli run deploy --abi Contract.abi Contract.tvc '{<constructor call arguments>}' --sign key
+cargo run deploy --abi Contract.abi Contract.tvc '{<constructor call arguments>}' --sign key
 ```
 Note that call arguments are supposed to be pairs of `"parameter":value` in JSON format. For instance, `'{"a":5, "b":6}'`calls the constructor with a = 5 and b = 6. Note that the parameter names must match ones specified in the contract ABI.
 
 4. Run a method
 Method's running is syntactically similar to deploying, but the name of the method should also be specified.
 ```
-tonlabs-cli run call --abi Contract.abi <RawAddress> '{<call arguments>}' --sign key
+cargo run call --abi Contract.abi <RawAddress> '{<call arguments>}' --sign key
 ```
 Note that a contract method might also be called internally (i.e. by another contract), see [Giver](https://github.com/tonlabs/samples/blob/master/cpp/Giver) example to learn more.
 
@@ -173,19 +172,24 @@ If everything is OK, you get the following output:
 
 ## Contract examples
 
-The list of C++ examples is provided below. If you just started learning C++ for TVM we recommend to study the examples in order. If you are familiar with TVM and smart contracts, however, just open the contract you are interested in.
+The list of C++ examples is provided below. If you just started learning C++ for TVM we recommend to start with the [Tutorial](https://github.com/tonlabs/samples/blob/master/cpp/TUTORIAL.md) and then to study the examples in order. If you are familiar with TVM and smart contracts, however, jump to the contract you are interested in.
 
-1) [Wallet](https://github.com/tonlabs/samples/blob/master/cpp/Wallet): Simple contract to hold and spend money (Grams).
+1) [Hello, world!](https://github.com/tonlabs/samples/blob/master/cpp/HelloWorld): Introduces general concepts of the contract development.
 
-The example shows C++ for TVM basics:
-1. How to write contract using `smart_interface<T>` template class.
-2. How to implement a public method an external user might call.
-It also familiarizes with the stuff the compiler does for you: signature checking, message handling and replay attack protection.
+This example is a part of [C++ Tutorial](https://github.com/tonlabs/samples/blob/master/cpp/TUTORIAL.md) which is a step by step guidance on how to create your first contract.
 
-2) [Piggybank](https://github.com/tonlabs/samples/blob/master/cpp/Piggybank): Contract for savings.
+2) [Authorization](https://github.com/tonlabs/samples/blob/master/cpp/Authorization): Demonstrate a message signature check.
+
+This example is a part of [C++ Tutorial](https://github.com/tonlabs/samples/blob/master/cpp/TUTORIAL.md). The example extends [Hello, world!](https://github.com/tonlabs/samples/blob/master/cpp/HelloWorld) example by introducing signature cheching to prevent spam attack on a contract and make it run out of money.
+
+3) [Giver](https://github.com/tonlabs/samples/blob/master/cpp/Giver): The contract sends the requested amount of money.
+
+This example is a part of [C++ Tutorial](https://github.com/tonlabs/samples/blob/master/cpp/TUTORIAL.md). It shows how to call a public method with parameters from another contract.
+
+4) [Wallet](https://github.com/tonlabs/samples/blob/master/cpp/Wallet): Simple contract to hold and spend money.
+
+5) [Piggybank](https://github.com/tonlabs/samples/blob/master/cpp/Piggybank): Contract for savings.
 
 The example consist of three contracts which exchange messages between each other. It shows simplest form of an internal call of a public method. It also show how a mechanism of internal authorization might work.
 
-3) [Giver](https://github.com/tonlabs/samples/blob/master/cpp/Giver): The contract gives money to everybody who is in need.
-
-Contract shows how to call a public method with parameters from another contract.
+6) [Kamikaze](https://github.com/tonlabs/samples/blob/master/cpp/Kamikaze): The example shows how a contract could be deleted from the network.
