@@ -7,7 +7,7 @@ To compile a contract, you first need to get the following libraries and tools.
 
 ## Contract in C++
 
-A contract in C++ might be written using any C++ standard supported by Clang-7. So a developer could use most of the features available in the most recent C++17 standard. Hovewer since blochain is the domain, C++ was not initially intended for a contract has some limitations:
+A contract in C++ might be written using any C++ standard supported by Clang-7. So a developer could use most of the features available in the most recent C++17 standard. However since blockchain is the domain, C++ was not initially intended for contracts and has some limitations:
 - All the arithmetic is 257-bits wide, sizeof(char) == sizeof(<any other numeric type>) == 1 byte == 257 bits.
 - TVM doesn't support float point arithmetic, so compilation of a contract utilizing float or double type might end up with an internal compiler error.
 - TVM has very poor performance when emulating pointers to functions, so a program which _after optimization_ still has calls by a pointer will not compile. So we strongly recommend to use coding style which could be characterized as C with classes and templates with several exceptions that are shown in the examples from this repository.
@@ -17,12 +17,12 @@ Aside from that, we introduced some extensions into the language to deal with th
 
 ### Language extensions
 
-- GNU attributes to mark public methods of a contract (see any example from this repo for detais).
+- GNU attributes to mark public methods of a contract (see any example from this repo for details).
 - `auto [=a] = expression;`. Structure binding extension allowing to assign to already declared variable a. Note that any mix of new and existing variables is allowed in a structure binding (e.g. `auto [=a, b, c, =d] = expression;` defines `b` and `c` and assigns to `a` and `d`).
-- `smart_interface<T>` template class and macro to generate contract ABI (see any example from this repo for detais).
+- `smart_interface<T>` template class and macro to generate contract ABI (see any example from this repo for details).
 - `void foo() = n` in a pure virtual function declaration is used to designate the public method id in a contract.
 
-Note that C++ compiler is under active development and we aim to improve diagnostic, but at the moment compilation might end up with an internal compiler error. In such case please refer to the aforementined guidelines and ask for help in the community chats.
+Note that C++ compiler is under active development and we aim to improve diagnostic, but at the moment compilation might end up with an internal compiler error. In such case please refer to the aforementioned guidelines and ask for help in the community chats.
 
 ## C++ compilation workflow
 
@@ -70,7 +70,7 @@ Bounceable address (for later access): <MyContractBounceMainAddress>
 Later we will use `<RawAddress>` of the contract. Note that `--genkey` (or `--setkey`) is mandatory, it generates a key file which is used for every interaction with the contract made by an offchain application. TVM supports unauthorized external (i.e. from outside of the blockchain) method calls, but C++ currently doesn't.
 
 2. Prepare the account
-The contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some coins to the future contract address before deploying the contract. Some of the ways to get test coins are covered in **Getting test grams**.
+The contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some coins to the future contract address before deploying the contract. Some of the ways to get test coins are covered in **Getting test coins**.
 
 3. Deploy the contract
 ```
@@ -85,15 +85,15 @@ tonos-cli call --abi Contract.abi <RawAddress> '{<call arguments>}' --sign key
 ```
 Note that a contract method might also be called internally (i.e. by another contract), see [Giver](https://github.com/tonlabs/samples/blob/master/cpp/Giver) example to learn more.
 
-## Getting test Grams
+## Getting test Coins
 
-At present, we can describe two ways to obtain test grams:
+At present, we can describe two ways to obtain test coins:
 
-### 1) Ask your mate to send test grams to your address.
-If you have a mate who works with TON smart contracts he may have some extra test grams and a contract with transfer function (e.g. it could be a Wallet contract, which can send test grams to a given address). In this situation, you can ask him/her to send some test grams to your address.
+### 1) Ask your friend to send test coins to your address.
+If you have a friend who works with TON smart contracts they may have some extra test coins and a contract with transfer function (e.g. it could be a Wallet contract, which can send test coins to a given address). In this situation, you can ask them to send some test coins to your address.
 
 ### 2) Use giver contract.
-If you know that there is a giver contract in your TON network and you know its address and possibly keys you can ask giver to transfer some test grams to your address.
+If you know that there is a giver contract in your TON network and you know its address and possibly keys you can ask giver to transfer some test coins to your address.
 
 2.1) If you need to use keys with your giver save them into 2 files:
   **secret.key** - 64 bytes concatenation of secret key and public key;
@@ -123,13 +123,13 @@ sendfile <path_to_file_<*-msg-body.boc>>
 2.4) Check whether the balance replenishment was successful: 
 We can perform this check in different ways:
 
-2.4.1) Using gramscan service:
+2.4.1) Using ton.live service:
 
-Go to https://gram-scan-test.firebaseapp.com/accounts?section=account-details&id=0:<MyContractAddress\> using your contract address.
+Go to https://net.ton.live/accounts?section=details&id=:<MyContractAddress\> using your contract address.
 
 2.4.2) Using GraphQL:
 
-Go to testnet.ton.dev/graphql and run that code:
+Go to https://net.ton.live/ Open Playground and run this code:
 
 ```
 {
