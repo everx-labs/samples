@@ -2,7 +2,8 @@
 
 To compile a contract, you first need to get the following libraries and tools.
 - [C++ for TVM compiler, C++ runtime, C++ SDK libraries, C++ driver](https://github.com/tonlabs/TON-Compiler). All libraries and tools are in the same repository.
-- [TVM linker and TVM deploying tool](https://github.com/tonlabs/TVM-linker/).
+- [TVM linker](https://github.com/tonlabs/TVM-linker/).
+- [TONOS CLI](https://github.com/tonlabs/tonos-cli).
 
 ## Contract in C++
 
@@ -45,9 +46,14 @@ If the compilation is successful, `*.tvc` file is created in the directory where
 
 Here we describe a contract deployment to the TON Blockchain Test Network (testnet) using `tonlabs-cli` tool. The following commands must be run from the directory where tonlabs-cli is located.
 
+0. Add tonos-cli build directory to PATH
+```
+export PATH=/path/to/tonos-cli/target/<debug or release>/
+```
+
 1. Generate contract address
 ```
-cargo run genaddr Contract.tvc Contract.abi --genkey key
+tonos-cli genaddr Contract.tvc Contract.abi --genkey key
 ```
 
 The command generates and print lists all possible addresses of the contract:
@@ -68,14 +74,14 @@ The contract is going to store its code and data in the blockchain, but it costs
 
 3. Deploy the contract
 ```
-cargo run deploy --abi Contract.abi Contract.tvc '{<constructor call arguments>}' --sign key
+tonos-cli deploy --abi Contract.abi Contract.tvc '{<constructor call arguments>}' --sign key
 ```
 Note that call arguments are supposed to be pairs of `"parameter":value` in JSON format. For instance, `'{"a":5, "b":6}'`calls the constructor with a = 5 and b = 6. Note that the parameter names must match ones specified in the contract ABI.
 
 4. Run a method
 Method's running is syntactically similar to deploying, but the name of the method should also be specified.
 ```
-cargo run call --abi Contract.abi <RawAddress> '{<call arguments>}' --sign key
+tonos-cli call --abi Contract.abi <RawAddress> '{<call arguments>}' --sign key
 ```
 Note that a contract method might also be called internally (i.e. by another contract), see [Giver](https://github.com/tonlabs/samples/blob/master/cpp/Giver) example to learn more.
 
