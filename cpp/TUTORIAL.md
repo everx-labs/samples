@@ -11,7 +11,7 @@ C++ toolchain consists of the following libraries and tools:
 *	TON SDK header-based library containing essential functions and classes to work with contracts. It's located at `TON-Compiler-source/stdlib/cpp-sdk/tvm`.
 *	Clang-7 based C++ compiler. The binary is located at `TON-Compiler-build/bin/clang++`.
 *	`tvm_linker` linker for TVM assembly and also a local testing tool for contracts. The tool is located at `TVM-linker-source/tvm_linker/target/<debug or release>/tvm_linker`.
-*	`tonos-cli` contract deployment tool. The tool is located at `/tonos-cli/target/<debug or release>/tonos-cli`.
+*	`tonos-cli` contract deployment tool. The tool is located at `tonos-cli/target/<debug or release>/tonos-cli`.
 *	Compiler driver for C++. Due to TVM backend has very specific requirements for the optimization pipeline we strongly recommend using the tool rather than call clang manually. The driver is located at `TON-Compiler-build/bin/tvm-build++`.
 
 ## Brief introduction to TON and TVM and the terminology
@@ -29,7 +29,6 @@ export PATH=TON-Compiler-build/bin:TVM-linker-source/tvm_linker/target/<debug or
 export TVM_LINKER=TVM-linker-source/tvm_linker/target/<debug or release>/tvm_linker #path to tvm_linker tool.
 export TVM_INCLUDE_PATH=TON-Compiler-source/stdlib #path to the folder containing cpp-sdk directory.
 export TVM_LIBRARY_PATH=TON-Compiler-source/stdlib #path to stdlib_cpp.tvm
-export LD_LIBRARY_PATH=tonos-cli/target/<debug or release>/ ton-client-rs-<hash>/out/libton_client.so:$LD_LIBRARY_PATH #path to the tonos-cli library
 ```
 
 ## Hello, world!
