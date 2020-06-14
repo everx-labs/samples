@@ -4,6 +4,7 @@ To compile a contract, you first need to get the following libraries and tools.
 - [C++ for TVM compiler, C++ runtime, C++ SDK libraries, C++ driver](https://github.com/tonlabs/TON-Compiler). All libraries and tools are in the same repository.
 - [TVM linker](https://github.com/tonlabs/TVM-linker/).
 - [TONOS CLI](https://github.com/tonlabs/tonos-cli).
+It's recommended to build and install the compiler and put binaries of the linker into `/path/to/compiler/install/bin` directory. In that case compiler can manage to find the linker thus it's able to produce binaries from the sources by itself.
 
 ## Contract in C++
 
@@ -24,23 +25,25 @@ Aside from that, we introduced some extensions into the language to deal with th
 
 Note that C++ compiler is under active development and we aim to improve diagnostic, but at the moment compilation might end up with an internal compiler error. In such case please refer to the aforementioned guidelines and ask for help in the community chats.
 
-## C++ compilation workflow
+## The compiler usage
 
-To compile a contract in C++ perform the following steps.
-1. Extract the contract ABI (alternatively it could be written by hands, but it duplicates information about the contract interface which is bug prone). To extract the ABI, run
+To compile a contract all that is needed to be done is to invoke the compiler:
 ```
-clang++ -target tvm --sysroot <path/to/TON-Compiler/stdlib/> Contract.cpp -export-json-abi -o Contract.abi
+clang <inputs.cpp> -o output.tvc
 ```
+This invokation runs the compiler and linker with O3 level of optimization and produces `output.tvc`, the contract's binary and `output.abi`, the contract's abi which is needed to run the contract in the network. Below we explain the compilation process in details, you might find this description of help when troubleshooting.
 
-2. Compile the contract and link it
+### C++ compilation workflow
+If you want to discover what the compiler is doing you might invoke:
 ```
-export TVM_LINKER=</path/to/tvm_linker/binary>
-export TVM_INCLUDE_PATH=</path/to/TON-Compiler/stdlib>
-export TVM_LIBRARY_PATH=</path/to/TON-Compiler/stdlib>
-</path/to/TON-Compiler/llvm/tools/tvm-build/tvm-build++.py> --abi Contract.abi Contract.cpp --include $TVM_INCLUDE_PATH
+clang -v <inputs.cpp> -o output.tvc
 ```
-
-If the compilation is successful, `*.tvc` file is created in the directory where `tvm-build++` was run.
+This command is the invocation of the compiler in verbose mode. If you want only to see the compilation steps without execution them run:
+```
+clang -### <inputs.cpp> -o output.tvc
+```
+In brief, the compiler first compiles all the sources into LLVM intermediate representation with `O3` level of optimization. Then it combines all the outputs of the previous step into a single file, optimizes it and generated the assembly (TVM doesn't have an object file format at the moment). Finally, the compiler invokes the linker which in turn produces the binary. The compiler also produces the abi which might also be done by hands with `-export-json-abi` option.
+If you are familiar with compilers you might have noticed that it's not a standard C++ pipeline and Clang for TVM relies on O3 and link time optimization, otherwise you might get a code generation error.
 
 ## Contract deployment
 
