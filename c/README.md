@@ -1,5 +1,6 @@
 # C contract samples for TON
 This directory contains contracts that demonstrate how to use C to write contracts for TON blockchain. There is a separate subfolder for each file and its description.
+We don't expect C to be a mainstream language for writing contracts, so we don't actively support it. C, however, is the language the has mimum compiler inpact on the resulting code performance - only the stack is handled by the compiler, but TVM instructions are need to be explicitely emitted by the programmer via builin calls. Thus the C compiler, might be a good learning tool if your goal is to become proficient in TVM assembly. You can also write C-style of code in C++ whenever you think that C++ compiler doesn't not provide optimal abstractions for you.
 
 ## Prerequisites
 TVM Toolchain for C to build and test contracts locally. It includes:
@@ -25,14 +26,14 @@ abi_parser.py piggybank
 
 2. Compile the contract sources.
 ```
-clang -target tvm -S -O3 *.c -I/path/to/stdlib
+clang -target tvm -S -O3 *.c -I/path/to/TON-Compiler/llvm/projects/ton-compiler/
 ```
 
 If Clang fails to recognize the TVM target, make sure that you are using Clang for TVM, not the system Clang.
 
 3. Compile the SDK sources.
 ```
-clang -target tvm -S -O3 /path/to/ton-std/*.c -I/path/to/stdlib
+clang -S /path/to/ton-std/*.c -I/path/to/TON-Compiler/llvm/projects/ton-compiler/
 ```
 
 4. Merge the assemblies together ('tvm_linker' does not support multiple inputs now).
@@ -52,8 +53,6 @@ You can invoke a public function specified in the ABI and see the output using '
 tvm_linker test <contract address> --abi-json piggybank.abi --abi-method initialize_target --abi-params "{\"target\":\"100\"}"
 ```
 
-To learn more about ABI, refer to [https://docs.ton.dev/86757ecb2/p/15062d](https://docs.ton.dev/86757ecb2/p/15062d)
-
 ## Contract deployment
 Contract deploy guidelines do not depend on the language. You can use the one at [https://github.com/tonlabs/samples/tree/master/solidity](https://github.com/tonlabs/samples/tree/master/solidity).
 
@@ -62,7 +61,7 @@ Contract deploy guidelines do not depend on the language. You can use the one at
 * TVM does not use float point arithmetic, so float point operations result in an error.
 * Contrary to the C specification, unsigned integer overflow can be expected causing an exception.
 * TVM has a stack, but no memory. Currently it is emulated via dictionaries in the runtime. Accessing dictionaries consumes a lot of gas, so we strongly discourage the use of globals and getting variable addresses.
-* TVM uses 257-bits wide SMR numbers representation. All numeric types are 257-bit wide, and 1 byte = 257 bit. So we suggest making no assumptions about behavior of implementation-defined features of C and C++.
+* TVM uses 257-bits wide numbers representation. All numeric types are 257-bit wide, and 1 byte = 257 bit. So we suggest making no assumptions about behavior of implementation-defined features of C and C++.
 
 ## Unsupported features
 * C and C++ standard libraries (partial support is planned)
