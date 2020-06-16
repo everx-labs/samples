@@ -43,8 +43,8 @@ contract BankClient is IBankClient {
 		bank.loan(amount);
 	}
 
-	// A callback payable function to receive requested loan. Function receives the total debt as an argument.
-	function receiveLoan(uint n_totalDebt) public payable override alwaysAccept {
+	// A callback function to receive requested loan. Function receives the total debt as an argument.
+	function receiveLoan(uint n_totalDebt) public override alwaysAccept {
 		value = msg.value;
 		uint n_balance = address(this).balance;
 		require(n_balance > balance);

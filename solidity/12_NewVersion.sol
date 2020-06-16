@@ -3,7 +3,7 @@ pragma solidity >=0.5.0;
 contract PiggyBank {
 
 	// State variables:
-	address payable owner;		// contract owner's address;
+	address owner;		// contract owner's address;
 	uint limit;			// piggybank's minimal limit to withdraw;
 	uint128 balance;			// piggybank's deposit balance;
 	uint version = 1;		// version of the PiggyBank.
@@ -39,19 +39,19 @@ contract PiggyBank {
 
 	// Constructor saves the address of the contract owner in a state variable and
 	// initializes the limit and the balance.
-	constructor(address payable pb_owner, uint pb_limit) public alwaysAccept {
+	constructor(address pb_owner, uint pb_limit) public alwaysAccept {
 		owner = pb_owner;
 		limit = pb_limit;
 		balance = 0;
 	}
 
 	// Function that can be called by anyone.
-	function deposit() public payable alwaysAccept {
+	function deposit() public alwaysAccept {
 		balance += uint128(msg.value);
 	}
 
 	// Function to change the PiggyBank limit that can be called only by the owner
-	function setLimit(uint newLimit) public payable checkOwnerAndAccept {
+	function setLimit(uint newLimit) public checkOwnerAndAccept {
 		limit = newLimit;
 	}
 
@@ -82,7 +82,7 @@ contract PiggyBank {
 	}
 
 	// Function to obtain contract version.
-	function getVersion() public view alwaysAccept returns (uint) {
+	function getVersion() public alwaysAccept returns (uint) {
 		return version;
 	}
 

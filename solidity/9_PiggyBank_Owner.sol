@@ -4,14 +4,14 @@ pragma solidity >=0.5.0;
 
 // PiggyBank interface
 abstract contract PiggyBank {
-	function deposit() public payable virtual;
+	function deposit() public virtual;
 	function withdraw() public virtual;
 }
 
 contract Owner {
 
 	// Receive function to receive plain transfers
-	receive() external payable {
+	receive() external {
 	}
 
 	// Modifier that allows public function to accept all external calls.

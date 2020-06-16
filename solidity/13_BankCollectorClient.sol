@@ -8,8 +8,8 @@ abstract contract IBankClient {
 
 // Interface to the bank collector.
 abstract contract IBankCollector {
-        function receivePayment() public payable  virtual;
-        function getDebtAmount() public payable virtual;
+        function receivePayment() public  virtual;
+        function getDebtAmount() public virtual;
 }
 
 // This contract implements 'IBankClient' interface.
@@ -18,7 +18,7 @@ contract BankClient is IBankClient {
         address bankCollector;
         uint debtAmount;
 
-        // Modifier that allows public function to accept all external calls.
+    // Modifier that allows public function to accept all external calls.
 	modifier alwaysAccept {
 		// Runtime function that allows contract to process inbound messages spending
 		// its own resources (it's necessary if contract should process all inbound messages,
@@ -27,13 +27,13 @@ contract BankClient is IBankClient {
 		_;
 	}
 
-        constructor(address payable _bankCollector) public alwaysAccept {
+        constructor(address _bankCollector) public alwaysAccept {
 		bankCollector = _bankCollector;
 	}
 
-        // Modifier that allows public function to accept external calls only from bank collecor.
+    // Modifier that allows public function to accept external calls only from bank collecor.
 	modifier onlyCollector {
-                // Runtime function to obtain message sender address.
+        // Runtime function to obtain message sender address.
 		require(msg.sender == bankCollector, 101);
 
 		// Runtime function that allows contract to process inbound messages spending

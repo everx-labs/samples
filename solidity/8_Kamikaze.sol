@@ -26,22 +26,22 @@ contract Kamikaze {
 	// Constructor saves the owner's public key in the state variable.
 	constructor() public {
 		tvm.accept();
-		// Runctime function that obtains contract owner's public key.
+		// Runtime function that obtains contract owner's public key.
 		owners_pubkey = tvm.pubkey();
 	}
 
 	// Due to the modifier checkOwnerAndAccept function sendAllMoney can be
 	// called only by the owner of the contract.
-	function sendAllMoney(address payable dest_addr) public checkOwnerAndAccept {
+	function sendAllMoney(address dest_addr) public checkOwnerAndAccept {
 		selfdestruct(dest_addr);
 	}
 
 	// Fallback function.
-	fallback() external payable {
+	fallback() external {
 		fallbackCounter++;
 	}
 
-	receive() external payable {
+	receive() external {
 		fallbackCounter++;
 	}
 }

@@ -8,8 +8,8 @@ abstract contract IBankClient {
 
 // Interface to the bank collector.
 abstract contract IBankCollector {
-        function receivePayment() public payable  virtual;
-        function getDebtAmount() public payable virtual;
+        function receivePayment() public  virtual;
+        function getDebtAmount() public virtual;
 }
 
 
@@ -18,7 +18,7 @@ contract BankCollector is IBankCollector {
 
 	// Modifier that allows public function to accept all external calls.
 	modifier onlyOwner {
-                // Runtime functions to obtain message sender pubkey and contract pubkey.
+        // Runtime functions to obtain message sender pubkey and contract pubkey.
 		require(msg.pubkey() == tvm.pubkey());
 
 		// Runtime function that allows contract to process inbound messages spending
@@ -54,7 +54,7 @@ contract BankCollector is IBankCollector {
         }
 
         // Function for client to get his debt amount.
-        function getDebtAmount() public payable override {
+        function getDebtAmount() public override {
                 // Mapping member function to obtain value from mapping if it exists.
                 (bool exists, ClientInfo info) = clientDB.fetch(msg.sender);
                 if (exists) {
@@ -65,7 +65,7 @@ contract BankCollector is IBankCollector {
         }
 
         // Function for client to return debt.
-        function receivePayment() public payable override {
+        function receivePayment() public override {
                 address addr = msg.sender;
                 // Mapping member function to obtain value from mapping if it exists.
                 (bool exists, ClientInfo info) = clientDB.fetch(addr);

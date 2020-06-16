@@ -5,9 +5,9 @@ contract SimpleWallet {
 
     // Fallback, receive and onBounce functions are defined, because this contract should be able to receive plain transfers and
     // bounced messages.
-    fallback() external payable {}
-    receive() external payable {}
-    onBounce(TvmSlice /*slice*/) external payable {}
+    fallback() external {}
+    receive() external {}
+    onBounce(TvmSlice /*slice*/) external {}
 
     // State variable to store number of transactions.
     uint transactionCounter;
@@ -19,7 +19,7 @@ contract SimpleWallet {
     }
 
     // Function to make an arbitrary transfer.
-    function sendTransaction(address payable destination, uint128 value, bool bounce, uint8 flag) public {
+    function sendTransaction(address destination, uint128 value, bool bounce, uint8 flag) public {
         // Check that contract can perform specified transaction.
         require(value > 0 && value < address(this).balance, 101);
 

@@ -8,7 +8,7 @@ abstract contract IBank {
 }
 
 abstract contract IBankClient {
-	function setCreditLimit(uint limi) public virtual;
+	function setCreditLimit(uint limit) public virtual;
 	function refusalCallback(uint remainingLimit) public virtual;
-	function receiveLoan(uint totalDebt) public payable virtual;
+	function receiveLoan(uint totalDebt) public virtual;
 }

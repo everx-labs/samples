@@ -2,7 +2,7 @@ pragma solidity >= 0.6.0;
 
 // Interface of the contract we want to interact with.
 abstract contract IBounceCallee {
-	function receiveMoney(uint128 value) public payable virtual;
+	function receiveMoney(uint128 value) public virtual;
 	function receiveValues(uint16 value1, bool value2, uint64 value3) public virtual;
 }
 
@@ -14,7 +14,7 @@ contract BounceCaller {
 	uint bounceCounter;				// Number of onBounce function calls;
 
 	// Saved arguments of function calls which were handled with failure.
-	uint16 invalidValue1; 
+	uint16 invalidValue1;
 	bool invalidValue2;
 	uint64 invalidValue3;
 	uint128 invalidMoneyAmount;
@@ -39,17 +39,17 @@ contract BounceCaller {
 			// After decoding we store the arguments of the function in the state variables.
 			invalidMoneyAmount = slice.decodeFunctionParams(IBounceCallee.receiveMoney);
 		} else if (functionId == tvm.functionId(IBounceCallee.receiveValues)) {
-			(invalidValue1, invalidValue2, invalidValue3) = 
+			(invalidValue1, invalidValue2, invalidValue3) =
 			slice.decodeFunctionParams(IBounceCallee.receiveValues);
 		}
 	}
 
 	// Function that calls another contract function and attaches some currency to the call.
-	function sendMoney(address callee, uint128 amount) public payable alwaysAccept {
+	function sendMoney(address callee, uint128 amount) public alwaysAccept {
 		IBounceCallee(callee).receiveMoney.value(amount)(amount);
 	}
 
-	// Funciton that calls another contract function with arbitrary arguments.
+	// Function that calls another contract function with arbitrary arguments.
 	function sendValues(address callee, uint16 value1, bool value2, uint64 value3) public pure
 		alwaysAccept {
 		IBounceCallee(callee).receiveValues(value1, value2, value3);

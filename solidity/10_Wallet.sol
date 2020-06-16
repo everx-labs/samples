@@ -36,7 +36,7 @@ contract Wallet {
     constructor() public {
         tvm.accept();
         // save contract's public key in the state variable.
-        // Runctime function that obtains contract owner's public key.
+        // Runtime function that obtains contract owner's public key.
         owner = tvm.pubkey();
     }
 
@@ -45,7 +45,7 @@ contract Wallet {
     /// @param dest Transfer target address.
     /// @param value Nanograms value to transfer.
     /// @param bounce Flag that enables bounce message in case of target contract error.
-    function sendTransaction(address payable dest, uint128 value, bool bounce) public view checkOwnerAndAccept {
+    function sendTransaction(address dest, uint128 value, bool bounce) public view checkOwnerAndAccept {
         require(value > 0 && value < address(this).balance, 101);
          // Runtime function that allows to make a transfer with arbitrary settings.
         dest.transfer(value, bounce, 0);
