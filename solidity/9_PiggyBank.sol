@@ -31,7 +31,7 @@ contract PiggyBank {
 	}
 
 	// Function to obtain parameters of the contract.
-	function getData() public view alwaysAccept returns (address, uint, uint128) {
+	function getData() public alwaysAccept returns (address, uint, uint128) {
 		return (owner, limit, balance);
 	}
 
@@ -42,7 +42,7 @@ contract PiggyBank {
 	}
 
 	// Function that can be called by anyone.
-	function deposit() public payable alwaysAccept {
+	function deposit() public alwaysAccept {
 		balance += uint128(msg.value);
 	}
 

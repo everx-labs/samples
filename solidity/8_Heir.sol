@@ -1,22 +1,20 @@
 pragma solidity >=0.5.0;
 
-// The contract receives all the balance of Kamikaze contract after its self-destuction.
+// The contract receives all the balance of Kamikaze contract after its self-destruction.
 contract Heir {
 
 	// State variable storing the number of times fallback function was called.
 	uint heritageCounter;
 
-	// Fallback function that will be called after Kamikaze contract self-destruction.
-	fallback() external payable {
+	fallback() external {
+		heritageCounter++;
+	}
+	// Receive function that will be called after Kamikaze contract self-destruction.
+    receive() external {
 		heritageCounter++;
 	}
 
-	// Receive function to receive plain transfers.
-	receive() external payable {
-		heritageCounter++;
-	}
-
-	function getCounter() public view returns(uint) {
+	function getCounter() public returns(uint) {
 		tvm.accept();
 		return heritageCounter;
 	}

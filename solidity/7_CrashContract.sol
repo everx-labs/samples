@@ -7,11 +7,11 @@ contract CrashContract {
 	uint fallbackCounter = 0;
 
 	// Fallback function.
-	fallback() external payable {
+	fallback() external {
 		fallbackCounter += 1;
 	}
 
-	receive() external payable {
+	receive() external {
 		fallbackCounter += 1;
 	}
 
@@ -22,7 +22,7 @@ contract CrashContract {
 	}
 
 	// Function that crashes after call.
-	function doCrash() public payable {
+	function doCrash() public {
 		require(false, 73);
 	}
 }

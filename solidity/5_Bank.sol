@@ -22,7 +22,7 @@ contract Bank is IBank {
 		uint used;
 	}
 
-	// State variable storing a credit infomation for addresses.
+	// State variable storing a credit information for addresses.
 	mapping(address => CreditInfo) clientDB;
 
 	// Set credit limit for the address.

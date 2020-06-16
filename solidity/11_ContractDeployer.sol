@@ -23,7 +23,7 @@ contract ContractDeployer {
 
 	// First variant of contract deployment.
 	function deployWithPubkey(TvmCell stateInit, uint256 pubkey, uint128 initial_balance,
-	uint32 constructor_id, uint32 constructor_param0, uint constructor_param1) public acceptOnlyOwner returns (address, uint) {
+	uint32 constuctor_id, uint32 constructor_param0, uint constructor_param1) public acceptOnlyOwner returns (address, uint) {
 		// Runtime function that inserts public key into contracts data field.
 		TvmCell stateInitWithKey = tvm.insertPubkey(stateInit, pubkey);
 
@@ -31,7 +31,7 @@ contract ContractDeployer {
 		address addr = address(tvm.hash(stateInitWithKey));
 
 		// Functions to deploy a contract and call it's constructor.
-		tvm.deployAndCallConstructor(stateInitWithKey, addr, initial_balance, constructor_id, constructor_param0, constructor_param1);
+		tvm.deployAndCallConstructor(stateInitWithKey, addr, initial_balance, constuctor_id, constructor_param0, constructor_param1);
 
 		uint newID = lastID;
 		contracts[newID] = DeployedContract(addr, stateInitWithKey, pubkey);
@@ -42,7 +42,7 @@ contract ContractDeployer {
 
 	// Second variant of contract deployment.
 	function deployFromCodeAndData(TvmCell code, TvmCell data, uint128 initial_balance,
-	uint32 constructor_id, uint32 constructor_param0, uint constructor_param1) public acceptOnlyOwner returns (address, uint) {
+	uint32 constuctor_id, uint32 constructor_param0, uint constructor_param1) public acceptOnlyOwner returns (address, uint) {
 		// Runtime function to generate StateInit from code and data cells.
 		TvmCell stateInit = tvm.buildStateInit(code, data);
 
@@ -50,7 +50,7 @@ contract ContractDeployer {
 		address addr = address(tvm.hash(stateInit));
 
 		// Functions to deploy a contract and call it's constructor.
-		tvm.deployAndCallConstructor(stateInit, addr, initial_balance, constructor_id, constructor_param0, constructor_param1);
+		tvm.deployAndCallConstructor(stateInit, addr, initial_balance, constuctor_id, constructor_param0, constructor_param1);
 
 		// In this function we deploy contract without public key, that's why we store struct with zero pubkey.
 		uint newID = lastID;
