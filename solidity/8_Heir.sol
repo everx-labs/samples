@@ -6,8 +6,11 @@ contract Heir {
 	// State variable storing the number of times fallback function was called.
 	uint heritageCounter;
 
-	// Fallback function that will be called after Kamikaze contract self-destruction.
 	fallback() external {
+		heritageCounter++;
+	}
+	// Receive function that will be called after Kamikaze contract self-destruction.
+    receive() external {
 		heritageCounter++;
 	}
 

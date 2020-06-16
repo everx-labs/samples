@@ -2,7 +2,7 @@ pragma solidity >= 0.6.0;
 
 // Interface of the database contract.
 interface OrderDatabase {
-    function createAnOrder(uint amount, uint32 duration) external payable;
+    function createAnOrder(uint amount, uint32 duration) external;
 }
 
 // Contract that can create new orders in OrderDatabase contract.

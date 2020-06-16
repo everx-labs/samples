@@ -47,7 +47,7 @@ contract OrderDatabase {
     }
 
     // This contract shouldn't accept plain transfers.
-    receive() external payable {
+    receive() external {
         // Throw an exception on plain transfer.
         revert(PLAIN_TRANSFERS_ARE_FORBIDDEN, "Plain transfers are forbidden.");
     }
@@ -72,7 +72,7 @@ contract OrderDatabase {
     }
 
     // Public function to create an order.
-    function createAnOrder(uint amount, uint32 duration) public payable {
+    function createAnOrder(uint amount, uint32 duration) public {
         // Remove expired orders.
         removeExpiredOrders();
 
