@@ -44,10 +44,11 @@ contract BankCollector is IBankCollector {
         // Add client to database.
         function addClient(address addr, uint debtAmount) public onlyOwner {
                 // Mapping member function to obtain value from mapping if it exists.
-                (bool exists, ClientInfo info) = clientDB.fetch(addr);
-                if (exists) {
-                        info.debtAmount += debtAmount;
-                        clientDB[addr] = info;
+                optional(ClientInfo) info = clientDB.fetch(addr);
+                if (info.hasValue()) {
+                        ClientInfo i = info.get();
+                        i.debtAmount += debtAmount;
+                        clientDB[addr] = i;
                 } else {
                         clientDB[addr] = ClientInfo(debtAmount, uint32(now) + EXPIRATION_PERIOD);
                 }
@@ -56,9 +57,9 @@ contract BankCollector is IBankCollector {
         // Function for client to get his debt amount.
         function getDebtAmount() public override {
                 // Mapping member function to obtain value from mapping if it exists.
-                (bool exists, ClientInfo info) = clientDB.fetch(msg.sender);
-                if (exists) {
-                        IBankClient(msg.sender).setDebtAmount(info.debtAmount);
+                optional(ClientInfo) info = clientDB.fetch(msg.sender);
+                if (info.hasValue()) {
+                        IBankClient(msg.sender).setDebtAmount(info.get().debtAmount);
                 } else {
                         IBankClient(msg.sender).setDebtAmount(0);
                 }
@@ -68,13 +69,14 @@ contract BankCollector is IBankCollector {
         function receivePayment() public override {
                 address addr = msg.sender;
                 // Mapping member function to obtain value from mapping if it exists.
-                (bool exists, ClientInfo info) = clientDB.fetch(addr);
-                if (exists) {
-                        if (info.debtAmount <= msg.value) {
+                optional(ClientInfo) info = clientDB.fetch(addr);
+                if (info.hasValue()) {
+                        ClientInfo i = info.get();
+                        if (i.debtAmount <= msg.value) {
                                 delete clientDB[addr];
                         } else {
-                                info.debtAmount -= msg.value;
-                                clientDB[addr] = info;
+                                i.debtAmount -= msg.value;
+                                clientDB[addr] = i;
                         }
                 }
         }
@@ -83,12 +85,13 @@ contract BankCollector is IBankCollector {
         function demandExpiredDebts() public view onlyOwner {
                 uint32 curTime = uint32(now);
                 // Mapping member function to obtain minimal key and associated value from mapping if it exists.
-                (address addr, ClientInfo info, bool exists) = clientDB.min();
-                while(exists) {
+                optional(address, ClientInfo) client = clientDB.min(); 
+                while(client.hasValue()) {
+                        (address addr, ClientInfo info) = client.get();
                         if (info.expiredTimestamp <= curTime)
                                 IBankClient(addr).demandDebt(info.debtAmount);
                         // Mapping member function to obtain next key and associated value from mapping if it exists.
-                        (addr, info, exists) = clientDB.next(addr);
+                        client = clientDB.next(addr);
                 }
         }
 
