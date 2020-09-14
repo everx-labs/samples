@@ -60,14 +60,15 @@ contract OrderDatabase {
 
         // Mapping function 'prevOrEq(keyArg)' computes the maximal key in mapping that is lexicographically less or equal to argument keyArg
         // and returns that key, associated value and status flag.
-        (uint40 expire, Order[] orders, bool hasValue) = database.prevOrEq(curTime);
+        optional(uint40, Order[]) val = database.prevOrEq(curTime);
 
-        while(hasValue) {
+        while(val.hasValue()) {
+            (uint40 expire, ) = val.get();
             // Remove entity from mapping.
             delete database[expire];
 
             // Obtain next array of expired orders.
-            (expire, orders, hasValue) = database.prevOrEq(curTime);
+            val = database.prevOrEq(curTime);
         }
     }
 
@@ -89,12 +90,13 @@ contract OrderDatabase {
 
         // Mapping function 'getAdd(keyArg, valueArg)' sets the value associated with keyArg, but only if keyArg does not exist in
         // the mapping. Otherwise returns the old value without changing the dictionary.
-		(Order[] old_orders, bool hasOldValue) = database.getAdd(key, orders);
-        if (hasOldValue) {
-            old_orders.push(newOrder);
+		optional(Order[]) old_orders = database.getAdd(key, orders);
+        if (old_orders.hasValue()) {
+            Order[] orders_array = old_orders.get();
+            orders_array.push(newOrder);
 
             // Mapping function 'replace(keyArg, valueArg)' sets the value associated with keyArg only if keyArg exists in mapping.
-            bool status = database.replace(key, old_orders);
+            bool status = database.replace(key, orders_array);
 
             // Throw exception in case of unexpected error.
             require(status, MAPPING_REPLACE_ERROR);
@@ -115,8 +117,9 @@ contract OrderDatabase {
 
         // Mapping function 'nextOrEq(keyArg)' computes the minimal key in mapping that is lexicographically greater or equal to argument keyArg
         // and returns that key, associated value and status flag.
-        (uint40 expire, Order[] orders, bool hasValue) = database.nextOrEq(curTime);
-        if (hasValue) {
+        optional(uint40, Order[]) n_orders = database.nextOrEq(curTime);
+        if (n_orders.hasValue()) {
+            (uint40 expire, Order[] orders) = n_orders.get();
             // Get the last order from the array.
             nextOrder = orders[orders.length - 1];
 
@@ -145,13 +148,17 @@ contract OrderDatabase {
         if (replace) {
             // Mapping function 'getReplace(keyArg, valueArg)' sets the value associated with keyArg, but only if keyArg exists in
             // the mapping. On success returns the old value, otherwise returns a default value.
-            (oldOrders, status) = database.getReplace(key, newOrders);
+            optional(Order[]) orders = database.getReplace(key, newOrders);
+            oldOrders = orders.get();
+            status = orders.hasValue();
         } else {
             // If 'replace' is not set, contract just has to set the value and return the old value in case it existed.
 
             // Mapping function 'getSet(keyArg, valueArg)' sets the value associated with keyArg and returns the old value associated
             // with keyArg, if it exists, otherwise returns a default value.
-            (oldOrders, status) = database.getSet(key, newOrders);
+            optional(Order[]) orders = database.getSet(key, newOrders);
+            oldOrders = orders.get();
+            status = orders.hasValue();
         }
     }
 

@@ -80,9 +80,9 @@ contract ContractDeployer {
 
 	// Function that allows to get information about contract with given ID.
 	function getContractInfo(uint ID) public view acceptOnlyOwner returns (bool, address, TvmCell, uint256) {
-		(bool exists, DeployedContract contr) = contracts.fetch(ID);
-		if (exists)
-			return (true, contr.addr, contr.stateInit, contr.pubkey);
+		optional(DeployedContract) contr = contracts.fetch(ID);
+		if (contr.hasValue())
+			return (true, contr.get().addr, contr.get().stateInit, contr.get().pubkey);
 		TvmCell cell;
 		return (false, address(0), cell, 0);
 	}
