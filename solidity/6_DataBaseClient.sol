@@ -58,7 +58,7 @@ contract DataBaseClient is IDataBaseClient {
 
 	// Function receives an array of structures.
 	function receiveStructArray(MyStruct[] arr) public override alwaysAccept {
-		checkSum = arr[0].ID * 1_000 + arr[0].value * 100 +
+		checkSum = arr[0].ID * 1000 + arr[0].value * 100 +
 		            arr[1].ID * 10    + arr[1].value;
 		receiptCounter++;
 	}
