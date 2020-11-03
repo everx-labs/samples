@@ -19,7 +19,7 @@ Also developer can set option "flag" to specify flag of the constructor message.
 To deploy contract from contract developer needs another contracts source code and stateInit. Source code is a solidity file which should be imported into the source file of contract deployer. To get stateInit of the contract developer should compile it with [tvm_linker](https://github.com/tonlabs/TVM-linker).
 Example of how to get arguments and call [WalletProducer](https://github.com/tonlabs/samples/blob/master/solidity/17_ContractProducer.sol) constructor:
 
-### 1. Compile wallet contract and obtain its stateInit
+### 1. Compile wallet contract and obtain its code
 
 ```bash
 solc 17_SimpleWallet.sol
@@ -34,13 +34,12 @@ The last command generates the tvc file:
 # ...
 ```
 
-This file contains stateInit of the contract. To use it as function argument developer should encode data of the file in base64.
+This file contains stateInit of the contract. But we need only code to use it as function argument.
 
 ```bash
-base64 -w 0 492c891deff0abd952c9db5aaf3255175425edb51da664d6dcb3834548f1d155.tvc
+tvm_linker decode --tvc 492c891deff0abd952c9db5aaf3255175425edb51da664d6dcb3834548f1d155.tvc
 ```
-
-This command outputs file data in base64. In commands below it's replaced to <BASE64_OF_STATEINIT>.
+Copy code in base64. Let's denote this code as <BASE64_OF_CODE>.
 
 ### 2. Compile contract deployer
 
@@ -60,7 +59,7 @@ The last command generates the tvc file:
 ### 3. Simulate call of deployer constructor locally using tvm_linker
 
 ```bash
-tvm_linker test 02163393a1a8fdbad68b9652b245340cc0d13d7ef36c5bcc0e9d51ccbf1ad189 --abi-json 17_ContractProducer.abi.json --abi-method constructor --abi-params '{"_walletStateInit": "<BASE64_OF_STATEINIT>", "_initialValue": 100000000}'
+tvm_linker test 02163393a1a8fdbad68b9652b245340cc0d13d7ef36c5bcc0e9d51ccbf1ad189 --abi-json 17_ContractProducer.abi.json --abi-method constructor --abi-params '{"_walletStateInit": "<BASE64_OF_CODE>", "_initialValue": 100000000}'
 ```
 
 ### 4. Generate a key pair for new wallet
@@ -148,7 +147,7 @@ currencies$_ grams:Grams other:ExtraCurrencyCollection
 = CurrencyCollection;
 ```
 
-When we deploy a contract we need to attach stateInit of that contract, but we [use tvm_linker to obtain it](#1-compile-wallet-contract-and-obtain-its-stateinit), that's why we don't need to construct it.
+When we deploy a contract we need to attach stateInit of that contract, but we [use tvm_linker to obtain it](#1-compile-wallet-contract-and-obtain-its-code), that's why we don't need to construct it.
 
 In case of deployment via **new** we also pass arguments to the constructor of the contract. That's why we need to attach constructor call as the body of the message. To do it we need to store **constructor** function identifier and encode it's parameters.
 
@@ -172,7 +171,7 @@ hash(stateInit)     - address:uint256 - address of the contract is equal to hash
                     - value:CurrencyCollection: (for example we will store 10_000_000 nanograms)
                     - grams:Grams
 0011                - len (because 10_000_000 < 2^(3*8))
-x989680‬             - value (3*8 bits)
+x989680             - value (3*8 bits)
 0                   - other:ExtraCurrencyCollection  (we don't attach any other currencies)
 
                     - In the next 4 fields we store zeroes, because blockchain software will replace them

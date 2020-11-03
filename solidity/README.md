@@ -43,7 +43,7 @@ Resulting state of the account can be examined by conventional means.
 Contracts can also call other remote contracts. Call "StorageClient.store(Storage storageAddress) to invoke a public function of another contract.
 The remote contract (UintStorage) saves the integer value of the argument and the caller address in its state variables.
 
-3) [Borrower](https://github.com/tonlabs/samples/blob/master/solidity/3_Borrower.sol): gram transfer
+3) [Borrower](https://github.com/tonlabs/samples/blob/master/solidity/3_Borrower.sol): ton transfer
 
 This sample demonstrates how currency transfer works. Call "Borrower.askForALoan(Loaner loanerAddress, uint amount)". 
 This requests \<amount\> of currency from the contract deployed at the specified address. 
@@ -84,7 +84,7 @@ One of contract functions call allows sending to the [DataBaseClient](https://gi
 
 This sample shows usage of different types of currency transactions and usage of a fallback function.
 
-Call "Giver.transferToAddress(address payable destination, uint amount)" or "Giver.do_tvm_transfer(address payable remote_addr, uint128 grams_value, bool bounce, uint16 sendrawmsg_flag)" to perform a currency transaction.
+Call "Giver.transferToAddress(address payable destination, uint amount)" or "Giver.do_tvm_transfer(address payable remote_addr, uint128 ton_value, bool bounce, uint16 sendrawmsg_flag)" to perform a currency transaction.
 
 Call "Giver.transferToCrashContract(address payable destination, uint amount)" to implement a crash during transaction. That will cause an exception in [CrashContract](https://github.com/tonlabs/samples/blob/master/solidity/7_CrashContract.sol) and Giver's contract fallback function calling.
 
@@ -101,23 +101,17 @@ This sample consists of 3 contracts:
 - [PiggyBank_Owner](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank_Owner.sol) - piggy bank's owner - valid user, who can add to piggy bank's deposit and withdraw.
 - [PiggyBank_Stranger](https://github.com/tonlabs/samples/blob/master/solidity/9_PiggyBank_Stranger.sol) - stranger - invalid user, who can add to piggy bank but can not withdraw.
 
-Call "PiggyBank_Owner.addToDeposit(PiggyBank bankAddress, uint amount)" or "PiggyBank_Stranger.addToDeposit(PiggyBank bankAddress, uint amount)" to transfer grams from the contract to PiggyBank.
+Call "PiggyBank_Owner.addToDeposit(PiggyBank bankAddress, uint amount)" or "PiggyBank_Stranger.addToDeposit(PiggyBank bankAddress, uint amount)" to transfer tons from the contract to PiggyBank.
 
 Call "PiggyBank_Owner.withdrawDeposit(PiggyBank bankAddress)" of "PiggyBank_Stranger.withdrawDeposit(PiggyBank bankAddress)" to try to withdraw the deposit from PiggyBank. Transfer would occur only for the owner.
 
 10) [Wallet](https://github.com/tonlabs/samples/blob/master/solidity/10_Wallet.sol): Simple wallet
 
-Call "Wallet.sendTransaction(address payable dest, uint128 value, bool bounce)". This function allows transferring grams to the specified account.
+Call "Wallet.sendTransaction(address payable dest, uint128 value, bool bounce)". This function allows transferring tons to the specified account.
 
-11) [ContractDeployer](https://github.com/tonlabs/samples/blob/master/solidity/11_ContractDeployer.sol): Deploy Contract from contract
+11) [ContractDeployer](https://github.com/tonlabs/samples/blob/master/solidity/11_ContractDeployer.sol): Deploy Contract from contract via `new`.
 
-Call "ContractDeployer.setContract(TvmCell memory _contract)" and then "ContractDeployer.deploy(uint256 pubkey, uint128 gram_amount, uint32 constuctor_id, uint32 constuctor_param0, uint constuctor_param1)" to deploy a contract. It's address will be stored in the state variable "contractAddress".
-
-Call "ContractDeployer.setCode(TvmCell memory _code)" and then "ContractDeployer.deploy2(TvmCell memory data, uint128 gram_amount, uint32 constuctor_id, uint32 constuctor_param0, uint constuctor_param1)" to deploy a contract. It's address will be stored in the state variable "contractAddress".
-
-Call "ContractDeployer.setCode(TvmCell memory _code)" and then "ContractDeployer.deploy2(TvmCell memory data, uint128 gram_amount, uint32 constuctor_id, uint32 constuctor_param0, uint constuctor_param1)" to deploy a contract. It's address will be stored in the state variable "contractAddress".
-
-The way to get arguments for the functions above is described in paragraph **Deploy contract from contract**.
+The way to get arguments for deploying is described [Deploy contract from contract](#deploy-contract-from-contract).
 
 12) [BadContract](https://github.com/tonlabs/samples/blob/master/solidity/12_BadContract.sol): Contract upgrade
 
@@ -128,7 +122,7 @@ Call "PiggyBank.setCode(TvmCell memory newcode)" with argument that contains cod
 
 13) [BankCollector](https://github.com/tonlabs/samples/blob/master/solidity/13_BankCollector.sol): Mapping methods
 
-Developer can work with mappings using methods: **fetch**, **min**, **next**. This methods allow to check existance of the key, obtain lexographicaly minimal key and lexicographicaly next key respectively.
+Developer can work with mappings using methods: **fetch**, **min**, **next**. This methods allow to check existence of the key, obtain lexicographically minimal key and lexicographically next key respectively.
 
 14) [CustomReplayProtection](https://github.com/tonlabs/samples/blob/master/solidity/14_CustomReplayProtection.sol): Custom replay protection
 
@@ -140,7 +134,7 @@ Developer can use TVM specific types to build message manually and special api f
 
 16) [onBounceHandler](https://github.com/tonlabs/samples/blob/master/solidity/16_onBounceHandler.sol): Working with bounced messages
 
-Developer can define **onBounce** function to work with bounced messages. If an error occures while message trnsfering or handling it can be bounced back to the source contract. This sample demonstrates how you can handle such bounced message.
+Developer can define **onBounce** function to work with bounced messages. If an error occurs while message transferring or handling it can be bounced back to the source contract. This sample demonstrates how you can handle such bounced message.
 
 
 ## Contract deployment
@@ -181,7 +175,7 @@ Here we also use an argument "-w" to set the workchain id and argument "--setkey
 The command generates **.boc** file with name \<\*-msg-init.boc\>.
 
 ### 3) Account preparation
-The contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some coins to the future contract address before deploying the contract. Some of the ways to get test coins are covered in **Getting test grams**.
+The contract is going to store its code and data in the blockchain, but it costs money. So we must transfer some coins to the future contract address before deploying the contract. Some of the ways to get test coins are covered in **Getting test tons**.
 
 ### 4) Contract deployment
 When we have a constructor message **.boc** file for the contract and we have replenished the balance of the address we are going deploy to, we can run the Lite Client with [configuration file for the TON Blockchain Test Network](https://test.ton.org/ton-lite-client-test1.config.json) and send the file:
@@ -205,15 +199,15 @@ tvm_linker message <MyContractAddress> -w 0 --abi-json MyContract.abi.json --abi
 \'\{\<FunctionArguments\>\}\' should have the following form: \'\{"<Argument1_Name>":"Argument1_Value", "<Argument2_Name>":"Argument2_Value", ... \}\'
 The command above will create a .boc file which we should send to the testnet as it was described on **step 4**.
 
-## Getting test Grams
+## Getting test tons
 
-At present, we can describe two ways to obtain test grams:
+At present, we can describe two ways to obtain test tons:
 
-### 1) Ask your mate to send test grams to your address.
-If you have a mate who works with TON smart contracts he may have some extra test grams and a contract with transfer function (e.g. it could be a Wallet contract, which can send test grams to a given address). In this situation, you can ask him/her to send some test grams to your address.
+### 1) Ask your mate to send test tons to your address.
+If you have a mate who works with TON smart contracts he may have some extra test tons and a contract with transfer function (e.g. it could be a Wallet contract, which can send test tons to a given address). In this situation, you can ask him/her to send some test tons to your address.
 
 ### 2) Use giver contract.
-If you know that there is a giver contract in your TON network and you know its address and possibly keys you can ask giver to transfer some test grams to your address.
+If you know that there is a giver contract in your TON network and you know its address and possibly keys you can ask giver to transfer some test tons to your address.
 
 2.1) If you need to use keys with your giver save them into 2 files:
   **secret.key** - 64 bytes concatenation of secret key and public key;
@@ -222,7 +216,7 @@ If you know that there is a giver contract in your TON network and you know its 
 2.2) Use tvm_linker to create message that we will call giver's function. Use giver's abi to create this message (in this example giver's abi was saved to file giver.abi.json and function name and arguments were taken from it).
 
 ```
-tvm_linker message <GiverAddress> -w 0 --abi-json giver.abi.json --abi-method 'sendTransaction' --abi-params '{"dest":"0:<MyContractAddress>","value":"<number of nanograms>","bounce":"false"}' --setkey secret.key
+tvm_linker message <GiverAddress> -w 0 --abi-json giver.abi.json --abi-method 'sendTransaction' --abi-params '{"dest":"0:<MyContractAddress>","value":"<number of nanotons>","bounce":"false"}' --setkey secret.key
 ```
 
 \<GiverAddress\> - giver contract address in HEX format without workchain id.
@@ -270,7 +264,7 @@ In case of success, you get the similar code:
     "accounts": [
       {
         "acc_type": 0,
-        "balance": "<NumberOfNanograms>",
+        "balance": "<NumberOfNanotons>",
         "code": null
       }
     ]
@@ -291,8 +285,8 @@ If everything is OK, you get the following output:
 ```
 ...
            value:(currencies
-             grams:(nanograms
-               amount:(var_uint len:5 value:<NumberOfNanograms>))
+             tons:(nanotons
+               amount:(var_uint len:5 value:<NumberOfNanotons>))
 ...
 ```
 
@@ -308,7 +302,7 @@ Compile your contract:
 tvm_linker compile <MyContract>.code --lib <path_to_stdlib_sol.tvm> [-w 0] [--abi-json <MyContract>.abi.json] [--genkey <path_to_key_file>]
 ```
 
-This commang will print the contract address and generate the \<MyContractAddress\>.tvc file.
+This command will print the contract address and generate the \<MyContractAddress\>.tvc file.
 Get StateInit using Python:
 
 ```
@@ -333,7 +327,7 @@ tvm_linker decode --tvc <MyContractAddress>.tvc
 This command will print the contract code and data.
 
 3) Address of the contract:
-Using tvm_linker complie or in Solidity:
+Using tvm_linker compile or in Solidity:
 
 ```
 address addr = tvm_make_address(0, tvm_hashcu(contr));

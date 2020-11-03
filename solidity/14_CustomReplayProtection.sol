@@ -1,50 +1,80 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.6.0;
 
-// Abiheader section allows to define which fields are expected to be in the header of inbound message.
+// AbiHeader section allows to define which fields are expected to be in the header of inbound message.
 // This fields must be read in the replay protection function.
 pragma AbiHeader time;
 pragma AbiHeader expire;
 
 // This contract demonstrates custom replay protection functionality.
 contract CustomReplaySample {
+    // Each transaction is limited by gas, so we must limit count of iteration in loop.
+    uint8 constant MAX_CLEANUP_MSGS = 30;
 
-        // State variables:
-        mapping(uint => bool) messages;         // mapping to store hashes of inbound messages;
-        uint value;                             // dummy variable to demonstrate contract functionality.
+    // State variables:
+    // mapping to store hashes of inbound messages;
+    mapping(uint => uint32) messages;
+    // dummy variable to demonstrate contract functionality.
+    uint value;
 
-	// Modifier that allows public function to accept all external calls.
-	modifier alwaysAccept {
-		// Runtime function that allows contract to process inbound messages spending
-		// its own resources (it's necessary if contract should process all inbound messages,
-		// not only those that carry value with them).
-		tvm.accept();
-		_;
-	}
+    constructor() public {
+        require(tvm.pubkey() != 0);
+        tvm.accept();
+    }
 
-        // Dummy function to demonstrate contract functionality.
-        function storeValue(uint new_value) public alwaysAccept {
-                value = new_value;
+    modifier onlyOwnerAndAccept {
+        require(msg.pubkey() == tvm.pubkey());
+        tvm.accept();
+        _;
+    }
+
+    // Dummy function to demonstrate contract functionality.
+    function storeValue(uint new_value) public onlyOwnerAndAccept {
+        // Let's clear expired messages from dict
+        gc();
+
+        value = new_value;
+    }
+
+    // Function with predefined name which is used to replace custom replay protection.
+    function afterSignatureCheck(TvmSlice body, TvmCell message) private inline returns (TvmSlice) {
+        // Via TvmSlice methods we read header fields from the message body
+
+        body.decode(uint64); // The first 64 bits contain timestamp which is usually used to differentiate messages.
+        uint32 expireAt = body.decode(uint32);
+
+        require(expireAt >= now, 101);   // Check that message is not expired.
+
+        // Runtime function tvm.hash() allows to calculate the hash of the message.
+        uint hash = tvm.hash(message);
+
+        // Check that the message is unique.
+        require(!messages.exists(hash), 102);
+
+        // Save the hash of the message in  the state variable.
+        messages[hash] = expireAt;
+
+        // After reading message headers this function must return the rest of the body slice.
+        return body;
+    }
+
+    /// @notice Allows to delete expired messages from dict.
+    function gc() private {
+        optional(uint256, uint32) res = messages.min();
+        uint8 counter = 0;
+        while (res.hasValue() && counter < MAX_CLEANUP_MSGS) {
+            (uint256 msgHash, uint32 expireAt) = res.get();
+            if (expireAt < now) {
+                delete messages[msgHash];
+            }
+            counter++;
+            res = messages.next(msgHash);
         }
+    }
 
-        // Function with predefined name which is used to replace custom replay protection.
-        function afterSignatureCheck(TvmSlice body, TvmCell message) private inline returns (TvmSlice) {
-                // Via TvmSlice methods we read header fields from the message body
-                
-                body.decode(uint64); // The first 64 bits contain timestamp which is usually used to differentiate messages. 
-                uint32 expireAt = body.decode(uint32);
-
-                require(expireAt >= now, 57);   // Check that message is not expired.
-
-                // Runtime function tvm.hash() allows to calculate the hash of the message.
-                uint hash = tvm.hash(message);
-
-                // Check that the message is unique.
-                require(!messages.exists(hash), 52);
-
-                // Save the hash of the message in  the state variable.
-                messages[hash] = true;
-
-                // At the end of the replay protection function we have to return the rest of the body slice.
-                return body;
-        }
+    /*
+     * Public Getters
+     */
+    function getValue() public returns(uint v) {
+        return value;
+    }
 }

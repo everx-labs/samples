@@ -6,17 +6,17 @@ import "17_SimpleWallet.sol";
 // Contract that can deploy a wallet contract with specified public key.
 contract WalletProducer {
 
-	// Structure to save information about deployed contract.
-	struct DeployedContract {
-		address addr;
-		uint256 pubkey;
-	}
+	// Number of deployed contracts
+	uint deployedNumber = 0;
+	// Wallet stateInit
+	TvmCell walletCode;
 
-	// State variables:
-	uint deployedNumber = 0;				// Number of deployed contracts;
-	DeployedContract[] deployedContracts;	// Array of deployed contract structures;
-	TvmCell walletStateInit;				// Wallet stateInit;
-	uint128 initialValue;					// Initial balance transferred to the deployed address.
+	// Constructor function initializes wallet stateInit and initial balance.
+	constructor(TvmCell code) public {
+		tvm.accept();
+		require(tvm.pubkey() != 0);
+		walletCode = code;
+	}
 
 	modifier checkOwnerAndAccept {
 		require(tvm.pubkey() == msg.pubkey());
@@ -24,57 +24,24 @@ contract WalletProducer {
 		_;
 	}
 
-	// Constructor function initializes wallet stateInit and initial balance.
-	constructor(TvmCell _walletStateInit, uint128 _initialValue) public {
-		tvm.accept();
-		walletStateInit = _walletStateInit;
-		initialValue = _initialValue;
-	}
-
-	// Function to update the wallet code.
-	function updateWalletCode(TvmCell newStateInit) public checkOwnerAndAccept {
-		walletStateInit = newStateInit;
-	}
-
-	// Function to update the initial wallet balance.
-	function updateInitialValue(uint128 newInitialValue) public checkOwnerAndAccept {
-		initialValue = newInitialValue;
-	}
-
-	// Getter functions.
-	function getHashOfWalletStateInit() public view checkOwnerAndAccept returns (uint) {
-		return tvm.hash(walletStateInit);
-	}
-
-	function getNumberOfDeployedContracts() public view checkOwnerAndAccept  returns (uint) {
-		return deployedNumber;
-	}
-
-	function getDeployedContractInfo(uint number) public view returns (DeployedContract) {
-		require(tvm.pubkey() == msg.pubkey());
-		// Check that argument has valid value.
-		require(number < deployedNumber);
-		tvm.accept();
-		return deployedContracts[number];
-	}
-
-
 	// Function that allows to deploy a wallet contract with specified public key.
-	function deployWalletWithPubkey(uint256 pubkey) public checkOwnerAndAccept returns (address deployedContract) {
+	function deployWallet(uint256 publicKey) public checkOwnerAndAccept returns (address newWallet) {
 		// Insert public key into contract stateInit data field.
-		TvmCell stateInitWithKey = tvm.insertPubkey(walletStateInit, pubkey);
+		TvmCell walletData = tvm.buildEmptyData(publicKey);
+		TvmCell stateInit = tvm.buildStateInit(walletCode, walletData);
 
 		// To deploy a contract via "new" expression developer must use it with special call options.
 		// "stateInit" option defines the stateInit of deployed contract. "value" option defines amount
 		// of currency, that will be sent to the new address.
-		address newWallet = new SimpleWallet{stateInit:stateInitWithKey, value:initialValue}(0);
+		newWallet = new SimpleWallet{stateInit:stateInit, value: 1 ton}(deployedNumber);
+		++deployedNumber;
+	}
 
-		// Save information about deployed contract.
-		deployedContracts.push(DeployedContract(newWallet, pubkey));
-		deployedNumber++;
-
-		// Return address of the deployed contract.
-		return newWallet;
+	/*
+     * Public Getters
+     */
+	function getData() public view returns (uint qty, uint hash) {
+		return (deployedNumber, tvm.hash(walletCode));
 	}
 
 }

@@ -1,28 +1,26 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.6.0;
+pragma AbiHeader expire;
 
-// This contract is used to emulate currency transfer destination contract, it can accept incoming transfer via fallback function or emulate crash in function doCrash().
+// This contract is used to emulate currency transfer destination contract,
+// it can accept incoming transfer via fallback function or emulate crash in function doCrash().
 contract CrashContract {
-
-	// State variable storing the number of times fallback function was called.
-	uint fallbackCounter = 0;
-
-	// Fallback function.
-	fallback() external {
-		fallbackCounter += 1;
-	}
+	
+	uint counter = 0;
 
 	receive() external {
-		fallbackCounter += 1;
-	}
-
-	// Function to obtain fallback counter
-	function getCounter() public view returns (uint) {
-		tvm.accept();
-		return fallbackCounter;
+		++counter;
 	}
 
 	// Function that crashes after call.
-	function doCrash() public {
-		require(false, 73);
+	function doCrash() public pure {
+		revert(101);
+	}
+
+	/*
+	 * Public Getters
+	 */
+	// Function to obtain fallback counter
+	function getCounter() public view returns (uint qty) {
+		return counter;
 	}
 }

@@ -3,15 +3,21 @@ pragma solidity >= 0.6.0;
 // Contract that constructs message to call another contract function and sends it.
 contract MessageSender {
 
-	modifier alwaysAccept {
+	// State variable storing the number of times 'sendMessage' function was called.
+	uint counter;
+
+	constructor() public {
+		require(tvm.pubkey() != 0);
+		tvm.accept();
+	}
+
+	modifier onlyOwnerAndAccept {
+		require(msg.pubkey() == tvm.pubkey());
 		tvm.accept();
 		_;
 	}
 
-	// State variable storing the number of times 'sendMessage' function was called.
-	uint counter;
-
-	function sendMessage(address anotherContract) public alwaysAccept {
+	function sendMessage(address anotherContract) public onlyOwnerAndAccept {
 		// Create an object of TVM type Builder.
 		TvmBuilder builder;
 
@@ -45,7 +51,7 @@ contract MessageSender {
 		// Function store() allows to store variable of arbitrary type in the builder.
 		builder.store(anotherContract); 	// dest:MsgAddressInt
 
-		builder.storeUnsigned(0x3989680, 28);	// value:CurrencyCollection : grams:Grams   - we attach 0.01 grams to the message,
+		builder.storeUnsigned(0x3989680, 28);	// value:CurrencyCollection : grams:Grams   - we attach 0.01 tons to the message,
 												// which is equivalent to the 10,000 gas units in the base workchain.
 
 		builder.storeUnsigned(0, 1);		// value:CurrencyCollection : other:ExtraCurrencyCollection - we store 0, because
@@ -88,7 +94,10 @@ contract MessageSender {
 		counter++;
 	}
 
-	function getCounter() public view alwaysAccept returns (uint) {
+	/*
+	 * Public Getters
+	 */
+	function getCounter() public view returns (uint c) {
 		return counter;
 	}
 }

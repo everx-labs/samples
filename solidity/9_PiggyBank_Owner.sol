@@ -1,39 +1,33 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.6.0;
+pragma AbiHeader expire;
+
+import "9_PiggyBank.sol";
 
 // This contract describes the owner of PiggyBank who can add to deposit and withdraw deposit.
-
-// PiggyBank interface
-abstract contract PiggyBank {
-	function deposit() public virtual;
-	function withdraw() public virtual;
-}
-
 contract Owner {
 
-	// Receive function to receive plain transfers
-	receive() external {
+	constructor () public {
+		// check that contract's public key is set
+		require(tvm.pubkey() != 0);
+		tvm.accept();
 	}
 
-	// Modifier that allows public function to accept all external calls.
-	modifier alwaysAccept {
-		// Runtime function that allows contract to process inbound messages spending
-		// its own resources (it's necessary if contract should process all inbound messages,
-		// not only those that carry value with them).
-		tvm.accept();
+	modifier onlyOwner {
+		// Check that message was signed with contracts key.
+		require(tvm.pubkey() == msg.pubkey(), 101);
 		_;
 	}
 
-	// State variable storing the number of function addToDeposit was called.
-	uint depositCounter;
 
 	// Function to deposit money to piggy bank.
-	function addToDeposit(PiggyBank bankAddress, uint amount) public alwaysAccept {
-		bankAddress.deposit.value(amount)();
-		depositCounter++;
+	function addToDeposit(PiggyBank bankAddress, uint amount) public onlyOwner {
+		tvm.accept();
+		bankAddress.deposit{value: amount}();
 	}
 
 	// Function to withdraw money from piggy bank.
-	function withdrawDeposit(PiggyBank bankAddress) public pure alwaysAccept {
+	function withdrawDeposit(PiggyBank bankAddress) public onlyOwner {
+		tvm.accept();
 		bankAddress.withdraw();
 	}
 }

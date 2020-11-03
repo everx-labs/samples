@@ -3,16 +3,17 @@ pragma solidity >= 0.6.0;
 // Contract that parses the argument passed to his function.
 contract MessageReceiver {
 
-	modifier alwaysAccept {
-		tvm.accept(); _;
-	}
-
 	// State variable storing the number of times 'receiveMessage' function was called.
 	uint counter;
 
+	constructor() public {
+		require(tvm.pubkey() != 0);
+		tvm.accept();
+	}
+
 	// Function to be called from another contract. This function gets TvmCell argument and parses data from it.
 	// Reserved keyword "functionID" allows to set function identifier manually.
-	function receiveMessage(TvmCell cell) public alwaysAccept functionID(0x12345678) {
+	function receiveMessage(TvmCell cell) public functionID(0x12345678) {
 		// Function toSlice allows to convert cell into slice.
 		TvmSlice slice = cell.toSlice();
 		// Function size() returns size of data bits and number of refs in slice.
@@ -33,7 +34,10 @@ contract MessageReceiver {
 		counter++;
 	}
 
-	function getCounter() public view alwaysAccept returns (uint) {
+	/*
+	 * Public Getters
+	 */
+	function getCounter() public view returns (uint c) {
 		return counter;
 	}
 }
