@@ -1,62 +1,56 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.6.0;
+pragma AbiHeader expire;
 
-// Interface to the bank client.
-abstract contract IBankClient {
-        function demandDebt(uint amount) public virtual;
-        function setDebtAmount(uint amount) public virtual;
-}
-
-// Interface to the bank collector.
-abstract contract IBankCollector {
-        function receivePayment() public  virtual;
-        function getDebtAmount() public virtual;
-}
+import "13_Interfaces.sol";
 
 // This contract implements 'IBankClient' interface.
 contract BankClient is IBankClient {
 
-        address bankCollector;
-        uint debtAmount;
+    address bankCollector;
+    uint debtAmount;
 
-    // Modifier that allows public function to accept all external calls.
-	modifier alwaysAccept {
-		// Runtime function that allows contract to process inbound messages spending
-		// its own resources (it's necessary if contract should process all inbound messages,
-		// not only those that carry value with them).
-		tvm.accept();
-		_;
-	}
+    constructor(address _bankCollector) public {
+        require(tvm.pubkey() != 0);
+        require(msg.pubkey() == tvm.pubkey());
+        tvm.accept();
+        bankCollector = _bankCollector;
+    }
 
-        constructor(address _bankCollector) public alwaysAccept {
-		bankCollector = _bankCollector;
-	}
+    // Modifier that allows public function to be called only by message signed with owner's pubkey.
+    modifier onlyOwnerAndAccept {
+        require(msg.pubkey() == tvm.pubkey());
+        tvm.accept();
+        _;
+    }
 
     // Modifier that allows public function to accept external calls only from bank collecor.
-	modifier onlyCollector {
+    modifier onlyCollector {
         // Runtime function to obtain message sender address.
-		require(msg.sender == bankCollector, 101);
+        require(msg.sender == bankCollector, 101);
 
-		// Runtime function that allows contract to process inbound messages spending
-		// its own resources (it's necessary if contract should process all inbound messages,
-		// not only those that carry value with them).
-		tvm.accept();
-		_;
-	}
+        // Runtime function that allows contract to process inbound messages spending
+        // its own resources (it's necessary if contract should process all inbound messages,
+        // not only those that carry value with them).
+        tvm.accept();
+        _;
+    }
 
-        function demandDebt(uint amount) public override onlyCollector {
-                IBankCollector(msg.sender).receivePayment.value(amount)();
-        }
+    function demandDebt(uint amount) public override onlyCollector {
+        IBankCollector(msg.sender).receivePayment{value: amount}();
+    }
 
-        function obtainDebtAmount() public alwaysAccept {
-                IBankCollector(bankCollector).getDebtAmount.value(500000000)();
-        }
+    function obtainDebtAmount() public onlyOwnerAndAccept {
+        IBankCollector(bankCollector).getDebtAmount{value: 0.5 ton}();
+    }
 
-        function setDebtAmount(uint amount) public override onlyCollector {
-                debtAmount = amount;
-        }
+    function setDebtAmount(uint amount) public override onlyCollector {
+        debtAmount = amount;
+    }
 
-        function getDebtAmount() public view alwaysAccept returns (uint) {
-                return debtAmount;
-        }
-
+    /*
+     * Public Getters
+     */
+    function getDebtAmount() public view returns (uint d) {
+        return debtAmount;
+    }
 }

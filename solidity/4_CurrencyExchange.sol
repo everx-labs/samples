@@ -1,39 +1,45 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.6.0;
+pragma AbiHeader expire;
 
-abstract contract ICentralBank {
-	function GetExchangeRate(uint16 code) public virtual;
-}
-
-abstract contract ICurrencyExchange {
-	function setExchangeRate(uint32 n_exchangeRate) public virtual;
-}
+import "4_interfaces.sol";
 
 // This contract implements 'ICurrencyExchange' interface.
 // The contract calls remote bank contract to get the exchange rate via callback function calling.
 contract CurrencyExchange is ICurrencyExchange {
 
-	// Modifier that allows public function to accept all external calls.
-	modifier alwaysAccept {
-		// Runtime function that allows contract to process inbound messages spending
-		// its own resources (it's necessary if contract should process all inbound messages,
-		// not only those that carry value with them).
+	// State variable storing the exchange rate.
+	uint32 exchangeRate;
+
+	constructor () public {
+		// check that contract's public key is set
+		require(tvm.pubkey() != 0);
+		tvm.accept();
+	}
+
+	modifier checkOwnerAndAccept {
+		// Check that message was signed with contracts key.
+		require(tvm.pubkey() == msg.pubkey(), 101);
 		tvm.accept();
 		_;
 	}
 
-	// State variable storing the exchange rate.
-	uint32 exchangeRate;
-
 	// This function gets an address of the contract and code of the currency <code>,
 	// casts the address to IRemoteContract interface and calls
 	// function 'GetExchangeRate' with parameter <code>.
-	function updateExchangeRate(address bankAddress, uint16 code) public pure alwaysAccept {
-		ICentralBank(bankAddress).GetExchangeRate(code);
+	function updateExchangeRate(address bankAddress, uint16 currency) external view checkOwnerAndAccept {
+		ICentralBank(bankAddress).getExchangeRate(currency);
 	}
 
 	// A callback function to set exchangeRate.
-	function setExchangeRate(uint32 n_exchangeRate) public override alwaysAccept {
-		// save parameter n_exchangeRate in state variable 'exchangeRate'.
-		exchangeRate = n_exchangeRate;
+	function setExchangeRate(uint32 er) external override {
+		// save parameter er in state variable 'exchangeRate'.
+		exchangeRate = er;
+	}
+
+	/*
+	 * Public Getters
+ 	*/
+	function getExchangeRate() public returns (uint rate) {
+		rate = exchangeRate;
 	}
 }

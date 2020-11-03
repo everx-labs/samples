@@ -1,23 +1,34 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.6.0;
+pragma AbiHeader expire;
 
 contract Accumulator {
 
-	// Modifier that allows public function to accept all external calls.
-	modifier alwaysAccept {
-		// Runtime function that allows contract to process inbound messages spending
-		// its own resources (it's necessary if contract should process all inbound messages,
-		// not only those that carry value with them).
+	// State variable storing the sum of arguments that were passed to function 'add',
+	uint sum = 0;
+
+	constructor () public {
+		// check that contract's public key is set
+		require(tvm.pubkey() != 0);
+		tvm.accept();
+	}
+
+	// Modifier that allows to accept some external messages
+	modifier checkOwnerAndAccept {
+		// Check that message was signed with contracts key.
+		require(tvm.pubkey() == msg.pubkey(), 101);
 		tvm.accept();
 		_;
 	}
 
-	// State variable storing the sum of arguments that were passed to function 'add',
-	// initialized with value 0.
-	uint sum = 0;
-
 	// Function that adds its argument to the state variable.
-	function add(uint value) public alwaysAccept {
+	function add(uint value) public checkOwnerAndAccept {
 		sum += value;
 	}
 
+	/*
+	 * Public Getters
+	 */
+	function getSum() public returns (uint s) {
+		return sum;
+	}
 }

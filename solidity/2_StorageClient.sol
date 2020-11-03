@@ -1,29 +1,32 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.6.0;
+pragma AbiHeader expire;
 
-// Remote contract interface.
-abstract contract Storage {
-	function storeValue(uint value) public virtual;
-}
+// import interface 'Storage'
+import "2_UintStorage.sol";
 
 // This contract calls the remote contract function with parameter to store a uint value in the remote contract's
 // persistent memory.
 contract StorageClient {
 
-	// Modifier that allows public function to accept all external calls.
-	modifier alwaysAccept {
-		// Runtime function that allows contract to process inbound messages spending
-		// its own resources (it's necessary if contract should process all inbound messages,
-		// not only those that carry value with them).
+	// State variable storing the number of times 'store' function was called.
+	uint callCounter = 0;
+
+	constructor () public {
+		// check that contract's public key is set
+		require(tvm.pubkey() != 0);
+		tvm.accept();
+	}
+
+	modifier checkOwnerAndAccept {
+		// Check that message was signed with contracts key.
+		require(tvm.pubkey() == msg.pubkey(), 101);
 		tvm.accept();
 		_;
 	}
 
-	// State variable storing the number of times 'store' function was called.
-	uint callCounter = 0;
-
-	function store(Storage storageAddress) public alwaysAccept {
+	function store(Storage storageAddress, uint value) public checkOwnerAndAccept {
 		// Call the remote contract function with parameter.
-		storageAddress.storeValue(257);
+		storageAddress.storeValue(value);
 		// Increment the counter.
 		callCounter++;
 	}

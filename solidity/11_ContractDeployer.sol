@@ -1,89 +1,90 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.6.0;
+pragma AbiHeader expire;
+
+import "11_SimpleContract.sol";
 
 contract ContractDeployer {
 
-	// Struct to store information about deployed contracts.
-	struct DeployedContract {
-		address addr;
-		TvmCell stateInit;
-		uint256 pubkey;
+	// addresses of deployed contracts
+	address[] contracts;
+
+	constructor () public {
+		require(tvm.pubkey() != 0);
+		tvm.accept();
 	}
 
-	// Deployed contracts database.
-	mapping(uint => DeployedContract) contracts;
-	uint public lastID = 0;
-
 	// Modifier that allows public function to accept external calls only from the contract owner.
-	modifier acceptOnlyOwner {
+	modifier checkOwnerAndAccept {
 		require(tvm.pubkey() == msg.pubkey(), 101);
 		tvm.accept();
 		_;
 	}
 
-
 	// First variant of contract deployment.
-	function deployWithPubkey(TvmCell stateInit, uint256 pubkey, uint128 initial_balance,
-	uint32 constuctor_id, uint32 constructor_param0, uint constructor_param1) public acceptOnlyOwner returns (address, uint) {
+	function deployWithPubkey(
+		TvmCell stateInit,
+		uint256 pubkey,
+		uint128 initialBalance,
+		uint paramA,
+		uint32 paramB
+	)
+		public
+		checkOwnerAndAccept
+	{
 		// Runtime function that inserts public key into contracts data field.
 		TvmCell stateInitWithKey = tvm.insertPubkey(stateInit, pubkey);
 
-		// tvm.hash() - Runtime function that computes the representation hash ot TvmCell.
-		address addr = address(tvm.hash(stateInitWithKey));
+		// Deploy a contract and call it's constructor.
+		address addr = new SimpleContract{stateInit: stateInitWithKey, value: initialBalance}(paramA, paramB);
 
-		// Functions to deploy a contract and call it's constructor.
-		tvm.deployAndCallConstructor(stateInitWithKey, addr, initial_balance, constuctor_id, constructor_param0, constructor_param1);
-
-		uint newID = lastID;
-		contracts[newID] = DeployedContract(addr, stateInitWithKey, pubkey);
-		lastID = newID + 1;
-		return (addr, newID);
+		// save address
+		contracts.push(addr);
 	}
 
 
 	// Second variant of contract deployment.
-	function deployFromCodeAndData(TvmCell code, TvmCell data, uint128 initial_balance,
-	uint32 constuctor_id, uint32 constructor_param0, uint constructor_param1) public acceptOnlyOwner returns (address, uint) {
+	function deployFromCodeAndData(
+		TvmCell code,
+		TvmCell data,
+		uint128 initialBalance,
+		uint paramA,
+		uint32 paramB
+	)
+		public
+		checkOwnerAndAccept
+	{
 		// Runtime function to generate StateInit from code and data cells.
 		TvmCell stateInit = tvm.buildStateInit(code, data);
 
-		// tvm.hash() - Runtime function that computes the representation hash ot TvmCell.
-		address addr = address(tvm.hash(stateInit));
+		address addr = new SimpleContract{stateInit: stateInit, value: initialBalance}(paramA, paramB);
 
-		// Functions to deploy a contract and call it's constructor.
-		tvm.deployAndCallConstructor(stateInit, addr, initial_balance, constuctor_id, constructor_param0, constructor_param1);
-
-		// In this function we deploy contract without public key, that's why we store struct with zero pubkey.
-		uint newID = lastID;
-		contracts[newID] = DeployedContract(addr, stateInit, 0);
-		lastID = newID + 1;
-		return (addr, newID);
+		// save address
+		contracts.push(addr);
 	}
 
 
 	// Third variant of contract deployment.
-	function deployWithMsgBody(TvmCell stateInit, address addr, uint128 initial_balance, TvmCell payload) public acceptOnlyOwner
-	returns (address, uint) {
+	function deployWithMsgBody(
+		TvmCell stateInit,
+		address addr,
+		uint128 initialBalance,
+		TvmCell payload
+	)
+		public
+		checkOwnerAndAccept
+	{
 		// Runtime function to deploy contract with prepared msg body for constructor call.
-		tvm.deploy(stateInit, addr, initial_balance, payload);
+		tvm.deploy(stateInit, addr, initialBalance, payload);
 
-		uint newID = lastID;
-		contracts[newID] = DeployedContract(addr, stateInit, 0);
-		lastID = newID + 1;
-		return (addr, newID);
+		// save address
+		contracts.push(addr);
 	}
 
-	// Function that allows to get address of the last deployed contract.
-	function getAddressOfLastDeployedContract() public view acceptOnlyOwner returns (address) {
-		DeployedContract contr = contracts[lastID - 1];
-		return contr.addr;
-	}
-
+	/*
+	 * Public Getters
+	 */
 	// Function that allows to get information about contract with given ID.
-	function getContractInfo(uint ID) public view acceptOnlyOwner returns (bool, address, TvmCell, uint256) {
-		optional(DeployedContract) contr = contracts.fetch(ID);
-		if (contr.hasValue())
-			return (true, contr.get().addr, contr.get().stateInit, contr.get().pubkey);
-		TvmCell cell;
-		return (false, address(0), cell, 0);
+	function getAddrs() public view returns (address[] addrs) {
+		addrs = contracts;
 	}
 }

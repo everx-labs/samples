@@ -1,14 +1,15 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.6.0;
+pragma AbiHeader expire;
 
 //Contract interface file
 
-abstract contract IBank {
-	function getCreditLimit() public virtual;
-	function loan(uint amount) public virtual;
+interface IBank {
+	function getCreditLimit() external;
+	function loan(uint amount) external;
 }
 
-abstract contract IBankClient {
-	function setCreditLimit(uint limit) public virtual;
-	function refusalCallback(uint remainingLimit) public virtual;
-	function receiveLoan(uint totalDebt) public virtual;
+interface IBankClient {
+	function setCreditLimit(uint limit) external;
+	function refusalCallback(uint remainingLimit) external;
+	function receiveLoan(uint totalDebt) external;
 }

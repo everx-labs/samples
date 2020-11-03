@@ -3,28 +3,32 @@ pragma solidity >= 0.6.0;
 // Simple wallet contract which can perform an arbitrary transfer.
 contract SimpleWallet {
 
-    // Fallback, receive and onBounce functions are defined, because this contract should be able to receive plain transfers and
-    // bounced messages.
-    fallback() external {}
-    receive() external {}
-    onBounce(TvmSlice /*slice*/) external {}
-
-    // State variable to store number of transactions.
+    // id - some magic number
+    uint m_id;
+    // number of transactions
     uint transactionCounter;
 
     // Constructor function initializes the transaction counter.
-    constructor(uint counter) public {
+    constructor(uint id) public {
+        require(tvm.pubkey() != 0);
         tvm.accept();
-        transactionCounter = counter;
+        m_id = id;
+        transactionCounter = 0;
+    }
+
+    modifier onlyOwnerAndAccept {
+        require(msg.pubkey() == tvm.pubkey());
+        tvm.accept();
+        _;
     }
 
     // Function to make an arbitrary transfer.
-    function sendTransaction(address destination, uint128 value, bool bounce, uint8 flag) public {
+    function sendTransaction(address destination, uint128 value, bool bounce, uint8 flag) public onlyOwnerAndAccept {
         // Check that contract can perform specified transaction.
         require(value > 0 && value < address(this).balance, 101);
 
         // Check that the function was called by the owner.
-        require(msg.pubkey() == tvm.pubkey(), 100);
+        require(msg.pubkey() == tvm.pubkey(), 102);
 		tvm.accept();
 
         // Perform transfer.
@@ -34,4 +38,11 @@ contract SimpleWallet {
         transactionCounter++;
     }
 
+    /*
+     * Public Getters
+     */
+    // Function to get state variables.
+    function getData() public view returns (uint id, uint counter) {
+        return (m_id, transactionCounter);
+    }
 }

@@ -1,14 +1,14 @@
 pragma solidity >= 0.6.0;
 
 // Interface of the contract we want to interact with.
-abstract contract IBounceCallee {
-	function receiveMoney(uint128 value) public virtual;
-	function receiveValues(uint16 value1, bool value2, uint64 value3) public virtual;
+interface AnotherContract {
+	function receiveMoney(uint128 value) external;
+	function receiveValues(uint16 value1, bool value2, uint64 value3) external;
 }
 
 
 // Contract that can handle errors during intercontract communication.
-contract BounceCaller {
+contract MyContract {
 
 	// State variables:
 	uint bounceCounter;				// Number of onBounce function calls;
@@ -19,12 +19,19 @@ contract BounceCaller {
 	uint64 invalidValue3;
 	uint128 invalidMoneyAmount;
 
-	modifier alwaysAccept {
+	constructor() public {
+		require(tvm.pubkey() != 0);
+		tvm.accept();
+	}
+
+	modifier onlyOwnerAndAccept {
+		require(msg.pubkey() == tvm.pubkey());
 		tvm.accept();
 		_;
 	}
 
-	// Function onBounce is executed on inbound messages with set <bounced> flag.
+	// Function onBounce is executed on inbound messages with set <bounced> flag. This function can not be called by
+	// external/internal message
 	// This function takes the body of the message as an argument.
 	onBounce(TvmSlice slice) external {
 		// Increase the counter.
@@ -34,29 +41,30 @@ contract BounceCaller {
 		uint32 functionId = slice.decode(uint32);
 
 		// Api function tvm.functionId() allows to calculate function id by function name.
-		if (functionId == tvm.functionId(IBounceCallee.receiveMoney)) {
+		if (functionId == tvm.functionId(AnotherContract.receiveMoney)) {
 			//Function decodeFunctionParams() allows to decode function parameters from the slice.
 			// After decoding we store the arguments of the function in the state variables.
-			invalidMoneyAmount = slice.decodeFunctionParams(IBounceCallee.receiveMoney);
-		} else if (functionId == tvm.functionId(IBounceCallee.receiveValues)) {
-			(invalidValue1, invalidValue2, invalidValue3) =
-			slice.decodeFunctionParams(IBounceCallee.receiveValues);
+			invalidMoneyAmount = slice.decodeFunctionParams(AnotherContract.receiveMoney);
+		} else if (functionId == tvm.functionId(AnotherContract.receiveValues)) {
+			(invalidValue1, invalidValue2, invalidValue3) = slice.decodeFunctionParams(AnotherContract.receiveValues);
 		}
 	}
 
 	// Function that calls another contract function and attaches some currency to the call.
-	function sendMoney(address callee, uint128 amount) public alwaysAccept {
-		IBounceCallee(callee).receiveMoney.value(amount)(amount);
+	function sendMoney(address dest, uint128 amount) public onlyOwnerAndAccept {
+		AnotherContract(dest).receiveMoney{value: amount}(amount);
 	}
 
 	// Function that calls another contract function with arbitrary arguments.
-	function sendValues(address callee, uint16 value1, bool value2, uint64 value3) public pure
-		alwaysAccept {
-		IBounceCallee(callee).receiveValues(value1, value2, value3);
+	function sendValues(address dest, uint16 value1, bool value2, uint64 value3) public view onlyOwnerAndAccept {
+		AnotherContract(dest).receiveValues(value1, value2, value3);
 	}
 
+	/*
+	 * Public Getters
+	 */
 	// Function to get state variables.
-	function getData() public view alwaysAccept returns (uint, uint16, bool, uint64, uint128) {
+	function getData() public view returns (uint c, uint16 v1, bool v2, uint64 v3, uint128 f) {
 		return (bounceCounter, invalidValue1, invalidValue2, invalidValue3, invalidMoneyAmount);
 	}
 
