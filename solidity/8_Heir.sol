@@ -15,7 +15,7 @@ contract Heir {
 	/*
  	 * Public Getters
  	 */
-	function getCounter() public returns(uint qty) {
+	function getCounter() public view returns(uint qty) {
 		return heritageCounter;
 	}
 }

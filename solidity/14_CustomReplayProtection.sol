@@ -17,12 +17,15 @@ contract CustomReplaySample {
     uint value;
 
     constructor() public {
-        require(tvm.pubkey() != 0);
+        // check that contract's public key is set
+        require(tvm.pubkey() != 0, 101);
+        // Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key
+        require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();
     }
 
     modifier onlyOwnerAndAccept {
-        require(msg.pubkey() == tvm.pubkey());
+        require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();
         _;
     }
@@ -74,7 +77,7 @@ contract CustomReplaySample {
     /*
      * Public Getters
      */
-    function getValue() public returns(uint v) {
+    function getValue() public view returns(uint v) {
         return value;
     }
 }

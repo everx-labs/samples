@@ -12,7 +12,7 @@ contract ContractWithBug {
 
 	// Modifier that allows public function to be called only by message signed with owner's pubkey.
 	modifier checkPubkeyAndAccept {
-		require(msg.pubkey() == tvm.pubkey());
+		require(msg.pubkey() == tvm.pubkey(), 102);
 		tvm.accept();
 		_;
 	}
@@ -36,7 +36,7 @@ contract ContractWithBug {
 	/*
 	 * Public Getters
 	 */
-	function getData() public returns (uint ver, uint val) {
+	function getData() public view returns (uint ver, uint val) {
 		return (VERSION, value);
 	}
 }

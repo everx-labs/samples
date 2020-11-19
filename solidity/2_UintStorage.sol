@@ -24,7 +24,7 @@ contract UintStorage is Storage {
 	/*
 	 * Public Getters
 	 */
-	function getData() public returns(uint v, address client){
+	function getData() public view returns(uint v, address client){
 		v = value;
 		client = clientAddress;
 	}
