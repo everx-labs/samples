@@ -11,7 +11,7 @@ interface AbstractContract {
 contract Giver {
 
 	// State variable storing the number of times receive/fallback/onBounce function was called.
-	uint counter = 0;
+	uint public counter = 0;
 
 	constructor() public {
 		// check that contract's public key is set
@@ -58,12 +58,5 @@ contract Giver {
 		// Runtime function that allows to make a transfer with arbitrary settings
 		// and can be used to send tons to non-existing address.
 		destination.transfer(value, bounce, flag);
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getCounter() public view returns (uint qty) {
-		return counter;
 	}
 }

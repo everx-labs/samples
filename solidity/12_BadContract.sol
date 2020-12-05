@@ -3,8 +3,16 @@ pragma AbiHeader expire;
 
 contract ContractWithBug {
 	// Version of the contract
-	uint VERSION = 1;
-	uint value;
+	uint public version = 1;
+	uint public value;
+
+	constructor() public {
+		// check that contract's public key is set
+		require(tvm.pubkey() != 0, 101);
+		// Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key
+		require(msg.pubkey() == tvm.pubkey(), 102);
+		tvm.accept();
+	}
 
 	function setValue(uint a, uint b) public checkPubkeyAndAccept {
 		value = a + b; // there is bug. It will be fixed in next version of contract. See 12_NewVersion.sol
@@ -31,12 +39,5 @@ contract ContractWithBug {
 	// After code upgrade caused by calling setCode function we may need to do some actions.
 	// We can add them into this function with constant id.
 	function onCodeUpgrade() private pure {
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getData() public view returns (uint ver, uint val) {
-		return (VERSION, value);
 	}
 }

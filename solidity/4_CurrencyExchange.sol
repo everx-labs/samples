@@ -8,7 +8,7 @@ import "4_interfaces.sol";
 contract CurrencyExchange is ICurrencyExchange {
 
 	// State variable storing the exchange rate.
-	uint32 exchangeRate;
+	uint32 public exchangeRate;
 
 	constructor() public {
 		// check that contract's public key is set
@@ -36,12 +36,5 @@ contract CurrencyExchange is ICurrencyExchange {
 	function setExchangeRate(uint32 er) external override {
 		// save parameter er in state variable 'exchangeRate'.
 		exchangeRate = er;
-	}
-
-	/*
-	 * Public Getters
- 	*/
-	function getExchangeRate() public view returns (uint rate) {
-		rate = exchangeRate;
 	}
 }

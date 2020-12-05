@@ -6,8 +6,8 @@ import "13_Interfaces.sol";
 // This contract implements 'IBankClient' interface.
 contract BankClient is IBankClient {
 
-    address bankCollector;
-    uint debtAmount;
+    address public bankCollector;
+    uint public debtAmount;
 
     constructor(address _bankCollector) public {
         // check that contract's public key is set
@@ -47,12 +47,5 @@ contract BankClient is IBankClient {
 
     function setDebtAmount(uint amount) public override onlyCollector {
         debtAmount = amount;
-    }
-
-    /*
-     * Public Getters
-     */
-    function getDebtAmount() public view returns (uint d) {
-        return debtAmount;
     }
 }

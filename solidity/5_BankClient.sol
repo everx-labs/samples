@@ -7,10 +7,10 @@ import "5_BankClientInterfaces.sol";
 // This contract implements 'IBankClient' interface.
 contract BankClient is IBankClient {
 
-	uint creditLimit = 0;    // allowed credit limit;
-	uint totalDebt = 0;      // contract total debt;
-	uint balance = 0;        // contract balance;
-	uint value = 0;          // inbound message value.
+	uint public creditLimit = 0;    // allowed credit limit;
+	uint public totalDebt = 0;      // contract total debt;
+	uint public balance = 0;        // contract balance;
+	uint public value = 0;          // inbound message value.
 
 	constructor() public {
 		// check that contract's public key is set
@@ -57,12 +57,5 @@ contract BankClient is IBankClient {
 	// A callback function to indicate refuse of the loan request. Function receives available limit as an argument.
 	function refusalCallback(uint availableLimit) public override {
 		creditLimit = availableLimit;
-	}
-
-	/*
- 	 * Public Getters
- 	*/
-	function getData() public view returns (uint creditLim, uint totDebt, uint bal, uint val) {
-		return (creditLimit, totalDebt, balance, value);
 	}
 }

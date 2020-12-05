@@ -21,9 +21,9 @@ contract Stranger {
 	}
 
 	// Function to deposit money to piggy bank.
-	function addToDeposit(PiggyBank bankAddress, uint amount) public onlyOwner {
+	function addToDeposit(PiggyBank bankAddress, uint128 amount) public onlyOwner {
 		tvm.accept();
-		bankAddress.deposit{value: uint128(amount)}();
+		bankAddress.deposit{value: amount}();
 	}
 
 	// Function to withdraw money from piggy bank.

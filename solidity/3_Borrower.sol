@@ -7,9 +7,6 @@ import "3_Loaner.sol";
 //  <amount> of currency.
 contract Borrower {
 
-	// State variable storing the number of times 'askForALoan' function was called.
-	uint callCounter = 0;
-
 	constructor() public {
 		// check that contract's public key is set
 		require(tvm.pubkey() != 0, 101);
@@ -25,10 +22,8 @@ contract Borrower {
 		_;
 	}
 
-	function askForALoan(Loaner loanerAddress, uint128 amount) public checkOwnerAndAccept {
+	function askForALoan(Loaner loanerAddress, uint128 amount) public view checkOwnerAndAccept {
 		// Call the remote contract function with parameter.
 		loanerAddress.borrow(amount);
-		// Increment the counter.
-		callCounter++;
 	}
 }

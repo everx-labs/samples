@@ -4,8 +4,8 @@ pragma AbiHeader expire;
 
 contract SimpleContract {
 
-	uint m_a;
-	uint32 m_b;
+	uint public m_a;
+	uint32 public m_b;
 
 	constructor(uint a, uint32 b) public {
 		// check that contract's public key is set
@@ -15,13 +15,5 @@ contract SimpleContract {
 		tvm.accept();
 		m_a = a;
 		m_b = b;
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getData() public view returns (uint a, uint32 b) {
-		a = m_a;
-		b = m_b;
 	}
 }

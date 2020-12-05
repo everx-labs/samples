@@ -6,8 +6,8 @@ import "18_Interfaces.sol";
 contract Client is IClient {
 
     // State variables:
-    uint40 orderKey;    // Key of the last order in database.
-    uint counter;       // Internal order counter.
+    uint40 public orderKey;    // Key of the last order in database.
+    uint public counter;       // Internal order counter.
     address database;
 
     constructor(address _database) public {
@@ -39,13 +39,5 @@ contract Client is IClient {
     // Callback function to set key of the last order.
     function setOrderKey(uint40 key) public override onlyDatabase {
         orderKey = key;
-    }
-
-    /*
-     * Public Getters
-     */
-    // Getter function to obtain the state variables.
-    function getData() public view returns (uint40 order, uint qty) {
-        return (orderKey, counter);
     }
 }

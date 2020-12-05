@@ -10,14 +10,14 @@ interface AnotherContract {
 // Contract that can handle errors during intercontract communication.
 contract MyContract {
 
-	// State variables:
-	uint bounceCounter;				// Number of onBounce function calls;
+	// Number of onBounce function calls
+	uint public bounceCounter;
 
 	// Saved arguments of function calls which were handled with failure.
-	uint16 invalidValue1;
-	bool invalidValue2;
-	uint64 invalidValue3;
-	uint128 invalidMoneyAmount;
+	uint16 public invalidValue1;
+	bool public invalidValue2;
+	uint64 public invalidValue3;
+	uint128 public invalidMoneyAmount;
 
 	constructor() public {
 		// check that contract's public key is set
@@ -62,13 +62,4 @@ contract MyContract {
 	function sendValues(address dest, uint16 value1, bool value2, uint64 value3) public view onlyOwnerAndAccept {
 		AnotherContract(dest).receiveValues(value1, value2, value3);
 	}
-
-	/*
-	 * Public Getters
-	 */
-	// Function to get state variables.
-	function getData() public view returns (uint c, uint16 v1, bool v2, uint64 v3, uint128 f) {
-		return (bounceCounter, invalidValue1, invalidValue2, invalidValue3, invalidMoneyAmount);
-	}
-
 }

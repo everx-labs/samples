@@ -6,7 +6,7 @@ import "11_SimpleContract.sol";
 contract ContractDeployer {
 
 	// addresses of deployed contracts
-	address[] contracts;
+	address[] public contracts;
 
 	constructor() public {
 		// check that contract's public key is set
@@ -69,7 +69,7 @@ contract ContractDeployer {
 	// Third variant of contract deployment.
 	function deployWithMsgBody(
 		TvmCell stateInit,
-		address addr,
+		int8 wid,
 		uint128 initialBalance,
 		TvmCell payload
 	)
@@ -77,17 +77,9 @@ contract ContractDeployer {
 		checkOwnerAndAccept
 	{
 		// Runtime function to deploy contract with prepared msg body for constructor call.
-		tvm.deploy(stateInit, addr, initialBalance, payload);
+		address addr = tvm.deploy(stateInit, payload, initialBalance, wid);
 
 		// save address
 		contracts.push(addr);
-	}
-
-	/*
-	 * Public Getters
-	 */
-	// Function that allows to get information about contract with given ID.
-	function getAddrs() public view returns (address[] addrs) {
-		addrs = contracts;
 	}
 }

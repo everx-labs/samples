@@ -4,7 +4,7 @@ pragma AbiHeader expire;
 contract Accumulator {
 
 	// State variable storing the sum of arguments that were passed to function 'add',
-	uint sum = 0;
+	uint public sum = 0;
 
 	constructor() public {
 		// check that contract's public key is set
@@ -25,12 +25,5 @@ contract Accumulator {
 	// Function that adds its argument to the state variable.
 	function add(uint value) public checkOwnerAndAccept {
 		sum += value;
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getSum() public view returns (uint s) {
-		return sum;
 	}
 }

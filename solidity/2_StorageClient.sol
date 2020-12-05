@@ -8,9 +8,6 @@ import "2_UintStorage.sol";
 // persistent memory.
 contract StorageClient {
 
-	// State variable storing the number of times 'store' function was called.
-	uint callCounter = 0;
-
 	constructor() public {
 		// check that contract's public key is set
 		require(tvm.pubkey() != 0, 101);
@@ -26,11 +23,9 @@ contract StorageClient {
 		_;
 	}
 
-	function store(Storage storageAddress, uint value) public checkOwnerAndAccept {
+	function store(Storage storageAddress, uint value) public view checkOwnerAndAccept {
 		// Call the remote contract function with parameter.
 		storageAddress.storeValue(value);
-		// Increment the counter.
-		callCounter++;
 	}
 
 }

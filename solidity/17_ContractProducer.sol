@@ -1,4 +1,5 @@
 pragma solidity >= 0.6.0;
+pragma AbiHeader expire;
 
 import "17_SimpleWallet.sol";
 
@@ -6,19 +7,15 @@ import "17_SimpleWallet.sol";
 contract WalletProducer {
 
 	// Number of deployed contracts.
-	uint m_deployedNumber = 0;
-	// Wallet's code.
-	TvmCell m_walletCode;
+	uint public m_deployedNumber = 0;
 
-	constructor(TvmCell walletCode) public {
+	constructor() public {
 		// Check that contract's public key is set.
 		require(tvm.pubkey() != 0, 101);
 		// Check that constructor is called by owner (message is signed by correct public key).
 		require(tvm.pubkey() == msg.pubkey(), 102);
 
 		tvm.accept();
-
-		m_walletCode = walletCode;
 	}
 
 	modifier checkOwnerAndAccept {
@@ -28,7 +25,7 @@ contract WalletProducer {
 	}
 
 	// Function deploys a wallet contract with specified public key
-	function deployWallet(uint256 publicKey0, uint256 publicKey1)
+	function deployWalletUsingCode(TvmCell walletCode, uint256 publicKey0, uint256 publicKey1)
 		public
 		checkOwnerAndAccept
 		returns (address newWallet)
@@ -37,26 +34,36 @@ contract WalletProducer {
 		uint n = 10;
 		newWallet = new SimpleWallet{
 			// code of the new contract
-			code: m_walletCode,
+			code: walletCode,
 			// value sent to the new contract
 			value: 1 ton,
-			// contract's public key (in the new contract it can be obtained with 'tvm.pubkey()')
+			// contract's public key (in the new contract it can be obtained by calling 'tvm.pubkey()')
 			pubkey: publicKey0,
 			// New contract public variables initialization
 			varInit: {
 				m_id: id,
 				m_creator: address(this)
 			}
-		}(n, publicKey1); // 'n' and 'publicKey1' are parameter of the constructor.
+		}(n, publicKey1); // 'n' and 'publicKey1' are parameters of the constructor.
 
 		++m_deployedNumber;
 	}
 
-	/*
-     * Public Getters
-     */
-	function getData() public view returns (uint qty, uint hash) {
-		return (m_deployedNumber, tvm.hash(m_walletCode));
+	function deployWalletUsingStateInit(TvmCell stateInit, uint256 publicKey1)
+		public
+		checkOwnerAndAccept
+		returns (address newWallet)
+	{
+		uint n = 10;
+		newWallet = new SimpleWallet{
+			// stateInit of the new contract
+			stateInit: stateInit,
+			// value sent to the new contract
+			value: 1 ton
+		}(n, publicKey1); // 'n' and 'publicKey1' are parameters of the constructor.
+
+		++m_deployedNumber;
 	}
+
 
 }

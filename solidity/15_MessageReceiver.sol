@@ -4,7 +4,7 @@ pragma solidity >= 0.6.0;
 contract MessageReceiver {
 
 	// State variable storing the number of times 'receiveMessage' function was called.
-	uint counter;
+	uint public counter;
 
 	constructor() public {
 		// check that contract's public key is set
@@ -35,12 +35,5 @@ contract MessageReceiver {
 		uint val2 = slice2.loadUnsigned(11);
 		require(val2 == 123, 107);
 		counter++;
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getCounter() public view returns (uint c) {
-		return counter;
 	}
 }

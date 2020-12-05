@@ -6,10 +6,10 @@ import "6_DBClientInterface.sol";
 // This contract implements IDataBaseClient interface.
 contract DataBaseClient is IDataBaseClient {
 	// State variable storing the number of receive* functions were called.
-	uint receiptCounter = 0;
+	uint public receiptCounter = 0;
 
 	// State variable that can be used to check received values.
-	uint checkSum = 0;
+	uint public checkSum = 0;
 
 	// Function receives an array of uint64 values.
 	function receiveArray(uint64[] arr) public override {
@@ -47,12 +47,5 @@ contract DataBaseClient is IDataBaseClient {
 		checkSum = arr[0].ID * 1_000 + arr[0].value * 100 +
 		           arr[1].ID * 10    + arr[1].value;
 		receiptCounter++;
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getData() public view returns (uint qty, uint sum) {
-		return (receiptCounter, checkSum);
 	}
 }

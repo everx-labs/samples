@@ -4,7 +4,7 @@ pragma solidity >= 0.6.0;
 contract MessageSender {
 
 	// State variable storing the number of times 'sendMessage' function was called.
-	uint counter;
+	uint public counter;
 
 	constructor() public {
 		// check that contract's public key is set
@@ -95,12 +95,5 @@ contract MessageSender {
 
 		// increment the counter
 		counter++;
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getCounter() public view returns (uint c) {
-		return counter;
 	}
 }
