@@ -8,9 +8,6 @@ interface Loaner {
 // This contract implements 'Loaner' interface.
 contract LoanerContract is Loaner {
 
-	// State variable storing the number of times 'borrow' function was called.
-	uint callCounter = 0;
-
 	// A function to be called from another contract
 	// This function receives parameter 'amount' from another contract and
 	// transfers 'amount' of currency to the caller.
@@ -19,7 +16,6 @@ contract LoanerContract is Loaner {
 		tvm.accept();
 
 		msg.sender.transfer(amount);
-		callCounter++;
 	}
 
 }

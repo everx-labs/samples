@@ -4,21 +4,16 @@ pragma AbiHeader expire;
 
 contract SimpleContract {
 
-	uint m_a;
-	uint32 m_b;
+	uint public m_a;
+	uint32 public m_b;
 
 	constructor(uint a, uint32 b) public {
-		require(tvm.pubkey() != 0);
+		// check that contract's public key is set
+		require(tvm.pubkey() != 0, 101);
+
+		// NOTE: To protect from deploying this contract by hacker it's good idea to check msg.sender. See 17_SimpleWallet.sol
 		tvm.accept();
 		m_a = a;
 		m_b = b;
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getData() public returns (uint a, uint32 b) {
-		a = m_a;
-		b = m_b;
 	}
 }

@@ -11,17 +11,19 @@ interface AbstractContract {
 contract Giver {
 
 	// State variable storing the number of times receive/fallback/onBounce function was called.
-	uint counter = 0;
+	uint public counter = 0;
 
-	constructor () public {
+	constructor() public {
 		// check that contract's public key is set
-		require(tvm.pubkey() != 0);
+		require(tvm.pubkey() != 0, 101);
+		// Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key
+		require(msg.pubkey() == tvm.pubkey(), 102);
 		tvm.accept();
 	}
 
 	modifier checkOwnerAndAccept {
 		// Check that message was signed with contracts key.
-		require(tvm.pubkey() == msg.pubkey(), 101);
+		require(msg.pubkey() == tvm.pubkey(), 102);
 		tvm.accept();
 		_;
 	}
@@ -38,13 +40,13 @@ contract Giver {
 
 	// This function calls an AbstractContract which would case a crash and call of onBounce function.
 	function transferToAbstractContract(address destination, uint amount) public view checkOwnerAndAccept {
-		AbstractContract(destination).receiveTransfer{value: amount}(123);
+		AbstractContract(destination).receiveTransfer{value: uint128(amount)}(123);
 	}
 
 	// This function call a CrashContract's function which would cause a crash during transaction
 	// and call of onBounce function.
 	function transferToCrashContract(address destination, uint amount) public view checkOwnerAndAccept {
-		CrashContract(destination).doCrash{value: amount}();
+		CrashContract(destination).doCrash{value: uint128(amount)}();
 	}
 
 	// Function which allows to make a transfer to an arbitrary address.
@@ -56,12 +58,5 @@ contract Giver {
 		// Runtime function that allows to make a transfer with arbitrary settings
 		// and can be used to send tons to non-existing address.
 		destination.transfer(value, bounce, flag);
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getCounter() public view returns (uint qty) {
-		return counter;
 	}
 }

@@ -1,196 +1,99 @@
-# Deploy contract from contract
+# Deploy contracts from the contract
 
-Convenient way to deploy contract from contract is to do it using "new Contract" construction.  
-Example from [WalletProducer](https://github.com/tonlabs/samples/blob/master/solidity/17_ContractProducer.sol):
+## Introduction
 
-```TVMSolidity
-address newWallet = new SimpleWallet{stateInit:stateInitWithKey, value:initialValue}();
-```
+Convenient way to deploy contracts from the contract is using `new ContractName{value: ..., ...}(arg0, arg1, ...)` construction. Obligatory call options for such construction:
+* Either `stateInit` or `code` must be set. Option `stateInit` is an initial state of the contract that contains `code` and `data`. Option `code` contains the code of the contract.
+* `value` - funds that will be transferred to the deployed address.
 
-Obligatory call options for such construction are:
+Also [another options](https://github.com/tonlabs/TON-Solidity-Compiler/blob/master/API.md#deploy-via-new) can be set.
 
-* "stateInit" - stateInit of the deployed contract. stateInit is an initial state of the contract that contains code and data;
-* "value" - currency value that will be transferred to the deployed address.
+It needs a solidity source code (*.sol file) and `stateInit` or `code` in base64 to deploy a contract from the contract. Solidity source code  should be imported into the contract that will deploy new contract. `.code` file should be compiled with [tvm_linker](https://github.com/tonlabs/TVM-linker) to get `stateInit`/`code` in base64 of new contract.
 
-Also developer can set option "flag" to specify flag of the constructor message.
+Let's consider how deploy a [SimpleWallet](https://github.com/tonlabs/samples/blob/master/solidity/17_SimpleWallet.sol) contract from the [WalletProducer](https://github.com/tonlabs/samples/blob/master/solidity/17_ContractProducer.sol) contract. In `WalletProducer` contract there are two public functions that deploy contracts:
+1. `deployWalletUsingCode` - uses `code` to deploy a contract.
+2. `deployWalletUsingStateInit` - uses `stateInit` to deploy a contract.
 
-## How to get arguments for contract deployment
+**Note**: linker creates a `*.tvc` file. This file represents `stateInit`. `stateInit` has such fields as `code`, `data` and etc. In first case we create `stateInit` onchain in smart contract's construction `new SimpleWallet{code: ..., ...}(...)`. In second case we create `stateInit` offchain using tonos-cli to set public key and static variables in the `data` field of the `stateInit`.
 
-To deploy contract from contract developer needs another contracts source code and stateInit. Source code is a solidity file which should be imported into the source file of contract deployer. To get stateInit of the contract developer should compile it with [tvm_linker](https://github.com/tonlabs/TVM-linker).
-Example of how to get arguments and call [WalletProducer](https://github.com/tonlabs/samples/blob/master/solidity/17_ContractProducer.sol) constructor:
-
-### 1. Compile wallet contract and obtain its code
+## 1. Compiling and deploying the contract deployer (`WalletProducer`)
 
 ```bash
-solc 17_SimpleWallet.sol
-tvm_linker compile 17_SimpleWallet.code -a 17_SimpleWallet.abi.json --lib PATH_TO_STDLIB_SOL
+# Generate 17_ContractProducer.code and 17_ContractProducer.abi.json
+solc 17_ContractProducer.sol --tvm-optimize
+
+# Generate <TVC_PRODUCER_HASH>.tvc
+tvm_linker compile 17_ContractProducer.code --lib stdlib_sol.tvm \
+    --abi-json 17_ContractProducer.abi.json
+
+# Set public key for ContractProducer contract
+tonos-cli genaddr --save --setkey key0.key <TVC_PRODUCER_HASH>.tvc 17_ContractProducer.abi.json
 ```
 
-The last command generates the tvc file:
+Last command updates the <TVC_PRODUCER_HASH>.tvc file and prints the address of the contract (it's just hash of that file). Let's denote address of thr WalletProducer as `<PRODUCER_ADDRESS>`. Then send funds on `<PRODUCER_ADDRESS>` address from your wallet or giver and deploy the `ContractProducer` contract:
 
 ```bash
-# ...
-# Saved contract to file 492c891deff0abd952c9db5aaf3255175425edb51da664d6dcb3834548f1d155.tvc
-# ...
+tonos-cli deploy --sign key0.key --abi 17_ContractProducer.abi.json <TVC_PRODUCER_HASH>.tvc
 ```
 
-This file contains stateInit of the contract. But we need only code to use it as function argument.
+### 2. Compiling and linking `SimpleWallet` contract
 
 ```bash
-tvm_linker decode --tvc 492c891deff0abd952c9db5aaf3255175425edb51da664d6dcb3834548f1d155.tvc
-```
-Copy code in base64. Let's denote this code as <BASE64_OF_CODE>.
+solc 17_SimpleWallet.sol --tvm-optimize
 
-### 2. Compile contract deployer
+tvm_linker compile 17_SimpleWallet.code --lib stdlib_sol.tvm \
+    --abi-json 17_SimpleWallet.abi.json
+```
+
+Last command generates the `<TVC_WALLET_HASH>.tvc` file.
+
+#### 3.1 Using `code` to deploy a contract from the contract
+
+Get `code` from `<TVC_WALLET_HASH>.tvc` file:
 
 ```bash
-solc 17_ContractProducer.sol
-tvm_linker compile 17_ContractProducer.code -a 17_ContractProducer.abi.json --lib PATH_TO_STDLIB_SOL
+tvm_linker decode --tvc <TVC_WALLET_HASH>.tvc
 ```
 
-The last command generates the tvc file:
+Copy `code` section from the linker output. Let's denote this code as `<CODE_IN_BASE64>`.
+
+Call function `deployWalletUsingCode` to deploy a new `SimpleWallet` contract:
 
 ```bash
-# ...
-# Saved contract to file 02163393a1a8fdbad68b9652b245340cc0d13d7ef36c5bcc0e9d51ccbf1ad189.tvc
-# ...
+tonos-cli call --sign key0.key --abi 17_ContractProducer.abi.json \
+    <PRODUCER_ADDRESS> deployWalletUsingCode \
+    '{"walletCode":"<CODE_IN_BASE64>","publicKey0":"<SOME_VALUE_0>","publicKey1":"<SOME_VALUE_1>"}'
 ```
 
-### 3. Simulate call of deployer constructor locally using tvm_linker
+This call returns address of the new `SimpleWallet` contract. Then the new contract is successfully deployed, that can be checked by obtaining it's account state with `tonos-cli`.
+
+#### 3.2 Using `stateInit` to deploy a contract from the contract
+
+Let's set a public key and static variables in the `data` field of the `stateInit` struct.
 
 ```bash
-tvm_linker test 02163393a1a8fdbad68b9652b245340cc0d13d7ef36c5bcc0e9d51ccbf1ad189 --abi-json 17_ContractProducer.abi.json --abi-method constructor --abi-params '{"_walletStateInit": "<BASE64_OF_CODE>", "_initialValue": 100000000}'
+tonos-cli genaddr --setkey key1.key <TVC_WALLET_HASH>.tvc \
+    17_SimpleWallet.abi.json \
+    --save --data '{"m_id":"444", "m_creator":"<PRODUCER_ADDRESS>"}'
 ```
 
-### 4. Generate a key pair for new wallet
-
-To generate a key pair we will use [tonos-cli](https://github.com/tonlabs/tonos-cli).
-At first we need to generate a seed phrase:
+`*.tvc` file represents `stateInit`. Get `stateInit` in base64:
 
 ```bash
-tonos-cli genphrase
+base64 -w 0 <TVC_WALLET_HASH>.tvc
 ```
 
-This command outputs the phrase, which we will be replaced to <SEED_PHRASE> in commands below:
+Let's denote output of the last command as `<STATEINIT_IN_BASE64>`.
+Call function `deployWalletUsingStateInit` to deploy a new `SimpleWallet` contract:
 
 ```bash
-Succeeded.
-Seed phrase: "<SEED_PHRASE>"
+tonos-cli call --sign key0.key --abi 17_ContractProducer.abi.json \
+    <PRODUCER_ADDRESS> deployWalletUsingStateInit \
+    '{"stateInit":"<STATEINIT_IN_BASE64>","publicKey1":"<SOME_VALUE_1>"}'
 ```
 
-Generate key pair and save it in file 'Wallet.key':
+This call returns address of the new `SimpleWallet` contract.  Then the new contract is successfully deployed, that can be checked by obtaining it's account state with `tonos-cli`.
 
-```bash
-tonos-cli getkeypair Wallet.key '<SEED_PHRASE>'
-```
+###  See also:
 
-### 5. Simulate call of wallet deployment function
-
-Get public key from the file generated on the previous step.
-
-```bash
-tvm_linker test 02163393a1a8fdbad68b9652b245340cc0d13d7ef36c5bcc0e9d51ccbf1ad189 --abi-json 17_ContractProducer.abi.json --abi-method deployWalletWithPubkey --abi-params '{"pubkey": "0x<PUBKEY>"}'
-```
-
-tvm_linker can show and decode the output message by using "--decode-c6" option:
-
-```bash
-tvm_linker test 02163393a1a8fdbad68b9652b245340cc0d13d7ef36c5bcc0e9d51ccbf1ad189 --abi-json 17_ContractProducer.abi.json --abi-method deployWalletWithPubkey --abi-params '{"pubkey": "0x<PUBKEY>"}' --decode-c6
-```
-
-## Constructor message structure
-
-All messages in TON have type **Message X**. Spec describes this type in TL-B scheme:
-
-```TL-B
-message$_ {X:Type} info:CommonMsgInfo
-init:(Maybe (Either StateInit ^StateInit))
-body:(Either X ^X) = Message X;
-```
-
-CommonMsgInfo structure has 3 types:
-
-* Internal message info;
-* External inbound message info;
-* External outbound message info.
-
-To deploy a new contract we need to send an internal message. TL-B scheme for CommonMsgInfo of internal message:
-
-```TL-B
-int_msg_info$0 ihr_disabled:Bool bounce:Bool src:MsgAddressInt dest:MsgAddressInt
-value:CurrencyCollection ihr_fee:Grams fwd_fee:Grams created_lt:uint64
-created_at:uint32 = CommonMsgInfo;
-```
-
-CommonMsgInfo contains structures, that are described by the following TL-B schemes:
-
-```TL-B
-nothing$0 {X:Type} = Maybe X;
-just$1 {X:Type} value:X = Maybe X;
-left$0 {X:Type} {Y:Type} value:X = Either X Y;
-right$1 {X:Type} {Y:Type} value:Y = Either X Y;
-
-anycast_info$_ depth:(## 5) rewrite_pfx:(depth * Bit) = Anycast;
-
-addr_none$00 = MsgAddressExt;
-
-addr_std$10 anycast:(Maybe Anycast)
-workchain_id:int8 address:uint256 = MsgAddressInt;
-
-var_uint$_ {n:#} len:(#< n) value:(uint (len * 8))
-= VarUInteger n;
-nanograms$_ amount:(VarUInteger 16) = Grams;
-
-extra_currencies$_ dict:(HashmapE 32 (VarUInteger 32))
-= ExtraCurrencyCollection;
-currencies$_ grams:Grams other:ExtraCurrencyCollection
-= CurrencyCollection;
-```
-
-When we deploy a contract we need to attach stateInit of that contract, but we [use tvm_linker to obtain it](#1-compile-wallet-contract-and-obtain-its-code), that's why we don't need to construct it.
-
-In case of deployment via **new** we also pass arguments to the constructor of the contract. That's why we need to attach constructor call as the body of the message. To do it we need to store **constructor** function identifier and encode it's parameters.
-
-In binary form the whole constructor message look like this:
-
-```TVM_Message
----CommonMsgInfo---
-0                   - int_msg_info$0 - constant value
-1                   - ihr_disabled - true (currently disabled for TON)
-1                   - bounce - true (we want this message to bounce to the sender in case of error)
-0                   - bounced - false (this message is not bounced)
-
-00                  - src:MsgAddress we store addr_none$00 because blockchain software will replace
-                      it with the current smart-contract address
-
-                    - dest:MsgAddressInt:
-10                  - addr_std$10 - constant value
-00000000            - workchain_id:int8 - store zero
-hash(stateInit)     - address:uint256 - address of the contract is equal to hash of the stateInit
-
-                    - value:CurrencyCollection: (for example we will store 10_000_000 nanograms)
-                    - grams:Grams
-0011                - len (because 10_000_000 < 2^(3*8))
-x989680             - value (3*8 bits)
-0                   - other:ExtraCurrencyCollection  (we don't attach any other currencies)
-
-                    - In the next 4 fields we store zeroes, because blockchain software will replace them
-                      with the correct values after this function finishes execution.
-0000                - ihr_fee:Grams
-0000                - fwd_fee:Grams
-x0000000000000000   - created_lt:uint64
-x00000000           - created_at:uint32
-------------------
-
----stateInit---
-1                   - Maybe - 1 because we attach a stateInit
-1                   - Either StateInit ^StateInit - 1 because we store stateInit in a ref
-                    - Store stateInit in a ref of
----------------
-
----body---
-0/1                 - Maybe: 0 if store body in current cell, otherwise 1
-constructorID       - uint32 constructor identifier value
-<encoded constructor params>
-----------
-```
+ * [Low level constructor message structure](https://github.com/tonlabs/samples/blob/master/solidity/17_low_level.md)

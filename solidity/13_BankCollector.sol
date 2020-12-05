@@ -6,13 +6,22 @@ import "13_Interfaces.sol";
 // The contract allows to store information about bank clients and iterate over them to filter clients.
 contract BankCollector is IBankCollector {
 
+    // Expiration period.
+    uint32 constant EXPIRATION_PERIOD = 1 days;
+
+    // State variable storing client information.
+    mapping(address => ClientInfo) clientDB;
+
     constructor() public {
-        require(tvm.pubkey() != 0);
+        // check that contract's public key is set
+        require(tvm.pubkey() != 0, 101);
+        // Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key
+        require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();
     }
 
     modifier onlyOwner {
-        require(msg.pubkey() == tvm.pubkey());
+        require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();
         _;
     }
@@ -22,12 +31,6 @@ contract BankCollector is IBankCollector {
         uint debtAmount;
         uint32 expiredTimestamp;
     }
-
-    // State variable storing client information.
-    mapping(address => ClientInfo) clientDB;
-
-    // Expiration period.
-    uint32 constant EXPIRATION_PERIOD = 1 days;
 
     // Add client to database.
     function addClient(address addr, uint debtAmount) public onlyOwner {

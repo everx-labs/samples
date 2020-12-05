@@ -6,18 +6,21 @@ import "18_Interfaces.sol";
 contract Client is IClient {
 
     // State variables:
-    uint40 orderKey;    // Key of the last order in database.
-    uint counter;       // Internal order counter.
+    uint40 public orderKey;    // Key of the last order in database.
+    uint public counter;       // Internal order counter.
     address database;
 
     constructor(address _database) public {
-        require(tvm.pubkey() != 0);
+        // check that contract's public key is set
+        require(tvm.pubkey() != 0, 101);
+        // Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key
+        require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();
         database =  _database;
     }
 
     modifier onlyOwnerAndAccept {
-        require(msg.pubkey() == tvm.pubkey());
+        require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();
         _;
     }
@@ -36,13 +39,5 @@ contract Client is IClient {
     // Callback function to set key of the last order.
     function setOrderKey(uint40 key) public override onlyDatabase {
         orderKey = key;
-    }
-
-    /*
-     * Public Getters
-     */
-    // Getter function to obtain the state variables.
-    function getData() public view returns (uint40 order, uint qty) {
-        return (orderKey, counter);
     }
 }

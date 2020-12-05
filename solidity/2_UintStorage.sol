@@ -10,8 +10,8 @@ interface Storage {
 contract UintStorage is Storage {
 
 	// State variables:
-	uint value;                // storage for a uint value;
-	address clientAddress;    // last caller address.
+	uint public value;                // storage for a uint value;
+	address public clientAddress;    // last caller address.
 
 	// This function can be called only by another contract. There is no 'tvm.accept()'
 	function storeValue(uint v) public override {
@@ -19,13 +19,5 @@ contract UintStorage is Storage {
 		value = v;
 		// save address of callee
 		clientAddress = msg.sender;
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getData() public returns(uint v, address client){
-		v = value;
-		client = clientAddress;
 	}
 }

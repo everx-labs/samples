@@ -1,21 +1,21 @@
 pragma solidity >= 0.6.0;
+pragma AbiHeader expire;
 
-// Import file with wallet source code.
 import "17_SimpleWallet.sol";
 
-// Contract that can deploy a wallet contract with specified public key.
+// Contract deployed wallet contracts.
 contract WalletProducer {
 
-	// Number of deployed contracts
-	uint deployedNumber = 0;
-	// Wallet stateInit
-	TvmCell walletCode;
+	// Number of deployed contracts.
+	uint public m_deployedNumber = 0;
 
-	// Constructor function initializes wallet stateInit and initial balance.
-	constructor(TvmCell code) public {
+	constructor() public {
+		// Check that contract's public key is set.
+		require(tvm.pubkey() != 0, 101);
+		// Check that constructor is called by owner (message is signed by correct public key).
+		require(tvm.pubkey() == msg.pubkey(), 102);
+
 		tvm.accept();
-		require(tvm.pubkey() != 0);
-		walletCode = code;
 	}
 
 	modifier checkOwnerAndAccept {
@@ -24,24 +24,46 @@ contract WalletProducer {
 		_;
 	}
 
-	// Function that allows to deploy a wallet contract with specified public key.
-	function deployWallet(uint256 publicKey) public checkOwnerAndAccept returns (address newWallet) {
-		// Insert public key into contract stateInit data field.
-		TvmCell walletData = tvm.buildEmptyData(publicKey);
-		TvmCell stateInit = tvm.buildStateInit(walletCode, walletData);
+	// Function deploys a wallet contract with specified public key
+	function deployWalletUsingCode(TvmCell walletCode, uint256 publicKey0, uint256 publicKey1)
+		public
+		checkOwnerAndAccept
+		returns (address newWallet)
+	{
+		uint id = m_deployedNumber;
+		uint n = 10;
+		newWallet = new SimpleWallet{
+			// code of the new contract
+			code: walletCode,
+			// value sent to the new contract
+			value: 1 ton,
+			// contract's public key (in the new contract it can be obtained by calling 'tvm.pubkey()')
+			pubkey: publicKey0,
+			// New contract public variables initialization
+			varInit: {
+				m_id: id,
+				m_creator: address(this)
+			}
+		}(n, publicKey1); // 'n' and 'publicKey1' are parameters of the constructor.
 
-		// To deploy a contract via "new" expression developer must use it with special call options.
-		// "stateInit" option defines the stateInit of deployed contract. "value" option defines amount
-		// of currency, that will be sent to the new address.
-		newWallet = new SimpleWallet{stateInit:stateInit, value: 1 ton}(deployedNumber);
-		++deployedNumber;
+		++m_deployedNumber;
 	}
 
-	/*
-     * Public Getters
-     */
-	function getData() public view returns (uint qty, uint hash) {
-		return (deployedNumber, tvm.hash(walletCode));
+	function deployWalletUsingStateInit(TvmCell stateInit, uint256 publicKey1)
+		public
+		checkOwnerAndAccept
+		returns (address newWallet)
+	{
+		uint n = 10;
+		newWallet = new SimpleWallet{
+			// stateInit of the new contract
+			stateInit: stateInit,
+			// value sent to the new contract
+			value: 1 ton
+		}(n, publicKey1); // 'n' and 'publicKey1' are parameters of the constructor.
+
+		++m_deployedNumber;
 	}
+
 
 }

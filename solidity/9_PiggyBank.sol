@@ -3,16 +3,16 @@ pragma AbiHeader expire;
 
 contract PiggyBank {
 	// contract owner's address;
-	address owner;
+	address public owner;
 	// piggybank's minimal limit to withdraw;
-	uint limit;
+	uint public limit;
 	// piggybank's deposit balance.
-	uint128 balance;
+	uint128 public balance;
 
 	// Constructor saves the address of the contract owner in a state variable and
 	// initializes the limit and the balance.
 	constructor(address own, uint lim) public {
-		// Check that contract have pubkey
+		// check that contract's public key is set
 		require(tvm.pubkey() != 0, 101);
 		// Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key
 		require(msg.pubkey() == tvm.pubkey(), 102);
@@ -44,12 +44,5 @@ contract PiggyBank {
 		tvm.accept();
 		msg.sender.transfer(balance);
 		balance = 0;
-	}
-
-	/*
-	 * Public Getters
-	 */
-	function getData() public returns (address own, uint lim, uint128 bal) {
-		return (owner, limit, balance);
 	}
 }
