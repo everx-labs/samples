@@ -22,7 +22,7 @@ contract Owner {
 
 
 	// Function to deposit money to piggy bank.
-	function addToDeposit(PiggyBank bankAddress, uint128 amount) public onlyOwner {
+	function addToDeposit(PiggyBank bankAddress, uint128 amount) public view onlyOwner {
 		tvm.accept();
 		bankAddress.deposit{value: amount}();
 	}
