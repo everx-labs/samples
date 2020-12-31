@@ -41,7 +41,7 @@ contract BankClient is IBankClient {
         IBankCollector(msg.sender).receivePayment{value: uint128(amount)}();
     }
 
-    function obtainDebtAmount() public onlyOwnerAndAccept {
+    function obtainDebtAmount() public view onlyOwnerAndAccept {
         IBankCollector(bankCollector).getDebtAmount{value: 0.5 ton}();
     }
 

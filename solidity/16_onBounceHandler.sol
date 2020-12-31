@@ -54,7 +54,7 @@ contract MyContract {
 	}
 
 	// Function that calls another contract function and attaches some currency to the call.
-	function sendMoney(address dest, uint128 amount) public onlyOwnerAndAccept {
+	function sendMoney(address dest, uint128 amount) public view onlyOwnerAndAccept {
 		AnotherContract(dest).receiveMoney{value: amount}(amount);
 	}
 
