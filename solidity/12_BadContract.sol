@@ -1,4 +1,4 @@
-pragma solidity >=0.6.0;
+pragma ton-solidity >= 0.35.0;
 pragma AbiHeader expire;
 
 contract ContractWithBug {
@@ -26,7 +26,7 @@ contract ContractWithBug {
 	}
 
 	// Function that changes the code of current contract.
-	function setCode(TvmCell newcode) public view checkPubkeyAndAccept {
+	function setCode(TvmCell newcode) public pure checkPubkeyAndAccept {
 		// Runtime function that creates an output action that would change this
 		// smart contract code to that given by cell newcode.
 		tvm.setcode(newcode);

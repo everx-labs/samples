@@ -1,4 +1,4 @@
-pragma solidity >= 0.6.0;
+pragma ton-solidity >= 0.35.0;
 
 // Contract that parses the argument passed to his function.
 contract MessageReceiver {

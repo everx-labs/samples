@@ -1,4 +1,4 @@
-pragma solidity >= 0.6.0;
+pragma ton-solidity >= 0.35.0;
 
 // Interface of the Casino contract.
 interface ICasino {
