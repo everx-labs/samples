@@ -1,4 +1,4 @@
-pragma solidity >=0.6.0;
+pragma ton-solidity >= 0.35.0;
 
 // AbiHeader section allows to define which fields are expected to be in the header of inbound message.
 // This fields must be read in the replay protection function.

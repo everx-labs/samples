@@ -1,4 +1,4 @@
-pragma solidity >=0.6.0;
+pragma ton-solidity >= 0.35.0;
 pragma AbiHeader expire;
 
 /// @title Simple wallet
@@ -38,7 +38,7 @@ contract Wallet {
     /// @param dest Transfer target address.
     /// @param value Nanotons value to transfer.
     /// @param bounce Flag that enables bounce message in case of target contract error.
-    function sendTransaction(address dest, uint128 value, bool bounce) public view checkOwnerAndAccept {
+    function sendTransaction(address dest, uint128 value, bool bounce) public pure checkOwnerAndAccept {
          // Runtime function that allows to make a transfer with arbitrary settings.
         dest.transfer(value, bounce, 0);
     }

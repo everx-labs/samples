@@ -1,4 +1,4 @@
-pragma solidity >= 0.6.0;
+pragma ton-solidity >= 0.35.0;
 
 import "18_Interfaces.sol";
 
