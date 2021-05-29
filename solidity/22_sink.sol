@@ -4,6 +4,8 @@ pragma AbiHeader expire;
 contract Sink {
 
     uint public m_counter;
+    uint public m_value;
+
 
     constructor() public onlyOwnerAccept {
     }
@@ -14,12 +16,14 @@ contract Sink {
         _;
     }
 
-    function inc(uint delta) public {
+    function inc(uint delta, uint value) public {
         m_counter += delta;
+        m_value = value;
     }
 
-    function incAndGetCount(uint delta) public responsible returns (uint) {
+    function incAndGetCount(uint delta, uint value) public responsible returns (uint) {
         m_counter += delta;
+        m_value = value;
         return{value: 0, flag: 64} m_counter;
     }
 }

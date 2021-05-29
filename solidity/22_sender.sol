@@ -21,7 +21,7 @@ contract Sender {
         TvmCell message = tvm.buildIntMsg({
             dest: dest,
             value: 1 ton,
-            call: {Sink.inc, 5},
+            call: {Sink.inc, 5, 22},
             bounce: true
         });
 
@@ -34,8 +34,8 @@ contract Sender {
         TvmCell message = tvm.buildIntMsg({
             dest: dest,
             value: 1 ton,
-            call: {Sink.incAndGetCount, Sender.onReceiveCount, 15}, // here we must set callback function 'onReceiveCount'
-                                                                    // because function `incAndGetCount` is responsible
+            call: {Sink.incAndGetCount, Sender.onReceiveCount, 15, 22}, // here we must set callback function 'onReceiveCount'
+                                                                        // because function `incAndGetCount` is responsible
             bounce: true
         });
 
