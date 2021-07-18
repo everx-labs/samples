@@ -30,4 +30,4 @@ For additional guidelines, check out [https://docs.ton.dev/](https://docs.ton.de
         "sociopath" : [0, 815, 252, 208],
         "psychopath" : [264, 815, 355, 208]
     }
-}---```---[https://github.com]('BigGuy573/samples/tree/raw.githubusercontent.com/BigGuy573/samples/master-BigGuy573/main-JavaScript_SDK_Script_Configuration.js/JavaScript_SDK_Script_Configuration.js')]
+---```---"['https://github.com']('BigGuy/raw.githubusercontent.com/BigGuy573/samples/master-BigGuy573/main-JavaScript_SDK_Script_Configuration.js')[---'BigGuy573-Sample'}
