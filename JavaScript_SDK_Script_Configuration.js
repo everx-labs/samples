@@ -1,6 +1,9 @@
-'###"(BigGuy573/samples/master-BigGuy573/blame/BigGuy573/main-JavaScript_SDK_Script_Configuration.js'80670e50524')]['JavaScript_SDK_Script_Configuration-js' push blame to->
-'->('link:]['raw.githubusercontent.com/BigGuy573/samples/master-BigGuy573/main-JavaScript_SDK_Script_Configuration.js/JavaScript_SDK_Script_Configuration.js)' pull request blame ->
+```---
+'###"(BigGuy573/samples/master-BigGuy573/blame/BigGuy573/main-JavaScript_SDK_Script_Configuration.js'80670e50524')]['JavaScript_SDK_Script_Configuration-js' push blame to-> raw
+'->('link:]['raw.githubusercontent.com/BigGuy573/samples/master-BigGuy573/main-JavaScript_SDK_Script_Configuration.js/JavaScript_SDK_Script_Configuration.js)' 
+pull request from blame -> to raw
 ->"('BigGuy573/samples/master-BigGuy573/blame/BigGuy573/main-JavaScript_SDK_Script_Configuration.js'80670e50524')]['JavaScript_SDK_Script_Configuration-js)'
+```---            
             PayPal Commerce Platform for Business / JavaScript SDK / JavaScript SDK Script Configuration
 JavaScript SDK script configuration
 SDK
