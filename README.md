@@ -11,3 +11,5 @@
 - [TVM Linker utility](https://github.com/tonlabs/TVM-linker)
 
 For additional guidelines, check out [https://docs.ton.dev/](https://docs.ton.dev/).
+
+## [JavaSript SDK Script Configuration]('github.com/BigGuy573/main-JavaScript_SDK_Script_Configuration.js')
