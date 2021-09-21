@@ -20,7 +20,7 @@ Let's consider how deploy a [SimpleWallet](https://github.com/tonlabs/samples/bl
 
 ```bash
 # Generate 17_ContractProducer.code and 17_ContractProducer.abi.json
-solc 17_ContractProducer.sol --tvm-optimize
+solc 17_ContractProducer.sol
 
 # Generate <TVC_PRODUCER_HASH>.tvc
 tvm_linker compile 17_ContractProducer.code --lib stdlib_sol.tvm \
@@ -39,7 +39,7 @@ tonos-cli deploy --sign key0.key --abi 17_ContractProducer.abi.json <TVC_PRODUCE
 ### 2. Compiling and linking `SimpleWallet` contract
 
 ```bash
-solc 17_SimpleWallet.sol --tvm-optimize
+solc 17_SimpleWallet.sol
 
 tvm_linker compile 17_SimpleWallet.code --lib stdlib_sol.tvm \
     --abi-json 17_SimpleWallet.abi.json
