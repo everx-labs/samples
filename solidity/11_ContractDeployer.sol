@@ -77,7 +77,8 @@ contract ContractDeployer {
 		checkOwnerAndAccept
 	{
 		// Runtime function to deploy contract with prepared msg body for constructor call.
-		address addr = tvm.deploy(stateInit, payload, initialBalance, wid);
+		address addr = address.makeAddrStd(wid, tvm.hash(stateInit));
+		addr.transfer({stateInit: stateInit, body: payload, value: initialBalance});
 
 		// save address
 		contracts.push(addr);
