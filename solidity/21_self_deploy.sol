@@ -29,7 +29,7 @@ contract SelfDeployer {
     function deploy(uint _value) onlyOwner public returns (address addr) {
         TvmCell code = tvm.code();
         addr = new SelfDeployer{
-            value: 2 ton,
+            value: 2 ever,
             code: code,
             varInit: {
                 m_value: _value,

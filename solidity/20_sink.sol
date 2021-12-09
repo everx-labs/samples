@@ -28,11 +28,11 @@ contract Sink is ISink {
 
     function testFlag64(address addr, uint mode) external pure onlyOwner {
         if (mode == 0)
-            IBomber(addr).testValue0Flag64{value: 1 ton}();
+            IBomber(addr).testValue0Flag64{value: 1 ever}();
         else if (mode == 1)
-            IBomber(addr).testValue1Flag64{value: 1 ton}();
+            IBomber(addr).testValue1Flag64{value: 1 ever}();
         else if (mode == 2)
-            IBomber(addr).testValue1Flag65{value: 1 ton}();
+            IBomber(addr).testValue1Flag65{value: 1 ever}();
     }
 
 }

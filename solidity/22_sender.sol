@@ -20,7 +20,7 @@ contract Sender {
         // generates cell which contains message which calls another contract by internal outbound message
         TvmCell message = tvm.buildIntMsg({
             dest: dest,
-            value: 1 ton,
+            value: 1 ever,
             call: {Sink.inc, 5, 22},
             bounce: true
         });
@@ -33,7 +33,7 @@ contract Sender {
     function testResponsibleSend(address dest) onlyOwnerAccept public pure {
         TvmCell message = tvm.buildIntMsg({
             dest: dest,
-            value: 1 ton,
+            value: 1 ever,
             call: {Sink.incAndGetCount, Sender.onReceiveCount, 15, 22}, // here we must set callback function 'onReceiveCount'
                                                                         // because function `incAndGetCount` is responsible
             bounce: true

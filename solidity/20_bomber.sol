@@ -18,15 +18,15 @@ contract Bomber is IBomber {
     }
 
     function testSend0(address addr) public pure onlyOwner {
-        // Bomber sends 1 ton but Sink will get less than 1 ton (~ 0.998 ton).
-        // Because forward fee is subtracted from 1 ton
-        ISink(addr).receive0{value: 1 ton, flag: 0}(param0, param1);
+        // Bomber sends 1 ever but Sink will get less than 1 ever (~ 0.998 ever).
+        // Because forward fee is subtracted from 1 ever
+        ISink(addr).receive0{value: 1 ever, flag: 0}(param0, param1);
     }
 
     function testSend1(address addr) public pure onlyOwner {
-        // Bomber sends 1 ton and Sink will get 1 ton exactly.
+        // Bomber sends 1 ever and Sink will get 1 ever exactly.
         // Forward fee is subtracted from balance of this contract.
-        ISink(addr).receive0{value: 1 ton, flag: 1}(param0, param1);
+        ISink(addr).receive0{value: 1 ever, flag: 1}(param0, param1);
     }
 
     function testSend128(address addr) public pure onlyOwner {
@@ -57,26 +57,26 @@ contract Bomber is IBomber {
 
     function testValue1Flag64() external override {
         map[rnd.next()] = rnd.next();
-        // Returns change and sends 1 ton.
-        // Forward fee is subtracted from (change + 1 ton). See also function `testSend0`.
-        ISink(msg.sender).receive0{value: 1 ton, flag: 64}(param0, param1);
+        // Returns change and sends 1 ever.
+        // Forward fee is subtracted from (change + 1 ever). See also function `testSend0`.
+        ISink(msg.sender).receive0{value: 1 ever, flag: 64}(param0, param1);
     }
 
     function testValue1Flag65() external override {
         map[rnd.next()] = rnd.next();
-        // Returns change and sends 1 ton.
+        // Returns change and sends 1 ever.
         // Forward fee is subtracted from Bomber's balance. See also function `testSend1`
-        ISink(msg.sender).receive0{value: 1 ton, flag: 64 + 1}(param0, param1);
+        ISink(msg.sender).receive0{value: 1 ever, flag: 64 + 1}(param0, param1);
     }
 
     function testFlag2(address addr) public pure onlyOwner {
-        // Contract sends 3 messages with values: 1 ton, 1e9 ton and 1 ton.
-        // Let contract has balance equal to 5 ton. Then it's obvious that it can't send 1e9 ton. It should cause fail
+        // Contract sends 3 messages with values: 1 ever, 1e9 ever and 1 ever.
+        // Let contract has balance equal to 5 ever. Then it's obvious that it can't send 1e9 ever. It should cause fail
         // of action phase. But the second message has flag: 2. It means that any errors arising while processing this
         // message during the action phase should be ignored.
         // That's why contract will send successfully the first and third messages. The second message will be ignored.
-        ISink(addr).receive0{value: 1 ton, flag: 0}(param0, param1);
-        ISink(addr).receive0{value: 1e9 ton, flag: 2}(param0, param1);
-        ISink(addr).receive0{value: 1 ton, flag: 0}(param0, param1);
+        ISink(addr).receive0{value: 1 ever, flag: 0}(param0, param1);
+        ISink(addr).receive0{value: 1e9 ever, flag: 2}(param0, param1);
+        ISink(addr).receive0{value: 1 ever, flag: 0}(param0, param1);
     }
 }
