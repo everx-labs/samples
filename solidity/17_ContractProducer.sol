@@ -36,7 +36,7 @@ contract WalletProducer {
 			// code of the new contract
 			code: walletCode,
 			// value sent to the new contract
-			value: 1 ton,
+			value: 1 ever,
 			// contract's public key (in the new contract it can be obtained by calling 'tvm.pubkey()')
 			pubkey: publicKey0,
 			// New contract public variables initialization
@@ -59,7 +59,7 @@ contract WalletProducer {
 			// stateInit of the new contract
 			stateInit: stateInit,
 			// value sent to the new contract
-			value: 1 ton
+			value: 1 ever
 		}(n, publicKey1); // 'n' and 'publicKey1' are parameters of the constructor.
 
 		++m_deployedNumber;

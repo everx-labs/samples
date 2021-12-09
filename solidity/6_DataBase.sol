@@ -6,7 +6,7 @@ import "6_DBClientInterface.sol";
 // This contract demonstrates how to send different amounts of information to another contract.
 contract DataBase {
 
-	uint64 constant ATTACHED_VALUE = 1 ton;
+	uint64 constant ATTACHED_VALUE = 1 ever;
 
 	// Modifier that allows public function to accept all external messages.
 	modifier alwaysAccept {

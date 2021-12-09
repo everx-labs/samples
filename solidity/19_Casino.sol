@@ -113,7 +113,7 @@ contract Casino is ICasino {
             ICasinoClient(msg.sender).receiveAnswer{value: 0, bounce: false, flag: 64}(code, comment);
         else
             // Call client with fixed value.
-            ICasinoClient(msg.sender).receiveAnswer{value: 10 milliton, bounce: false, flag: 1}(code, comment);
+            ICasinoClient(msg.sender).receiveAnswer{value: 10 milliever, bounce: false, flag: 1}(code, comment);
     }
 
     /// @dev Internal function that performs common checks.

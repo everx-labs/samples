@@ -54,7 +54,7 @@ contract MessageSender {
 		// Function store() allows to store variable of arbitrary type in the builder.
 		builder.store(anotherContract); 	// dest:MsgAddressInt
 
-		builder.storeUnsigned(0x3989680, 28);	// value:CurrencyCollection : grams:Grams   - we attach 0.01 tons to the message,
+		builder.storeUnsigned(0x3989680, 28);	// value:CurrencyCollection : grams:Grams   - we attach 0.01 evers to the message,
 												// which is equivalent to the 10,000 gas units in the base workchain.
 
 		builder.storeUnsigned(0, 1);		// value:CurrencyCollection : other:ExtraCurrencyCollection - we store 0, because

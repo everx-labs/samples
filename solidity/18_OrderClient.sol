@@ -32,7 +32,7 @@ contract Client is IClient {
 
     // Function that calls database to create an order.
     function createAnOrder(uint amount, uint32 duration) public onlyOwnerAndAccept {
-        IOrderDatabase(database).createAnOrder{value: 1 ton}(amount, duration);
+        IOrderDatabase(database).createAnOrder{value: 1 ever}(amount, duration);
         counter++;
     }
 

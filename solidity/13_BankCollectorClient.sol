@@ -42,7 +42,7 @@ contract BankClient is IBankClient {
     }
 
     function obtainDebtAmount() public view onlyOwnerAndAccept {
-        IBankCollector(bankCollector).getDebtAmount{value: 0.5 ton}();
+        IBankCollector(bankCollector).getDebtAmount{value: 0.5 ever}();
     }
 
     function setDebtAmount(uint amount) public override onlyCollector {

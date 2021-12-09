@@ -14,10 +14,10 @@ contract Client is IClient {
         m_provider = provider;
     }
 
-    function getRectangleSquare() external {
+    function getRectangleSquare() external view {
         require(msg.pubkey() == tvm.pubkey(), 101);
         tvm.accept();
-        m_provider.startGettingRectangleSquare{value: 5 ton}();
+        m_provider.startGettingRectangleSquare{value: 5 ever}();
     }
 
     function setRectangleSquare(uint64 square) external override {

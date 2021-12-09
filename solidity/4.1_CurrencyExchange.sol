@@ -29,7 +29,7 @@ contract CurrencyExchange {
 	// casts the address to IRemoteContract interface and calls
 	// function 'GetExchangeRate' with parameter <code>.
 	function updateExchangeRate(address bankAddress, uint16 currency) external pure checkOwnerAndAccept {
-		CentralBank(bankAddress).getExchangeRate{value: 1 ton, callback: CurrencyExchange.setExchangeRate}(currency);
+		CentralBank(bankAddress).getExchangeRate{value: 1 ever, callback: CurrencyExchange.setExchangeRate}(currency);
 	}
 
 	// A callback function to set exchangeRate.
