@@ -3,14 +3,15 @@ pragma AbiHeader expire;
 
 contract GoodContract {
 	// Version of the contract
-	uint public version; // this value is set in 'onCodeUpgrade' function
-	uint public value;
+	uint public m_version; // this value is set in 'onCodeUpgrade' function
+	uint public m_value;
+	mapping(uint => uint) m_map; // we added this new contract's state variable
 
-	// constructor is not needed. It won't be called.
+	// constructor is not needed. It won't be called. Because we use this contact to update another.
 	// constructor() public {}
 
 	function setValue(uint a, uint b) public checkPubkeyAndAccept {
-		value = a * b; // Bug is fixed =)
+		m_value = a * b; // Bug has been fixed here =)
 	}
 
 	// Modifier that allows public function to be called only by message signed with owner's pubkey.
@@ -21,19 +22,27 @@ contract GoodContract {
 	}
 
 	// Function that changes the code of current contract.
-	function setCode(TvmCell newcode) public checkPubkeyAndAccept {
+	function updateContractCode(TvmCell newcode) public checkPubkeyAndAccept {
 		// Runtime function that creates an output action that would change this
 		// smart contract code to that given by cell newcode.
 		tvm.setcode(newcode);
-		// Runtime function that replaces current code of the contract with newcode.
+		// Runtime function that replaces current code (in register C3) of the contract with newcode.
+		// It needs to call new `onCodeUpgrade` function
 		tvm.setCurrentCode(newcode);
+		TvmCell stateVars = abi.encode(m_version, m_value, m_map);
 		// Call function onCodeUpgrade of the 'new' code.
-		onCodeUpgrade();
+		onCodeUpgrade(stateVars);
 	}
 
-	// After code upgrade caused by calling setCode function we may need to do some actions.
-	// We can add them into this function with constant id.
-	function onCodeUpgrade() private {
-		version = 2;
+	// This function will be called from old contract.
+	// This function must have same signature as in old contract.
+	function onCodeUpgrade(TvmCell stateVars) private {
+		// in new contract we added new state variable. So we must reset storage
+		tvm.resetStorage();
+		(uint version, uint value) = abi.decode(stateVars, (uint, uint));
+		// initialize state variables
+		m_version = version + 1;
+		m_value = value;
+		m_map[100] = 200;
 	}
 }
