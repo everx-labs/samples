@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.35.0;
+pragma ever-solidity >= 0.35.0;
 
 // Contract that constructs message to call another contract function and sends it.
 contract MessageSender {

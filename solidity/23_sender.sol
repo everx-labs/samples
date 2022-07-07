@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.44.0;
+pragma ever-solidity >= 0.44.0;
 pragma AbiHeader expire;
 
 import "23_rawReserve.sol";
@@ -11,11 +11,11 @@ contract MyContract {
         _;
     }
 
-    function transfer(address addr, uint128 value) public pure onlyOwnerAccept {
+    function transfer(address addr, uint128 value) public view onlyOwnerAccept {
         addr.transfer({value: value, flag: 1});
     }
 
-    function send(address addr, uint mode) public pure onlyOwnerAccept {
+    function send(address addr, uint mode) public view onlyOwnerAccept {
         if (mode == 0) {
             Reserve(addr).reserve0{value: 0.5 ever, flag: 1}();
         } else if (mode == 1) {

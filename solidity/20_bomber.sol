@@ -1,4 +1,4 @@
-pragma ton-solidity >=0.32.0;
+pragma ever-solidity >=0.32.0;
 pragma AbiHeader expire;
 
 import "20_interface.sol";
@@ -17,26 +17,26 @@ contract Bomber is IBomber {
         _;
     }
 
-    function testSend0(address addr) public pure onlyOwner {
+    function testSend0(address addr) public view onlyOwner {
         // Bomber sends 1 ever but Sink will get less than 1 ever (~ 0.998 ever).
         // Because forward fee is subtracted from 1 ever
         ISink(addr).receive0{value: 1 ever, flag: 0}(param0, param1);
     }
 
-    function testSend1(address addr) public pure onlyOwner {
+    function testSend1(address addr) public view onlyOwner {
         // Bomber sends 1 ever and Sink will get 1 ever exactly.
         // Forward fee is subtracted from balance of this contract.
         ISink(addr).receive0{value: 1 ever, flag: 1}(param0, param1);
     }
 
-    function testSend128(address addr) public pure onlyOwner {
+    function testSend128(address addr) public view onlyOwner {
         // Bomber sends all its balance and Sink will get all that funds minus forward fee.
         // The Bomber's balance will be equal to zero.
         ISink(addr).receive0{value: 0, flag: 128}(param0, param1);
         // Note: parameter "value" is ignored by the virtual machine. It can be set to any value, for example zero.
     }
 
-    function testSend160(address addr) public pure onlyOwner {
+    function testSend160(address addr) public view onlyOwner {
         // Bomber sends all its balance and Sink will get all that funds minus forward fee.
         // The Bomber's balance will be equal to zero and the contract will be destroyed.
         ISink(addr).receive0{value: 0, flag: 128 + 32}(param0, param1);
@@ -69,7 +69,7 @@ contract Bomber is IBomber {
         ISink(msg.sender).receive0{value: 1 ever, flag: 64 + 1}(param0, param1);
     }
 
-    function testFlag2(address addr) public pure onlyOwner {
+    function testFlag2(address addr) public view onlyOwner {
         // Contract sends 3 messages with values: 1 ever, 1e9 ever and 1 ever.
         // Let contract has balance equal to 5 ever. Then it's obvious that it can't send 1e9 ever. It should cause fail
         // of action phase. But the second message has flag: 2. It means that any errors arising while processing this

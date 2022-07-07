@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.35.0;
+pragma ever-solidity >= 0.35.0;
 pragma AbiHeader expire;
 
 // Import the interface file
@@ -28,7 +28,7 @@ contract BankClient is IBankClient {
 	}
 
 	// This function calls a remote IBank contract to get the credit limit.
-	function getMyCreditLimit(IBank bank) public pure checkOwnerAndAccept {
+	function getMyCreditLimit(IBank bank) public view checkOwnerAndAccept {
 		// Call remote contract function.
 		bank.getCreditLimit();
 	}

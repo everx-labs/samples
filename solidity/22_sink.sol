@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.44.0;
+pragma ever-solidity >= 0.44.0;
 pragma AbiHeader expire;
 
 contract Sink {
@@ -24,6 +24,6 @@ contract Sink {
     function incAndGetCount(uint delta, uint value) public responsible returns (uint) {
         m_counter += delta;
         m_value = value;
-        return{value: 0, flag: 64} m_counter;
+        return{value: 0, bounce: false, flag: 64} m_counter;
     }
 }
