@@ -1,4 +1,4 @@
-pragma ton-solidity >=0.32.0;
+pragma ever-solidity >=0.32.0;
 pragma AbiHeader expire;
 
 import "20_interface.sol";
@@ -26,7 +26,7 @@ contract Sink is ISink {
         _;
     }
 
-    function testFlag64(address addr, uint mode) external pure onlyOwner {
+    function testFlag64(address addr, uint mode) external view onlyOwner {
         if (mode == 0)
             IBomber(addr).testValue0Flag64{value: 1 ever}();
         else if (mode == 1)

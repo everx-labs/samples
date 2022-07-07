@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.35.0;
+pragma ever-solidity >= 0.35.0;
 pragma AbiHeader expire;
 
 import "4.1_CentralBank.sol";
@@ -28,7 +28,7 @@ contract CurrencyExchange {
 	// This function gets an address of the contract and code of the currency <code>,
 	// casts the address to IRemoteContract interface and calls
 	// function 'GetExchangeRate' with parameter <code>.
-	function updateExchangeRate(address bankAddress, uint16 currency) external pure checkOwnerAndAccept {
+	function updateExchangeRate(address bankAddress, uint16 currency) external view checkOwnerAndAccept {
 		CentralBank(bankAddress).getExchangeRate{value: 1 ever, callback: CurrencyExchange.setExchangeRate}(currency);
 	}
 

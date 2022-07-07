@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.35.0;
+pragma ever-solidity >= 0.35.0;
 pragma AbiHeader expire;
 
 // The contract receives all the balance of Kamikaze contract after its self-destruction.

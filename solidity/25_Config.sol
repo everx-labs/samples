@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.54.0;
+pragma ever-solidity >= 0.54.0;
 pragma AbiHeader time;
 pragma AbiHeader expire;
 

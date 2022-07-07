@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.35.0;
+pragma ever-solidity >= 0.35.0;
 
 // Interface of the contract we want to interact with.
 interface AnotherContract {
@@ -54,12 +54,12 @@ contract MyContract {
 	}
 
 	// Function that calls another contract function and attaches some currency to the call.
-	function sendMoney(address dest, uint128 amount) public pure onlyOwnerAndAccept {
+	function sendMoney(address dest, uint128 amount) public view onlyOwnerAndAccept {
 		AnotherContract(dest).receiveMoney{value: amount}(amount);
 	}
 
 	// Function that calls another contract function with arbitrary arguments.
-	function sendValues(address dest, uint16 value1, bool value2, uint64 value3) public pure onlyOwnerAndAccept {
+	function sendValues(address dest, uint16 value1, bool value2, uint64 value3) public view onlyOwnerAndAccept {
 		AnotherContract(dest).receiveValues(value1, value2, value3);
 	}
 }

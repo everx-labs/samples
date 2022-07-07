@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.35.0;
+pragma ever-solidity >= 0.35.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
@@ -53,7 +53,7 @@ contract SimpleWallet {
 
     // Function to make an arbitrary transfer. Called by external message
     function sendTransaction(address destination, uint128 value, bool bounce, uint8 flag)
-        public pure
+        public view
         onlyOwnerAndAccept
     {
         // Perform transfer.
