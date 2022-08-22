@@ -39,10 +39,10 @@ contract GoodContract {
 	function onCodeUpgrade(TvmCell stateVars) private {
 		// in new contract we added new state variable. So we must reset storage
 		tvm.resetStorage();
-		(uint version, uint value) = abi.decode(stateVars, (uint, uint));
+
 		// initialize state variables
-		m_version = version + 1;
-		m_value = value;
+		(m_version, m_value) = abi.decode(stateVars, (uint, uint));
+		++m_version;
 		m_map[100] = 200;
 	}
 }
