@@ -41,7 +41,7 @@ contract BankCollector is IBankCollector {
             i.debtAmount += debtAmount;
             clientDB[addr] = i;
         } else {
-            clientDB[addr] = ClientInfo(debtAmount, now + EXPIRATION_PERIOD);
+            clientDB[addr] = ClientInfo(debtAmount, block.timestamp + EXPIRATION_PERIOD);
         }
     }
 
@@ -78,7 +78,7 @@ contract BankCollector is IBankCollector {
         optional(address, ClientInfo) client = clientDB.min();
         while (client.hasValue()) {
             (address addr, ClientInfo info) = client.get();
-            if (info.expiredTimestamp <= now)
+            if (info.expiredTimestamp <= block.timestamp)
                 IBankClient(addr).demandDebt(info.debtAmount);
             // Mapping member function to obtain next key and associated value from mapping if it exists.
             client = clientDB.next(addr);
