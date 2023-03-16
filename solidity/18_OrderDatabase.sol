@@ -27,7 +27,7 @@ contract OrderDatabase is IOrderDatabase {
         require(tvm.pubkey() != 0, NO_PUBKEY);
         require(tvm.pubkey() == msg.pubkey(), MESSAGE_SENDER_IS_NOT_THE_OWNER);
         tvm.accept();
-        uint40 key = now + duration;
+        uint40 key = block.timestamp + duration;
 
         // Mapping function 'add(keyArg, valueArg)' sets the value associated with keyArg only if the keyArg does not exist in mapping.
         database.add(key, initialOrders);
@@ -46,7 +46,7 @@ contract OrderDatabase is IOrderDatabase {
     function removeExpiredOrders() inline private {
         // Mapping function 'prevOrEq(keyArg)' computes the maximal key in mapping that is lexicographically less or equal to argument keyArg
         // and returns that key, associated value and status flag.
-        optional(uint40, Order[]) val = database.prevOrEq(now);
+        optional(uint40, Order[]) val = database.prevOrEq(block.timestamp);
 
         while (val.hasValue()) {
             (uint40 expire, ) = val.get();
@@ -54,7 +54,7 @@ contract OrderDatabase is IOrderDatabase {
             delete database[expire];
 
             // Obtain next array of expired orders.
-            val = database.prevOrEq(now);
+            val = database.prevOrEq(block.timestamp);
         }
     }
 
@@ -64,12 +64,12 @@ contract OrderDatabase is IOrderDatabase {
         removeExpiredOrders();
 
         // Create new order.
-        Order newOrder = Order(msg.sender, amount, duration, now);
+        Order newOrder = Order(msg.sender, amount, duration, block.timestamp);
 		Order[] orders;
 		orders.push(newOrder);
 
         // Calculate expiration timestamp.
-		uint40 key = now + duration;
+		uint40 key = block.timestamp + duration;
 
         // Mapping function 'getAdd(keyArg, valueArg)' sets the value associated with keyArg, but only if keyArg does not exist in
         // the mapping. Otherwise returns the old value without changing the dictionary.
@@ -96,7 +96,7 @@ contract OrderDatabase is IOrderDatabase {
         removeExpiredOrders();
 
         // Obtain current timestamp.
-        uint40 curTime = now;
+        uint40 curTime = block.timestamp;
 
         // Mapping function 'nextOrEq(keyArg)' computes the minimal key in mapping that is lexicographically greater or equal to argument keyArg
         // and returns that key, associated value and status flag.
