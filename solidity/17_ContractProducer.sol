@@ -9,7 +9,7 @@ contract WalletProducer {
 	// Number of deployed contracts.
 	uint public m_deployedNumber = 0;
 
-	constructor() public {
+	constructor() {
 		// Check that contract's public key is set.
 		require(tvm.pubkey() != 0, 101);
 		// Check that constructor is called by owner (message is signed by correct public key).

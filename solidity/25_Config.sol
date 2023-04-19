@@ -28,7 +28,7 @@ contract ConfigContract {
     Config public config;
     
     // Constructor function that initializes config
-    constructor(Config initial_config) public {
+    constructor(Config initial_config) {
         // check that contract's public key is set
         require(tvm.pubkey() != 0, 101);
         // Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key

@@ -11,7 +11,7 @@ contract SelfDeployer {
     uint m_depth;
     mapping(address => bool) m_chilred;
 
-    constructor(uint _depth) public {
+    constructor(uint _depth) {
         require(
             (tvm.pubkey() != 0 && tvm.pubkey() == msg.pubkey()) ||
             (msg.sender == m_parent)

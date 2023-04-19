@@ -6,7 +6,7 @@ contract MessageReceiver {
 	// State variable storing the number of times 'receiveMessage' function was called.
 	uint public counter;
 
-	constructor() public {
+	constructor() {
 		// check that contract's public key is set
 		require(tvm.pubkey() != 0, 101);
 		// Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key

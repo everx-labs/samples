@@ -6,7 +6,7 @@ import "9_PiggyBank.sol";
 // This contract describes the Stranger who can add to deposit of PiggyBank but can't withdraw deposit.
 contract Stranger {
 
-	constructor() public {
+	constructor() {
 		// check that contract's public key is set
 		require(tvm.pubkey() != 0, 101);
 		// Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key

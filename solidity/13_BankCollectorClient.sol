@@ -9,7 +9,7 @@ contract BankClient is IBankClient {
     address public bankCollector;
     uint public debtAmount;
 
-    constructor(address _bankCollector) public {
+    constructor(address _bankCollector) {
         // check that contract's public key is set
         require(tvm.pubkey() != 0, 101);
         // Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key

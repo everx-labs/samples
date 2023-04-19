@@ -11,7 +11,7 @@ contract PiggyBank {
 
 	// Constructor saves the address of the contract owner in a state variable and
 	// initializes the limit and the balance.
-	constructor(address own, uint lim) public {
+	constructor(address own, uint lim) {
 		// check that contract's public key is set
 		require(tvm.pubkey() != 0, 101);
 		// Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key
