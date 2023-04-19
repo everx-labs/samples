@@ -7,7 +7,7 @@ contract Client is IClient {
     ISquareProvider m_provider;
     uint64 public m_square;
 
-    constructor(ISquareProvider provider) public {
+    constructor(ISquareProvider provider) {
         require(tvm.pubkey() != 0, 100);
         require(msg.pubkey() == tvm.pubkey(), 101);
         tvm.accept();

@@ -12,7 +12,7 @@ contract BankCollector is IBankCollector {
     // State variable storing client information.
     mapping(address => ClientInfo) clientDB;
 
-    constructor() public {
+    constructor() {
         // check that contract's public key is set
         require(tvm.pubkey() != 0, 101);
         // Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key

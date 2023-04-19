@@ -10,7 +10,7 @@ contract Client is IClient {
     uint public counter;       // Internal order counter.
     address database;
 
-    constructor(address _database) public {
+    constructor(address _database) {
         // check that contract's public key is set
         require(tvm.pubkey() != 0, 101);
         // Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key

@@ -5,7 +5,7 @@ contract Reserve {
 
     mapping(uint => uint) m_map;
 
-    constructor() public onlyOwnerAccept {
+    constructor() onlyOwnerAccept {
     }
 
     modifier onlyOwnerAccept {

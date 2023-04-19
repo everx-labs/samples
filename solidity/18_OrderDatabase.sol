@@ -17,13 +17,13 @@ contract OrderDatabase is IOrderDatabase {
     mapping (uint40 => Order[]) database;
 
     // Exception codes:
-    uint constant MESSAGE_SENDER_IS_NOT_THE_OWNER = 101;
-    uint constant MAPPING_REPLACE_ERROR = 102;
-    uint constant PLAIN_TRANSFERS_ARE_FORBIDDEN = 103;
-    uint constant NO_PUBKEY = 104;
+    uint16 constant MESSAGE_SENDER_IS_NOT_THE_OWNER = 101;
+    uint16 constant MAPPING_REPLACE_ERROR = 102;
+    uint16 constant PLAIN_TRANSFERS_ARE_FORBIDDEN = 103;
+    uint16 constant NO_PUBKEY = 104;
 
     // Constructor function initializes the database with an array of orders.
-    constructor(Order[] initialOrders, uint32 duration) public {
+    constructor(Order[] initialOrders, uint32 duration) {
         require(tvm.pubkey() != 0, NO_PUBKEY);
         require(tvm.pubkey() == msg.pubkey(), MESSAGE_SENDER_IS_NOT_THE_OWNER);
         tvm.accept();

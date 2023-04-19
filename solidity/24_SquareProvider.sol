@@ -19,7 +19,7 @@ contract SquareProvider is ISquareProvider {
     uint constant FEE = 2 ever; // some fee for storing context, calling another contracts, etc. Must be calculated more precisely
     uint constant MAX_TRANS_FEE = 0.5 ever; // max possible fee for `startGettingRectangleSquare` function. May be calculated more precisely
 
-    constructor(address widthProvider, address lengthProvider) public {
+    constructor(address widthProvider, address lengthProvider) {
         require(tvm.pubkey() != 0, 100);
         require(msg.pubkey() == tvm.pubkey(), 101);
         tvm.accept();

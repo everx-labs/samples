@@ -7,7 +7,7 @@ contract Sink {
     uint public m_value;
 
 
-    constructor() public onlyOwnerAccept {
+    constructor() onlyOwnerAccept {
     }
 
     modifier onlyOwnerAccept {

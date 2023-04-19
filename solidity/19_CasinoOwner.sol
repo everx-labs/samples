@@ -12,7 +12,7 @@ contract CasinoOwner is ICasinoOwner {
     uint public m_casinoSeed; // modifier public creates a getter function with the same name as a state variable.
     address m_casino;
 
-    constructor(address casino) public {
+    constructor(address casino) {
         require(tvm.pubkey() != 0, 103);
         require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();

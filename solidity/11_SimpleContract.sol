@@ -7,7 +7,7 @@ contract SimpleContract {
 	uint public m_a;
 	uint32 public m_b;
 
-	constructor(uint a, uint32 b) public {
+	constructor(uint a, uint32 b) {
 		// check that contract's public key is set
 		require(tvm.pubkey() != 0, 101);
 

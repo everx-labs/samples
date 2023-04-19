@@ -20,7 +20,7 @@ contract SimpleWallet {
 
 
     // This constructor is called by internal message
-    constructor(uint n, uint256 secondPubkey) public {
+    constructor(uint n, uint256 secondPubkey) {
         // Note: here static variables are already set.
 
         // Check that constructor is called by creator. It's need to check that contract is not deployd by hacker

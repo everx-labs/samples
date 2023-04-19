@@ -13,7 +13,7 @@ contract CasinoClient is ICasinoClient {
     uint8 public m_lastCode;
     uint128 public m_lastComment;
 
-    constructor(address casino) public {
+    constructor(address casino) {
         require(tvm.pubkey() != 0, 103);
         require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();
