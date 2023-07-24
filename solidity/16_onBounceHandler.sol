@@ -41,15 +41,15 @@ contract MyContract {
 		bounceCounter++;
 
 		// Start decoding the message. First 32 bits store the function id.
-		uint32 functionId = slice.decode(uint32);
+		uint32 functionId = slice.load(uint32);
 
 		// Api function tvm.functionId() allows to calculate function id by function name.
 		if (functionId == tvm.functionId(AnotherContract.receiveMoney)) {
-			//Function decodeFunctionParams() allows to decode function parameters from the slice.
+			//Function loadFunctionParams() allows to load function parameters from the slice.
 			// After decoding we store the arguments of the function in the state variables.
-			invalidMoneyAmount = slice.decodeFunctionParams(AnotherContract.receiveMoney);
+			invalidMoneyAmount = slice.loadFunctionParams(AnotherContract.receiveMoney);
 		} else if (functionId == tvm.functionId(AnotherContract.receiveValues)) {
-			(invalidValue1, invalidValue2, invalidValue3) = slice.decodeFunctionParams(AnotherContract.receiveValues);
+			(invalidValue1, invalidValue2, invalidValue3) = slice.loadFunctionParams(AnotherContract.receiveValues);
 		}
 	}
 

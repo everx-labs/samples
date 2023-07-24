@@ -39,40 +39,40 @@ contract MessageSender {
 		// init:(Maybe (Either StateInit ^StateInit))
 		// body:(Either X ^X) = Message X;
 
-		// Function storeUnsigned() allows to store unsigned integer of arbitrary size in the builder.
-		builder.storeUnsigned(0, 1);		// int_msg_info$0 - constant value
-		builder.storeUnsigned(1, 1);		// ihr_disabled	  - true (currently disabled for TON)
-		builder.storeUnsigned(1, 1);		// bounce         - true (we want this message to bounce to the sender
-											// in case of error)
-		builder.storeUnsigned(0, 1);		// bounced        - false (this message is not bounced)
+		// Function storeUint() allows to store unsigned integer of arbitrary size in the builder.
+		builder.storeUint(0, 1);		// int_msg_info$0 - constant value
+		builder.storeUint(1, 1);		// ihr_disabled	  - true (currently disabled)
+		builder.storeUint(1, 1);		// bounce         - true (we want this message to bounce to the sender
+										// in case of error)
+		builder.storeUint(0, 1);		// bounced        - false (this message is not bounced)
 
-		builder.storeUnsigned(0, 2);		// src:MsgAddress we store addr_none$00
-											// because blockchain software will replace
-											// it with the current smart-contract address
+		builder.storeUint(0, 2);		// src:MsgAddress we store addr_none$00
+										// because blockchain software will replace
+										// it with the current smart-contract address
 
 
 		// Function store() allows to store variable of arbitrary type in the builder.
 		builder.store(anotherContract); 	// dest:MsgAddressInt
 
-		builder.storeUnsigned(0x3989680, 28);	// value:CurrencyCollection : grams:Grams   - we attach 0.01 evers to the message,
-												// which is equivalent to the 10,000 gas units in the base workchain.
+		builder.storeUint(0x3989680, 28);	// value:CurrencyCollection : grams:Grams   - we attach 0.01 evers to the message,
+											// which is equivalent to the 10,000 gas units in the base workchain.
 
-		builder.storeUnsigned(0, 1);		// value:CurrencyCollection : other:ExtraCurrencyCollection - we store 0, because
-											// we don't attach any other currencies.
+		builder.storeUint(0, 1);		// value:CurrencyCollection : other:ExtraCurrencyCollection - we store 0, because
+										// we don't attach any other currencies.
 
 		// In the next 4 fields we store zeroes, because blockchain software will replace them
 		// with the correct values after this function finishes execution.
-		builder.storeUnsigned(0, 4);		// ihr_fee:Grams
-		builder.storeUnsigned(0, 4);		// fwd_fee:Grams
-		builder.storeUnsigned(0, 64);		// created_lt:uint64
-		builder.storeUnsigned(0, 32);		// created_at:uint32
+		builder.storeUint(0, 4);		// ihr_fee:Grams
+		builder.storeUint(0, 4);		// fwd_fee:Grams
+		builder.storeUint(0, 64);		// created_lt:uint64
+		builder.storeUint(0, 32);		// created_at:uint32
 
 
-		builder.storeUnsigned(0, 1);		// init:(Maybe (Either StateInit ^StateInit)) - we store 0, because we don't attach
-											// initial state of a contract.
+		builder.storeUint(0, 1);		// init:(Maybe (Either StateInit ^StateInit)) - we store 0, because we don't attach
+										// initial state of a contract.
 
-		builder.storeUnsigned(0, 1);		// body:(Either X ^X) - we store zero, because body of the message is stored in the
-											// current cell, not in the ref.
+		builder.storeUint(0, 1);		// body:(Either X ^X) - we store zero, because body of the message is stored in the
+										// current cell, not in the ref.
 
 		// Filling message body
 		builder.store(uint32(0x12345678));	// store functionID of the receiving contract function to process this message.
@@ -80,7 +80,7 @@ contract MessageSender {
 		// Attach the cell with fixed value, that will be checked in the receiving contract.
 		TvmBuilder builder2;
 		builder2.store(address.makeAddrStd(0, 123), uint16(123), uint8(123));
-		builder2.storeUnsigned(123, 11);
+		builder2.storeUint(123, 11);
 
 		TvmBuilder builder3;
 

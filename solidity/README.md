@@ -21,7 +21,7 @@ Contracts can also call other remote contracts. Call `StorageClient.store(Storag
 invoke a public function of another contract. The remote contract `UintStorage` saves the integer
 value of the argument and the caller address in its state variables.
 
-#### 3. [Borrower](https://github.com/tonlabs/samples/blob/master/solidity/3_Borrower.sol): ton transfer
+#### 3. [Borrower](https://github.com/tonlabs/samples/blob/master/solidity/3_Borrower.sol): transfer
 
 This sample demonstrates how currency transfer works. Call `Borrower.askForALoan(Loaner loanerAddress, uint amount)`.
 This requests `amount` of currency from the contract deployed at the specified address.

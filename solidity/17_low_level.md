@@ -56,7 +56,7 @@ In binary form the whole constructor message look like this:
 ```TVM_Message
 ---CommonMsgInfo---
 0                   - int_msg_info$0 - constant value
-1                   - ihr_disabled - true (currently disabled for TON)
+1                   - ihr_disabled - true (currently disabled)
 1                   - bounce - true (we want this message to bounce to the sender in case of error)
 0                   - bounced - false (this message is not bounced)
 

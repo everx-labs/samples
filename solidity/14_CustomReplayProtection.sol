@@ -2,7 +2,6 @@ pragma ever-solidity >= 0.35.0;
 
 // AbiHeader section allows to define which fields are expected to be in the header of inbound message.
 // This fields must be read in the replay protection function.
-pragma AbiHeader time;
 pragma AbiHeader expire;
 
 // This contract demonstrates custom replay protection functionality.
@@ -55,10 +54,10 @@ contract CustomReplaySample {
 
     // Function with predefined name which is used to replace custom replay protection.
     function afterSignatureCheck(TvmSlice body, TvmCell message) private inline returns (TvmSlice) {
-        body.decode(uint64); // The first 64 bits contain timestamp which is usually used to differentiate messages.
+        body.load(uint64); // The first 64 bits contain timestamp which is usually used to differentiate messages.
 
         // check expireAt
-        uint32 expireAt = body.decode(uint32);
+        uint32 expireAt = body.load(uint32);
         require(expireAt > block.timestamp, 101);   // Check whether the message is not expired.
         require(expireAt < block.timestamp + 5 minutes, 102); // Check whether expireAt is not too huge.
 

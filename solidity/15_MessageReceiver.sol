@@ -26,13 +26,13 @@ contract MessageReceiver {
 		// Function loadRefAsSlice() allows to load a cell from slice ref and convert it into a slice.
 		TvmSlice slice2 = slice.loadRefAsSlice();
 		require(slice2.bits() == 267 + 16 + 8 + 11, 103);
-		// Function decode() allows to load arbitrary types from slice.
-		(address addr, uint16 val0, uint8 val1) = slice2.decode(address, uint16, uint8);
+		// Function load() allows to load arbitrary types from slice.
+		(address addr, uint16 val0, uint8 val1) = slice2.load(address, uint16, uint8);
 		require(addr.value == 123, 104);
 		require(val0 == 123, 105);
 		require(val1 == 123, 106);
-		// Function loadUnsigned() allows to load an unsigned integer of arbitrary bitsize.
-		uint val2 = slice2.loadUnsigned(11);
+		// Function loadUint() allows to load an unsigned integer of arbitrary bitsize.
+		uint val2 = slice2.loadUint(11);
 		require(val2 == 123, 107);
 		counter++;
 	}
