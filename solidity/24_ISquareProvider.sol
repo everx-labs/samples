@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.44.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 interface ISquareProvider {

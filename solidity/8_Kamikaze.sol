@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // This sample demonstrates usage of selfdestruct function.
@@ -22,7 +22,7 @@ contract Kamikaze {
 
 	// Due to the modifier checkOwnerAndAccept function sendAllMoney can be
 	// called only by the owner of the contract.
-	function sendAllMoney(address dest) public checkOwnerAndAccept {
+	function sendAllMoney(address dest) external checkOwnerAndAccept {
 		selfdestruct(dest);
 	}
 }

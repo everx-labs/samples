@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // This contract is used to emulate currency transfer destination contract,
@@ -12,7 +12,7 @@ contract CrashContract {
 	}
 
 	// Function that just throws an exception
-	function doCrash() public pure {
+	function doCrash() external pure {
 		revert(101);
 	}
 }

@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 interface Loaner {
@@ -11,7 +11,7 @@ contract LoanerContract is Loaner {
 	// A function to be called from another contract
 	// This function receives parameter 'amount' from another contract and
 	// transfers 'amount' of currency to the caller.
-	function borrow(uint128 amount) public override {
+	function borrow(uint128 amount) external override {
 		// Before 'accept' here can be some checks (e.g: check that msg.sender is in while list)
 		tvm.accept();
 

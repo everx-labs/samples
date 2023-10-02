@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 
 // Contract that constructs message to call another contract function and sends it.
 contract MessageSender {
@@ -20,7 +20,7 @@ contract MessageSender {
 		_;
 	}
 
-	function sendMessage(address anotherContract) public onlyOwnerAndAccept {
+	function sendMessage(address anotherContract) external onlyOwnerAndAccept {
 		// Create an object of TVM type Builder.
 		TvmBuilder builder;
 

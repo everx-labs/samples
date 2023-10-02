@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // Remote contract interface.
@@ -14,7 +14,7 @@ contract UintStorage is Storage {
 	address public clientAddress;    // last caller address.
 
 	// This function can be called only by another contract. There is no 'tvm.accept()'
-	function storeValue(uint v) public override {
+	function storeValue(uint v) external override {
 		// save parameter v to contract's state variable
 		value = v;
 		// save address of callee

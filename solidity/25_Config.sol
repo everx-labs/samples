@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.54.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // Example of a structure with different fields
@@ -37,7 +37,7 @@ contract ConfigContract {
         config = initial_config;
     }
 
-    function change_config(Config new_config) public {
+    function change_config(Config new_config) external {
         // Check that message was signed with contracts key.
         require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();

@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 
 import "19_CasinoInterfaces.sol";
 
@@ -21,9 +21,9 @@ contract Casino is ICasino {
     event TooLowBalance(uint replenishment);
 
     // Error codes: 
-    uint constant ERROR_NO_PUBKEY = 101;
-    uint constant ERROR_SENDER_IS_NOT_OWNER = 102;
-    uint constant ERROR_BAD_ASSURANCE = 103;
+    uint16 constant ERROR_NO_PUBKEY = 101;
+    uint16 constant ERROR_SENDER_IS_NOT_OWNER = 102;
+    uint16 constant ERROR_BAD_ASSURANCE = 103;
 
     // Status codes that returned to the client:
     uint8 constant STATUS_WIN = 0;
@@ -46,8 +46,7 @@ contract Casino is ICasino {
         uint128 casinoAssurance,
         uint128 minimalBet,
         address ownerWallet
-    ) 
-    public {
+    ) {
         // Check that contract's public key is set.
         require(tvm.pubkey() != 0, ERROR_NO_PUBKEY);
         // Check that message has signature (msg.pubkey() is not zero) and message is signed with the owner's private key.
@@ -72,7 +71,7 @@ contract Casino is ICasino {
     }
 
     /// @dev Function for the owner to withdraw all contract's balance that exceeds minimal balance.
-    function withdrawBenefits() public view onlyOwner override {
+    function withdrawBenefits() external view onlyOwner override {
         uint128 minBalance = m_minimalBalance;
         // Check whether balance of the contract exceeds the minimal balance.
         if (address(this).balance < minBalance) {
@@ -91,7 +90,7 @@ contract Casino is ICasino {
     }
 
     /// @dev Function for the owner to get the Casino's random seed.
-    function getSeed() public view onlyOwner override {
+    function getSeed() external view onlyOwner override {
         // Function rnd.getSeed() returns the current random seed.
         uint seed = rnd.getSeed();
         ICasinoOwner(m_ownerWallet).returnSeed(seed);
@@ -159,7 +158,7 @@ contract Casino is ICasino {
 
     /// @notice Start a roulette with bet on a single number.
     /// @param number Number that bet placed on. Should be from 0 to 36.
-    function singleBet(uint8 number) public view override {
+    function singleBet(uint8 number) external view override {
         uint128 bet = msg.value;
         uint8 payoutMultiplier = 36;
         uint128 minBalance = m_minimalBalance;
@@ -186,7 +185,7 @@ contract Casino is ICasino {
     /// 1 = 1 - 12
     /// 2 = 13 - 24
     /// 3 = 25 - 36
-    function dozenBet(uint8 number) public view override {
+    function dozenBet(uint8 number) external view override {
         uint128 bet = msg.value;
         uint8 payoutMultiplier = 3;
         uint128 minBalance = m_minimalBalance;
@@ -216,7 +215,7 @@ contract Casino is ICasino {
     /// 1 = 1-4-7-...-34
     /// 2 = 2-5-8-...-35
     /// 3 = 3-6-9-...-36
-    function columnBet(uint8 number) public view override {
+    function columnBet(uint8 number) external view override {
         uint128 bet = msg.value;
         uint8 payoutMultiplier = 3;
         uint128 minBalance = m_minimalBalance;
@@ -245,7 +244,7 @@ contract Casino is ICasino {
     /// @param isGreat Indicates whether bet is placed on the great half of numbers.
     /// true = 19 - 36
     /// false = 1 - 18
-    function greatSmallBet(bool isGreat) public view override {
+    function greatSmallBet(bool isGreat) external view override {
         uint128 bet = msg.value;
         uint8 payoutMultiplier = 2;
         uint128 minBalance = m_minimalBalance;
@@ -269,7 +268,7 @@ contract Casino is ICasino {
     /// @param isEven Indicates whether bet is placed on the even numbers.
     /// true = even numbers
     /// false = odd numbers
-    function parityBet(bool isEven) public view override {
+    function parityBet(bool isEven) external view override {
         uint128 bet = msg.value;
         uint8 payoutMultiplier = 2;
         uint128 minBalance = m_minimalBalance;
@@ -293,7 +292,7 @@ contract Casino is ICasino {
     /// @param isRed Indicates whether bet is placed on the red numbers.
     /// true = red numbers
     /// false = black numbers
-    function colorBet(bool isRed) public view override {
+    function colorBet(bool isRed) external view override {
         uint128 bet = msg.value;
         uint8 payoutMultiplier = 2;
         uint128 minBalance = m_minimalBalance;
@@ -319,7 +318,7 @@ contract Casino is ICasino {
             minBalance);
     }
 
-    /// @dev Internal funciton to reshuffle Casino's random to be sure in it's honour.
+    /// @dev Internal function to reshuffle Casino's random to be sure in it's honour.
     function reshuffleCasino() private pure {
         uint repeatCnt = 10;
         // `repeat()` construction allows to repeat block of code a given number of times.
@@ -335,7 +334,7 @@ contract Casino is ICasino {
     }
 
     /// @dev Function to replenish Casino's balance.
-    function receiveFunds() public pure override {
+    function receiveFunds() external pure override {
     }
 
     /// @notice receive function just returns funds for not to be mixed up with bet.

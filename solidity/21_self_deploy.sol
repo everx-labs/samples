@@ -1,4 +1,4 @@
-pragma ever-solidity >=0.32.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // This sample shows how the contract can deploy another contract of the same type
@@ -26,7 +26,7 @@ contract SelfDeployer {
         _;
     }
 
-    function deploy(uint _value) onlyOwner public returns (address addr) {
+    function deploy(uint _value) onlyOwner external returns (address addr) {
         TvmCell code = tvm.code();
         addr = new SelfDeployer{
             value: 2 ever,

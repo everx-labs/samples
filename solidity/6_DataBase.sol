@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "6_DBClientInterface.sol";
@@ -21,7 +21,7 @@ contract DataBase {
 	// upon request as an array of integers.
 	// Function sends an array of uint64  with size 'count' to the contract
 	// with address 'receiver'.
-	function sendArray(address receiver, uint64 count) public pure alwaysAccept {
+	function sendArray(address receiver, uint64 count) external pure alwaysAccept {
 		uint64[] arr = new uint64[](count);
 		for (uint64 i = 0; i < count; i++) {
 			arr[i] = i + 1;
@@ -30,7 +30,7 @@ contract DataBase {
 	}
 
 	// Function sends five arrays of uint to the contract with address 'receiver'.
-	function sendFiveArrays(address receiver) public pure alwaysAccept {
+	function sendFiveArrays(address receiver) external pure alwaysAccept {
 		uint[] arr0 = [uint(1)];
 		uint[] arr1 = [uint(2)];
 		uint[] arr2 = [uint(3)];
@@ -40,7 +40,7 @@ contract DataBase {
 	}
 
 	// Function sends five uint256 to the contract with address 'receiver'.
-	function sendFiveUint256(address receiver) public pure alwaysAccept {
+	function sendFiveUint256(address receiver) external pure alwaysAccept {
 		uint256 a0 = 5;
 		uint256 a1 = 4;
 		uint256 a2 = 3;
@@ -65,7 +65,7 @@ contract DataBase {
 	}
 
 	// Function sends an array of structures to the contract with address 'receiver'.
-	function sendStructArray(address receiver) public pure alwaysAccept {
+	function sendStructArray(address receiver) external pure alwaysAccept {
 		MyStruct[] arr = createStructArray();
 		IDataBaseClient(receiver).receiveStructArray{value: ATTACHED_VALUE}(arr);
 	}

@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "13_Interfaces.sol";
@@ -33,7 +33,7 @@ contract BankCollector is IBankCollector {
     }
 
     // Add client to database.
-    function addClient(address addr, uint debtAmount) public onlyOwner {
+    function addClient(address addr, uint debtAmount) external onlyOwner {
         // Mapping member function to obtain value from mapping if it exists.
         optional(ClientInfo) info = clientDB.fetch(addr);
         if (info.hasValue()) {
@@ -46,7 +46,7 @@ contract BankCollector is IBankCollector {
     }
 
     // Function for client to get his debt amount.
-    function getDebtAmount() public override {
+    function getDebtAmount() external override {
         // Mapping member function to obtain value from mapping if it exists.
         optional(ClientInfo) info = clientDB.fetch(msg.sender);
         if (info.hasValue()) {
@@ -57,7 +57,7 @@ contract BankCollector is IBankCollector {
     }
 
     // Function for client to return debt.
-    function receivePayment() public override {
+    function receivePayment() external override {
         address addr = msg.sender;
         // Mapping member function to obtain value from mapping if it exists.
         optional(ClientInfo) info = clientDB.fetch(addr);
@@ -73,7 +73,7 @@ contract BankCollector is IBankCollector {
     }
 
     // Function to demand all expired debts.
-    function demandExpiredDebts() public view onlyOwner {
+    function demandExpiredDebts() external view onlyOwner {
         // Mapping member function to obtain minimal key and associated value from mapping if it exists.
         optional(address, ClientInfo) client = clientDB.min();
         while (client.hasValue()) {

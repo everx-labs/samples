@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 
 import "18_Interfaces.sol";
 
@@ -59,7 +59,7 @@ contract OrderDatabase is IOrderDatabase {
     }
 
     // Public function to create an order.
-    function createAnOrder(uint amount, uint32 duration) public override {
+    function createAnOrder(uint amount, uint32 duration) external override {
         // Remove expired orders.
         removeExpiredOrders();
 
@@ -91,7 +91,7 @@ contract OrderDatabase is IOrderDatabase {
 
 
     // Function to get the first not expired order.
-    function getNextOrder() public checkOwnerAndAccept returns (bool exists, Order nextOrder) {
+    function getNextOrder() external checkOwnerAndAccept returns (bool exists, Order nextOrder) {
         // Remove expired transactions.
         removeExpiredOrders();
 

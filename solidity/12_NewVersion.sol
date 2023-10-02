@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 contract GoodContract {
@@ -10,7 +10,7 @@ contract GoodContract {
 	// constructor is not needed. It won't be called. Because we use this contact to update another.
 	// constructor() {}
 
-	function setValue(uint a, uint b) public checkPubkeyAndAccept {
+	function setValue(uint a, uint b) external checkPubkeyAndAccept {
 		m_value = a * b; // Bug has been fixed here =)
 	}
 
@@ -22,7 +22,7 @@ contract GoodContract {
 	}
 
 	// Function that changes the code of current contract.
-	function updateContractCode(TvmCell newcode) public checkPubkeyAndAccept {
+	function updateContractCode(TvmCell newcode) external checkPubkeyAndAccept {
 		// Runtime function that creates an output action that would change this
 		// smart contract code to that given by cell newcode.
 		tvm.setcode(newcode);

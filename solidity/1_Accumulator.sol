@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 contract Accumulator {
@@ -23,7 +23,7 @@ contract Accumulator {
 	}
 
 	// Function that adds its argument to the state variable.
-	function add(uint value) public checkOwnerAndAccept {
+	function add(uint value) external checkOwnerAndAccept {
 		sum += value;
 	}
 }
