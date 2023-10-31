@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "13_Interfaces.sol";
@@ -37,15 +37,15 @@ contract BankClient is IBankClient {
         _;
     }
 
-    function demandDebt(uint amount) public override onlyCollector {
+    function demandDebt(uint amount) external override onlyCollector {
         IBankCollector(msg.sender).receivePayment{value: uint128(amount)}();
     }
 
-    function obtainDebtAmount() public view onlyOwnerAndAccept {
+    function obtainDebtAmount() external view onlyOwnerAndAccept {
         IBankCollector(bankCollector).getDebtAmount{value: 0.5 ever}();
     }
 
-    function setDebtAmount(uint amount) public override onlyCollector {
+    function setDebtAmount(uint amount) external override onlyCollector {
         debtAmount = amount;
     }
 }

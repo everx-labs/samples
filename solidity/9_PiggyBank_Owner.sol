@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "9_PiggyBank.sol";
@@ -22,13 +22,13 @@ contract Owner {
 
 
 	// Function to deposit money to piggy bank.
-	function addToDeposit(PiggyBank bankAddress, uint128 amount) public view onlyOwner {
+	function addToDeposit(PiggyBank bankAddress, uint128 amount) external view onlyOwner {
 		tvm.accept();
 		bankAddress.deposit{value: amount}();
 	}
 
 	// Function to withdraw money from piggy bank.
-	function withdrawDeposit(PiggyBank bankAddress) public view onlyOwner {
+	function withdrawDeposit(PiggyBank bankAddress) external view onlyOwner {
 		tvm.accept();
 		bankAddress.withdraw();
 	}

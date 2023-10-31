@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 
 import "19_CasinoInterfaces.sol";
 
@@ -21,7 +21,7 @@ contract CasinoOwner is ICasinoOwner {
     }
 
     // Callback function to get seed value from the casino.
-    function returnSeed(uint seed) public override {
+    function returnSeed(uint seed) external override {
         require(msg.sender == m_casino, 101);
         tvm.accept();
         m_casinoSeed = seed;
@@ -33,15 +33,15 @@ contract CasinoOwner is ICasinoOwner {
         _;
     }
 
-    function updateSeed() public view onlyOwner {
+    function updateSeed() external view onlyOwner {
         ICasino(m_casino).getSeed();
     }
 
-    function withdrawBenefits() public view onlyOwner {
+    function withdrawBenefits() external view onlyOwner {
         ICasino(m_casino).withdrawBenefits();
     }
 
-    function replenishCasino(uint128 value) public view onlyOwner {
+    function replenishCasino(uint128 value) external view onlyOwner {
         ICasino(m_casino).receiveFunds{value: value}();
     }
 

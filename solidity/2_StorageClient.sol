@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // import interface 'Storage'
@@ -23,7 +23,7 @@ contract StorageClient {
 		_;
 	}
 
-	function store(Storage storageAddress, uint value) public view checkOwnerAndAccept {
+	function store(Storage storageAddress, uint value) external view checkOwnerAndAccept {
 		// Call the remote contract function with parameter.
 		storageAddress.storeValue(value);
 	}

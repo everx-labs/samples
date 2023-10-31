@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 
 import "18_Interfaces.sol";
 
@@ -31,13 +31,13 @@ contract Client is IClient {
     }
 
     // Function that calls database to create an order.
-    function createAnOrder(uint amount, uint32 duration) public onlyOwnerAndAccept {
+    function createAnOrder(uint amount, uint32 duration) external onlyOwnerAndAccept {
         IOrderDatabase(database).createAnOrder{value: 1 ever}(amount, duration);
         counter++;
     }
 
     // Callback function to set key of the last order.
-    function setOrderKey(uint40 key) public override onlyDatabase {
+    function setOrderKey(uint40 key) external override onlyDatabase {
         orderKey = key;
     }
 }

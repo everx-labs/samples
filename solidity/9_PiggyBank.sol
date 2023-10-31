@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 contract PiggyBank {
@@ -35,12 +35,12 @@ contract PiggyBank {
 	}
 
 	// Function that can be called by anyone.
-	function deposit() public {
+	function deposit() external {
 		balance += uint128(msg.value);
 	}
 
 	// Function that can be called only by the owner after reaching the limit.
-	function withdraw() public checkSenderIsOwner checkBalance {
+	function withdraw() external checkSenderIsOwner checkBalance {
 		tvm.accept();
 		msg.sender.transfer(balance);
 		balance = 0;

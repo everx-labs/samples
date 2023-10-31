@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 
 // Interface of the database contract.
 interface IOrderDatabase {

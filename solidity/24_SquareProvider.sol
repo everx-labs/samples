@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.44.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 import "24_IClient.sol";
 import "24_ISquareProvider.sol";

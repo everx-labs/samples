@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // Import the interface file
@@ -28,25 +28,25 @@ contract BankClient is IBankClient {
 	}
 
 	// This function calls a remote IBank contract to get the credit limit.
-	function getMyCreditLimit(IBank bank) public view checkOwnerAndAccept {
+	function getMyCreditLimit(IBank bank) external view checkOwnerAndAccept {
 		// Call remote contract function.
 		bank.getCreditLimit();
 	}
 
 	// A callback function to set the credit limit.
-	function setCreditLimit(uint limit) public override {
+	function setCreditLimit(uint limit) external override {
 		// Save the credit limit (received from another contract) in the state variable.
 		creditLimit = limit;
 	}
 
 	//This function calls bank contract to ask for a loan.
-	function askForALoan(IBank bank, uint amount) public checkOwnerAndAccept {
+	function askForALoan(IBank bank, uint amount) external checkOwnerAndAccept {
 		balance = address(this).balance;
 		bank.loan(amount);
 	}
 
 	// A callback function to receive requested loan. Function receives the total debt as an argument.
-	function receiveLoan(uint n_totalDebt) public override {
+	function receiveLoan(uint n_totalDebt) external override {
 		value = msg.value;
 		uint n_balance = address(this).balance;
 		require(n_balance > balance);
@@ -55,7 +55,7 @@ contract BankClient is IBankClient {
 	}
 
 	// A callback function to indicate refuse of the loan request. Function receives available limit as an argument.
-	function refusalCallback(uint availableLimit) public override {
+	function refusalCallback(uint availableLimit) external override {
 		creditLimit = availableLimit;
 	}
 }

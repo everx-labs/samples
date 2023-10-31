@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 
 // Contract that parses the argument passed to his function.
 contract MessageReceiver {
@@ -16,7 +16,7 @@ contract MessageReceiver {
 
 	// Function to be called from another contract. This function gets TvmCell argument and parses data from it.
 	// Reserved keyword "functionID" allows to set function identifier manually.
-	function receiveMessage(TvmCell cell) public functionID(0x12345678) {
+	function receiveMessage(TvmCell cell) external functionID(0x12345678) {
 		// Function toSlice allows to convert cell into slice.
 		TvmSlice slice = cell.toSlice();
 		// Function size() returns size of data bits and number of refs in slice.

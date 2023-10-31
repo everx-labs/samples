@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.44.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "22_sink.sol";
@@ -16,7 +16,7 @@ contract Sender {
         _;
     }
 
-    function testSend(address dest) onlyOwnerAccept public view {
+    function testSend(address dest) onlyOwnerAccept external view {
         // generates cell which contains message which calls another contract by internal outbound message
         TvmCell message = tvm.buildIntMsg({
             dest: dest,
@@ -30,7 +30,7 @@ contract Sender {
         }
     }
 
-    function testResponsibleSend(address dest) onlyOwnerAccept public view {
+    function testResponsibleSend(address dest) onlyOwnerAccept external view {
         TvmCell message = tvm.buildIntMsg({
             dest: dest,
             value: 1 ever,
@@ -42,7 +42,7 @@ contract Sender {
         tvm.sendrawmsg(message, 0);
     }
 
-    function onReceiveCount(uint count) public {
+    function onReceiveCount(uint count) external {
         // just save received value in state variable
         m_value = count;
     }

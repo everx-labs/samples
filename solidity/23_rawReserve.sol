@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.44.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 contract Reserve {
@@ -20,7 +20,7 @@ contract Reserve {
         }
     }
 
-    function reserve0() public {
+    function reserve0() external {
         doHardWork();
         // Contract reserves exactly 1 ever.
         // If contract balance is less than 1 ever, an exception is thrown at the action phase.
@@ -29,7 +29,7 @@ contract Reserve {
         // after a successful call of `reserve0` contract's balance will equal to 1 ever
     }
 
-    function reserve1() public {
+    function reserve1() external {
         doHardWork();
         // Contract reserves all but 1 ever from the remaining balance of the account.
         // If contract balance is less than 1 ever, an exception is thrown at the action phase.
@@ -44,7 +44,7 @@ contract Reserve {
         // Finally, after a successful call of `reserve1` contract's balance will be approximately equal to 4.3 ever
     }
 
-    function reserve2() public {
+    function reserve2() external {
         doHardWork();
         // contract reserves at most 1 ever. Never throws exceptions
         tvm.rawReserve(1 ever, 0 + 2);
@@ -52,7 +52,7 @@ contract Reserve {
         // after a successful call of `reserve2` contract's balance will be less than or equal to 1 ever
     }
 
-    function reserve3() public {
+    function reserve3() external {
         doHardWork();
         // Contract reserves all but 1 ever from the remaining balance of the account
         // or 0 ever if remaining balance less than 1 ever.
@@ -61,7 +61,7 @@ contract Reserve {
         msg.sender.transfer({value: 0, flag: 128});
     }
 
-    function reserve12() public {
+    function reserve12() external {
         doHardWork();
         tvm.rawReserve(0.3 ever, 4 + 8);
         msg.sender.transfer({value: 0, flag: 128});

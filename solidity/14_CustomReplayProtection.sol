@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 
 // AbiHeader section allows to define which fields are expected to be in the header of inbound message.
 // This fields must be read in the replay protection function.
@@ -96,7 +96,7 @@ contract CustomReplaySample {
     //  4) calling the modifier `saveMessage`
     //  5) calling the function (`storeValue`) body
     //  6) calling the modifier clear
-    function storeValue(uint newValue) public onlyOwner accept saveMessage clear {
+    function storeValue(uint newValue) external onlyOwner accept saveMessage clear {
         value = newValue;
     }
 }

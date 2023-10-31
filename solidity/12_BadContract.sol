@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 contract ContractWithBug {
@@ -14,7 +14,7 @@ contract ContractWithBug {
 		tvm.accept();
 	}
 
-	function setValue(uint a, uint b) public checkPubkeyAndAccept {
+	function setValue(uint a, uint b) external checkPubkeyAndAccept {
 		m_value = a + b; // there is bug. It will be fixed in next version of contract. See 12_NewVersion.sol
 	}
 
@@ -26,7 +26,7 @@ contract ContractWithBug {
 	}
 
 	// Function that changes the code of the contract.
-	function updateContractCode(TvmCell newcode) public view checkPubkeyAndAccept {
+	function updateContractCode(TvmCell newcode) external view checkPubkeyAndAccept {
 		// Runtime function that creates an output action that would change this
 		// smart contract code to that given by cell newcode.
 		tvm.setcode(newcode);

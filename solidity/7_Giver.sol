@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "7_CrashContract.sol";
@@ -34,18 +34,18 @@ contract Giver {
 
 	// This function can transfer currency to an existing contract with fallback
 	// function.
-	function transferToAddress(address destination, uint128 value) public view checkOwnerAndAccept {
+	function transferToAddress(address destination, uint128 value) external view checkOwnerAndAccept {
 		destination.transfer(value);
 	}
 
 	// This function calls an AbstractContract which would case a crash and call of onBounce function.
-	function transferToAbstractContract(address destination, uint amount) public view checkOwnerAndAccept {
+	function transferToAbstractContract(address destination, uint amount) external view checkOwnerAndAccept {
 		AbstractContract(destination).receiveTransfer{value: uint128(amount)}(123);
 	}
 
 	// This function call a CrashContract's function which would cause a crash during transaction
 	// and call of onBounce function.
-	function transferToCrashContract(address destination, uint amount) public view checkOwnerAndAccept {
+	function transferToCrashContract(address destination, uint amount) external view checkOwnerAndAccept {
 		CrashContract(destination).doCrash{value: uint128(amount)}();
 	}
 

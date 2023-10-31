@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.35.0;
+pragma ever-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // Import the interface file
@@ -34,13 +34,13 @@ contract Bank is IBank {
 	}
 
 	// Set credit limit for the address.
-	function setAllowance(address bankClientAddress, uint amount) public checkOwnerAndAccept {
+	function setAllowance(address bankClientAddress, uint amount) external checkOwnerAndAccept {
         // Store allowed credit limit for the address in state variable mapping.
 		clientDB[bankClientAddress].allowed = amount;
 	}
 
 	// Get allowed credit limit for the caller.
-	function getCreditLimit() public override {
+	function getCreditLimit() external override {
 		// Cast caller to IMyContractCallback and invoke callback function
 		// with value obtained from state variable mapping.
         CreditInfo borrowerInfo = clientDB[msg.sender];
@@ -49,7 +49,7 @@ contract Bank is IBank {
 
 	// This function checks whether message sender's available limit could be loaned
 	// and sends currency.
-	function loan(uint amount) public override {
+	function loan(uint amount) external override {
 		CreditInfo borrowerInfo = clientDB[msg.sender];
 		if (borrowerInfo.used + amount > borrowerInfo.allowed) {
 		    IBankClient(msg.sender).refusalCallback(borrowerInfo.allowed - borrowerInfo.used);
