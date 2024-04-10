@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 
 // Interface of the contract we want to interact with.
 interface AnotherContract {
@@ -43,18 +43,18 @@ contract MyContract {
 		// Start decoding the message. First 32 bits store the function id.
 		uint32 functionId = slice.load(uint32);
 
-		// Api function tvm.functionId() allows to calculate function id by function name.
-		if (functionId == tvm.functionId(AnotherContract.receiveMoney)) {
-			//Function loadFunctionParams() allows to load function parameters from the slice.
+		// Api function abi.functionId() allows to calculate function id by function name.
+		if (functionId == abi.functionId(AnotherContract.receiveMoney)) {
+			//Function decodeFunctionParams() allows to load function parameters from the slice.
 			// After decoding we store the arguments of the function in the state variables.
-			invalidMoneyAmount = slice.loadFunctionParams(AnotherContract.receiveMoney);
-		} else if (functionId == tvm.functionId(AnotherContract.receiveValues)) {
-			(invalidValue1, invalidValue2, invalidValue3) = slice.loadFunctionParams(AnotherContract.receiveValues);
+			invalidMoneyAmount = abi.decodeFunctionParams(AnotherContract.receiveMoney, slice);
+		} else if (functionId == abi.functionId(AnotherContract.receiveValues)) {
+			(invalidValue1, invalidValue2, invalidValue3) = abi.decodeFunctionParams(AnotherContract.receiveValues, slice);
 		}
 	}
 
 	// Function that calls another contract function and attaches some currency to the call.
-	function sendMoney(address dest, uint128 amount) external view onlyOwnerAndAccept {
+	function sendMoney(address dest, coins amount) external view onlyOwnerAndAccept {
 		AnotherContract(dest).receiveMoney{value: amount}(amount);
 	}
 

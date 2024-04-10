@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 
 // Contract that constructs message to call another contract function and sends it.
 contract MessageSender {

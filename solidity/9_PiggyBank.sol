@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 contract PiggyBank {
@@ -7,7 +7,7 @@ contract PiggyBank {
 	// piggybank's minimal limit to withdraw;
 	uint public limit;
 	// piggybank's deposit balance.
-	uint128 public balance;
+	coins public balance;
 
 	// Constructor saves the address of the contract owner in a state variable and
 	// initializes the limit and the balance.
@@ -36,7 +36,7 @@ contract PiggyBank {
 
 	// Function that can be called by anyone.
 	function deposit() external {
-		balance += uint128(msg.value);
+		balance += msg.value;
 	}
 
 	// Function that can be called only by the owner after reaching the limit.

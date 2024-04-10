@@ -1,10 +1,10 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // Interface to the bank client.
 interface IBankClient {
-    function demandDebt(uint amount) external;
-    function setDebtAmount(uint amount) external;
+    function demandDebt(coins amount) external;
+    function setDebtAmount(coins amount) external;
 }
 
 // Interface to the bank collector.

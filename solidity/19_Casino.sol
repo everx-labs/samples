@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 
 import "19_CasinoInterfaces.sol";
 
@@ -144,7 +144,7 @@ contract Casino is ICasino {
     }
 
     /// @dev Internal function that performs after roll actions.
-    function finishBet(bool hasWon, uint128 payout, uint8 rouletteNumber, uint128 minBalance) private pure {
+    function finishBet(bool hasWon, coins payout, uint8 rouletteNumber, uint128 minBalance) private pure {
         if (hasWon) {
             if (address(this).balance - payout < minBalance) {
                 emit TooLowBalance(minBalance - address(this).balance + payout);
@@ -159,7 +159,7 @@ contract Casino is ICasino {
     /// @notice Start a roulette with bet on a single number.
     /// @param number Number that bet placed on. Should be from 0 to 36.
     function singleBet(uint8 number) external view override {
-        uint128 bet = msg.value;
+        coins bet = msg.value;
         uint8 payoutMultiplier = 36;
         uint128 minBalance = m_minimalBalance;
         // Perform preliminary checks.
@@ -186,7 +186,7 @@ contract Casino is ICasino {
     /// 2 = 13 - 24
     /// 3 = 25 - 36
     function dozenBet(uint8 number) external view override {
-        uint128 bet = msg.value;
+        coins bet = msg.value;
         uint8 payoutMultiplier = 3;
         uint128 minBalance = m_minimalBalance;
         // Perform preliminary checks.
@@ -216,7 +216,7 @@ contract Casino is ICasino {
     /// 2 = 2-5-8-...-35
     /// 3 = 3-6-9-...-36
     function columnBet(uint8 number) external view override {
-        uint128 bet = msg.value;
+        coins bet = msg.value;
         uint8 payoutMultiplier = 3;
         uint128 minBalance = m_minimalBalance;
         // Perform preliminary checks.
@@ -245,7 +245,7 @@ contract Casino is ICasino {
     /// true = 19 - 36
     /// false = 1 - 18
     function greatSmallBet(bool isGreat) external view override {
-        uint128 bet = msg.value;
+        coins bet = msg.value;
         uint8 payoutMultiplier = 2;
         uint128 minBalance = m_minimalBalance;
         // Perform preliminary checks.
@@ -269,7 +269,7 @@ contract Casino is ICasino {
     /// true = even numbers
     /// false = odd numbers
     function parityBet(bool isEven) external view override {
-        uint128 bet = msg.value;
+        coins bet = msg.value;
         uint8 payoutMultiplier = 2;
         uint128 minBalance = m_minimalBalance;
         // Perform preliminary checks.
@@ -293,7 +293,7 @@ contract Casino is ICasino {
     /// true = red numbers
     /// false = black numbers
     function colorBet(bool isRed) external view override {
-        uint128 bet = msg.value;
+        coins bet = msg.value;
         uint8 payoutMultiplier = 2;
         uint128 minBalance = m_minimalBalance;
         // Perform preliminary checks.
@@ -320,7 +320,7 @@ contract Casino is ICasino {
 
     /// @dev Internal function to reshuffle Casino's random to be sure in it's honour.
     function reshuffleCasino() private pure {
-        uint repeatCnt = 10;
+        uint31 repeatCnt = 10;
         // `repeat()` construction allows to repeat block of code a given number of times.
         // It works more economical than `while` or `for`, but allows to repeat construction
         // only definite number of times, because it reads the value of the argument at the

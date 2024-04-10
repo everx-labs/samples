@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "11_SimpleContract.sol";
@@ -23,33 +23,11 @@ contract ContractDeployer {
 		_;
 	}
 
-	// First variant of contract deployment.
-	function deployWithPubkey(
-		TvmCell stateInit,
-		uint256 pubkey,
-		uint128 initialBalance,
-		uint paramA,
-		uint32 paramB
-	)
-		public
-		checkOwnerAndAccept
-	{
-		// Runtime function that inserts public key into contracts data field.
-		TvmCell stateInitWithKey = tvm.insertPubkey(stateInit, pubkey);
-
-		// Deploy a contract and call it's constructor.
-		address addr = new SimpleContract{stateInit: stateInitWithKey, value: initialBalance}(paramA, paramB);
-
-		// save address
-		contracts.push(addr);
-	}
-
-
-	// Second variant of contract deployment.
+	// The first option of contract deployment.
 	function deployFromCodeAndData(
 		TvmCell code,
 		TvmCell data,
-		uint128 initialBalance,
+		coins initialBalance,
 		uint paramA,
 		uint32 paramB
 	)
@@ -57,7 +35,7 @@ contract ContractDeployer {
 		checkOwnerAndAccept
 	{
 		// Runtime function to generate StateInit from code and data cells.
-		TvmCell stateInit = tvm.buildStateInit(code, data);
+		TvmCell stateInit = abi.encodeStateInit(code, data);
 
 		address addr = new SimpleContract{stateInit: stateInit, value: initialBalance}(paramA, paramB);
 
@@ -66,11 +44,11 @@ contract ContractDeployer {
 	}
 
 
-	// Third variant of contract deployment.
+	// The second option of contract deployment.
 	function deployWithMsgBody(
 		TvmCell stateInit,
 		int8 wid,
-		uint128 initialBalance,
+		coins initialBalance,
 		TvmCell payload
 	)
 		public

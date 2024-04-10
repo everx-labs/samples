@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // Import the interface file
@@ -40,7 +40,7 @@ contract BankClient is IBankClient {
 	}
 
 	//This function calls bank contract to ask for a loan.
-	function askForALoan(IBank bank, uint amount) external checkOwnerAndAccept {
+	function askForALoan(IBank bank, coins amount) external checkOwnerAndAccept {
 		balance = address(this).balance;
 		bank.loan(amount);
 	}

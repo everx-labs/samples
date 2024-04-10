@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "13_Interfaces.sol";
@@ -28,12 +28,12 @@ contract BankCollector is IBankCollector {
 
     // Struct for storing the credit information.
     struct ClientInfo {
-        uint debtAmount;
+        coins debtAmount;
         uint32 expiredTimestamp;
     }
 
     // Add client to database.
-    function addClient(address addr, uint debtAmount) external onlyOwner {
+    function addClient(address addr, coins debtAmount) external onlyOwner {
         // Mapping member function to obtain value from mapping if it exists.
         optional(ClientInfo) info = clientDB.fetch(addr);
         if (info.hasValue()) {

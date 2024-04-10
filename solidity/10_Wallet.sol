@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 /// @title Simple wallet
@@ -38,7 +38,7 @@ contract Wallet {
     /// @param dest Transfer target address.
     /// @param value Nanoevers value to transfer.
     /// @param bounce Flag that enables bounce message in case of target contract error.
-    function sendTransaction(address dest, uint128 value, bool bounce) external view checkOwnerAndAccept {
+    function sendTransaction(address dest, coins value, bool bounce) external view checkOwnerAndAccept {
          // Runtime function that allows to make a transfer with arbitrary settings.
         dest.transfer(value, bounce, 0);
     }

@@ -1,11 +1,11 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 //Contract interface file
 
 interface IBank {
 	function getCreditLimit() external;
-	function loan(uint amount) external;
+	function loan(coins amount) external;
 }
 
 interface IBankClient {

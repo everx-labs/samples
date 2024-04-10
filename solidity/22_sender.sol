@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "22_sink.sol";
@@ -18,7 +18,7 @@ contract Sender {
 
     function testSend(address dest) onlyOwnerAccept external view {
         // generates cell which contains message which calls another contract by internal outbound message
-        TvmCell message = tvm.buildIntMsg({
+        TvmCell message = abi.encodeIntMsg({
             dest: dest,
             value: 1 ever,
             call: {Sink.inc, 5, 22},
@@ -31,7 +31,7 @@ contract Sender {
     }
 
     function testResponsibleSend(address dest) onlyOwnerAccept external view {
-        TvmCell message = tvm.buildIntMsg({
+        TvmCell message = abi.encodeIntMsg({
             dest: dest,
             value: 1 ever,
             call: {Sink.incAndGetCount, Sender.onReceiveCount, 15, 22}, // here we must set callback function 'onReceiveCount'

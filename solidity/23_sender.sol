@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "23_rawReserve.sol";
@@ -11,7 +11,7 @@ contract MyContract {
         _;
     }
 
-    function transfer(address addr, uint128 value) external view onlyOwnerAccept {
+    function transfer(address addr, coins value) external view onlyOwnerAccept {
         addr.transfer({value: value, flag: 1});
     }
 

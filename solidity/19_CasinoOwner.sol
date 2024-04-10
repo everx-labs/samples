@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 
 import "19_CasinoInterfaces.sol";
 
@@ -41,7 +41,7 @@ contract CasinoOwner is ICasinoOwner {
         ICasino(m_casino).withdrawBenefits();
     }
 
-    function replenishCasino(uint128 value) external view onlyOwner {
+    function replenishCasino(coins value) external view onlyOwner {
         ICasino(m_casino).receiveFunds{value: value}();
     }
 

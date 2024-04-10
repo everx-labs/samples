@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 
 // AbiHeader section allows to define which fields are expected to be in the header of inbound message.
 // This fields must be read in the replay protection function.

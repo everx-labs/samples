@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 import "3_Loaner.sol";
@@ -22,7 +22,7 @@ contract Borrower {
 		_;
 	}
 
-	function askForALoan(Loaner loanerAddress, uint128 amount) external view checkOwnerAndAccept {
+	function askForALoan(Loaner loanerAddress, coins amount) external view checkOwnerAndAccept {
 		// Call the remote contract function with parameter.
 		loanerAddress.borrow(amount);
 	}

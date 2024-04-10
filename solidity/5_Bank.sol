@@ -1,4 +1,4 @@
-pragma ever-solidity >= 0.72.0;
+pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 // Import the interface file
@@ -49,14 +49,14 @@ contract Bank is IBank {
 
 	// This function checks whether message sender's available limit could be loaned
 	// and sends currency.
-	function loan(uint amount) external override {
+	function loan(coins amount) external override {
 		CreditInfo borrowerInfo = clientDB[msg.sender];
 		if (borrowerInfo.used + amount > borrowerInfo.allowed) {
 		    IBankClient(msg.sender).refusalCallback(borrowerInfo.allowed - borrowerInfo.used);
 		} else {
 		    // '{value: amount}' allows to attach arbitrary amount of currency to the message
 		    // if it is not set amount would be set to 10 000 000 nanoever
-		    IBankClient(msg.sender).receiveLoan{value: uint128(amount)}(borrowerInfo.used + amount);
+		    IBankClient(msg.sender).receiveLoan{value: amount}(borrowerInfo.used + amount);
 		    clientDB[msg.sender].used += amount;
 		}
 	}
