@@ -2,7 +2,6 @@ pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
 /// @title Simple wallet
-/// @author Tonlabs
 contract Wallet {
     /*
      Exception codes:
@@ -18,7 +17,6 @@ contract Wallet {
         require(msg.pubkey() == tvm.pubkey(), 102);
         tvm.accept();
     }
-
 
     // Modifier that allows function to accept external call only if it was signed
     // with contract owner's public key.

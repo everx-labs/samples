@@ -8,6 +8,10 @@ interface Loaner {
 // This contract implements 'Loaner' interface.
 contract LoanerContract is Loaner {
 
+	constructor () {
+		tvm.accept();
+	}
+
 	// A function to be called from another contract
 	// This function receives parameter 'amount' from another contract and
 	// transfers 'amount' of currency to the caller.

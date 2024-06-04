@@ -7,8 +7,9 @@ contract GoodContract {
 	uint public m_value;
 	mapping(uint => uint) m_map; // we added this new contract's state variable
 
-	// constructor is not needed. It won't be called. Because we use this contact to update another.
-	// constructor() {}
+	constructor () {
+		tvm.accept();
+	}
 
 	function setValue(uint a, uint b) external checkPubkeyAndAccept {
 		m_value = a * b; // Bug has been fixed here =)

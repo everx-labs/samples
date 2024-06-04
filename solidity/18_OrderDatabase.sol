@@ -89,7 +89,6 @@ contract OrderDatabase is IOrderDatabase {
         IClient(msg.sender).setOrderKey(key);
 	}
 
-
     // Function to get the first not expired order.
     function getNextOrder() external checkOwnerAndAccept returns (bool exists, Order nextOrder) {
         // Remove expired transactions.

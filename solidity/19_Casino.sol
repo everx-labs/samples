@@ -3,7 +3,6 @@ pragma tvm-solidity >= 0.72.0;
 import "19_CasinoInterfaces.sol";
 
 /// @title Casino roulette smart contract.
-/// @author TONLabs (https://github.com/tonlabs)
 
 // Possible bets:                                                                     | Payout (number of bets in addition to the original bet)
 // 1) Single - bet on the single number from 0 to 36;                                 | 35
@@ -12,7 +11,6 @@ import "19_CasinoInterfaces.sol";
 // 4) Great/Small - bet on righteen numbers: from 1 to 18 or from 19 to 36;           | 1
 // 5) Even/Odd - bet on all even or odd numbers;                                      | 1
 // 6) Red/Black - bet on all red or black numbers.                                    | 1
-
 
 contract Casino is ICasino {
 

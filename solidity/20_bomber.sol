@@ -10,6 +10,10 @@ contract Bomber is IBomber {
 
     mapping(uint => uint) map;
 
+    constructor () {
+        tvm.accept();
+    }
+
     modifier onlyOwner {
         // Check that function is called by external message
         require(tvm.pubkey() != 0 && tvm.pubkey() == msg.pubkey());

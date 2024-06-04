@@ -13,6 +13,10 @@ contract UintStorage is Storage {
 	uint public value;                // storage for a uint value;
 	address public clientAddress;    // last caller address.
 
+	constructor () {
+		tvm.accept();
+	}
+
 	// This function can be called only by another contract. There is no 'tvm.accept()'
 	function storeValue(uint v) external override {
 		// save parameter v to contract's state variable

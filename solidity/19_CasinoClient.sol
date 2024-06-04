@@ -3,8 +3,6 @@ pragma tvm-solidity >= 0.72.0;
 import "19_CasinoInterfaces.sol";
 
 /// @title Casino owner smart contract.
-/// @author TONLabs (https://github.com/tonlabs)
-
 
 contract CasinoClient is ICasinoClient {
 
@@ -65,6 +63,5 @@ contract CasinoClient is ICasinoClient {
 
     receive() external pure {}
 }
-
 
 

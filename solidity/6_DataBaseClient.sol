@@ -11,6 +11,10 @@ contract DataBaseClient is IDataBaseClient {
 	// State variable that can be used to check received values.
 	uint public checkSum = 0;
 
+	constructor () {
+		tvm.accept();
+	}
+
 	// Function receives an array of uint64 values.
 	function receiveArray(uint64[] arr) external override {
 		uint sum = 0;

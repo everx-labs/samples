@@ -6,15 +6,15 @@ Convenient way to deploy contracts from the contract is using `new ContractName{
 * Either `stateInit` or `code` must be set. Option `stateInit` is an initial state of the contract that contains `code` and `data`. Option `code` contains the code of the contract.
 * `value` - funds that will be transferred to the deployed address.
 
-Also [another options](https://github.com/tonlabs/TON-Solidity-Compiler/blob/master/API.md#deploy-via-new) can be set.
+Also, [another options](https://github.com/everx-labs/TVM-Solidity-Compiler/blob/master/API.md#deploy-via-new) can be set.
 
-It needs a solidity source code (*.sol file) and `stateInit` or `code` in base64 to deploy a contract from the contract. Solidity source code  should be imported into the contract that will deploy new contract. `.code` file should be compiled with [tvm_linker](https://github.com/tonlabs/TVM-linker) to get `stateInit`/`code` in base64 of new contract.
+It needs a solidity source code (*.sol file) and `stateInit` or `code` in base64 to deploy a contract from the contract. Solidity source code  should be imported into the contract that will deploy new contract. `.code` file should be compiled with [tvm_linker](https://github.com/everx-labs/TVM-linker) to get `stateInit`/`code` in base64 of new contract.
 
-Let's consider how deploy a [SimpleWallet](https://github.com/tonlabs/samples/blob/master/solidity/17_SimpleWallet.sol) contract from the [WalletProducer](https://github.com/tonlabs/samples/blob/master/solidity/17_ContractProducer.sol) contract. In `WalletProducer` contract there are two public functions that deploy contracts:
+Let's consider how deploy a [SimpleWallet](https://github.com/everx-labs/samples/blob/master/solidity/17_SimpleWallet.sol) contract from the [WalletProducer](https://github.com/everx-labs/samples/blob/master/solidity/17_ContractProducer.sol) contract. In `WalletProducer` contract there are two public functions that deploy contracts:
 1. `deployWalletUsingCode` - uses `code` to deploy a contract.
 2. `deployWalletUsingStateInit` - uses `stateInit` to deploy a contract.
 
-**Note**: linker creates a `*.tvc` file. This file represents `stateInit`. `stateInit` has such fields as `code`, `data` etc. In first case we create `stateInit` onchain in smart contract's construction `new SimpleWallet{code: ..., ...}(...)`. In second case we create `stateInit` offchain using tonos-cli to set public key and static variables in the `data` field of the `stateInit`.
+**Note**: linker creates a `*.tvc` file. This file represents `stateInit`. `stateInit` has such fields as `code`, `data` etc. In first case we create `stateInit` onchain in smart contract's construction `new SimpleWallet{code: ..., ...}(...)`. In second case we create `stateInit` offchain using ever-cli to set public key and static variables in the `data` field of the `stateInit`.
 
 ## 1. Compiling and deploying the contract deployer (`WalletProducer`)
 
@@ -26,14 +26,14 @@ solc 17_ContractProducer.sol
 tvm_linker compile 17_ContractProducer.code --lib stdlib_sol.tvm -o 17_ContractProducer.tvc
 
 # Generate the keypair, set public key for ContractProducer contract and obtain contract address
-tonos-cli genaddr --save --genkey key0.key 17_ContractProducer.tvc 17_ContractProducer.abi.json
+ever-cli genaddr --save --genkey key0.key 17_ContractProducer.tvc 17_ContractProducer.abi.json
 ```
 
 **Note**: `--genkey` option can be changed to `--setkey` if you have a file with a keypair and want to use it.
 Last command updates the 17_ContractProducer.tvc file and prints the address of the contract (it's just hash of the updated file). Let's denote address of the WalletProducer as `<PRODUCER_ADDRESS>`. Then send funds on `<PRODUCER_ADDRESS>` address from your wallet or giver and deploy the `WalletProducer` contract:
 
 ```bash
-tonos-cli deploy --sign key.key --abi 17_ContractProducer.abi.json 17_ContractProducer.tvc '{}'
+ever-cli deploy --sign key.key --abi 17_ContractProducer.abi.json 17_ContractProducer.tvc '{}'
 ```
 
 ## 2. Compiling and linking `SimpleWallet` contract
@@ -62,13 +62,13 @@ Generate 2 public keys required to deploy a `SimpleWallet` contract:
 
 ```bash
 # Generate a seed phrase (it is used in other commands and denoted as <SEED_PHRASE> 
-tonos-cli genphrase
+ever-cli genphrase
 
 # Genrate a keypair from the seed phrase and save it to the file
-tonos-cli getkeypair key1.key "<SEED_PHRASE>"
+ever-cli getkeypair key1.key "<SEED_PHRASE>"
 
-tonos-cli genphrase
-tonos-cli getkeypair key2.key "<SEED_PHRASE2>"
+ever-cli genphrase
+ever-cli getkeypair key2.key "<SEED_PHRASE2>"
 ```
 
 After this commands the keypair file can be opened and a public key can be copied from it to use later.
@@ -85,15 +85,15 @@ Example of the file with a keypair:
 Call function `deployWalletUsingCode` to deploy a new `SimpleWallet` contract:
 
 ```bash
-tonos-cli call --sign key0.key --abi 17_ContractProducer.abi.json \
+ever-cli call --sign key0.key --abi 17_ContractProducer.abi.json \
     <PRODUCER_ADDRESS> deployWalletUsingCode \
     '{"walletCode":"<CODE_IN_BASE64>","publicKey0":"0x<PUBKEY_0>","publicKey1":"0x<PUBKEY_1>"}'
 ```
 
-This call returns address of the new `SimpleWallet` contract (It's denoted as `<WALLET_ADDRESS>`). Then the new contract is successfully deployed, that can be checked by obtaining it's account state with `tonos-cli`:
+This call returns address of the new `SimpleWallet` contract (It's denoted as `<WALLET_ADDRESS>`). Then the new contract is successfully deployed, that can be checked by obtaining it's account state with `ever-cli`:
 
 ```bash
-tonos-cli account <WALLET_ADDRESS>
+ever-cli account <WALLET_ADDRESS>
 ```
 
 Example of the last command output:
@@ -110,8 +110,8 @@ code_hash:     b4ac0a0f61ffddc1db5cec6c66abade1064b12dc528795699bc7cd0791b7868e
 `SimpleWallet` can be called now using its abi:
 
 ```bash
-tonos-cli call --abi 17_SimpleWallet.abi.json --sign key1.key <WALLET_ADDRESS> sendTransaction '{"destination":"<WALLET_ADDRESS>","value":"100_000_000","bounce":"false","flag":1}'
-tonos-cli call --abi 17_SimpleWallet.abi.json --sign key2.key <WALLET_ADDRESS> sendTransaction '{"destination":"<WALLET_ADDRESS>","value":"100_000_000","bounce":"false","flag":1}'
+ever-cli call --abi 17_SimpleWallet.abi.json --sign key1.key <WALLET_ADDRESS> sendTransaction '{"destination":"<WALLET_ADDRESS>","value":"100_000_000","bounce":"false","flag":1}'
+ever-cli call --abi 17_SimpleWallet.abi.json --sign key2.key <WALLET_ADDRESS> sendTransaction '{"destination":"<WALLET_ADDRESS>","value":"100_000_000","bounce":"false","flag":1}'
 ```
 
 ### 3.2 Using `stateInit` to deploy a contract from the contract
@@ -119,7 +119,7 @@ tonos-cli call --abi 17_SimpleWallet.abi.json --sign key2.key <WALLET_ADDRESS> s
 Let's set a public key and static variables in the `data` field of the `SimpleWallet` contract `stateInit` struct.
 
 ```bash
-tonos-cli genaddr --setkey key1.key 17_SimpleWallet.tvc 17_SimpleWallet.abi.json --save --data '{"m_id":"444", "m_creator":"<PRODUCER_ADDRESS>"}'
+ever-cli genaddr --setkey key1.key 17_SimpleWallet.tvc 17_SimpleWallet.abi.json --save --data '{"m_id":"444", "m_creator":"<PRODUCER_ADDRESS>"}'
 ```
 
 `*.tvc` file represents contract's `stateInit`. Get `stateInit` in base64:
@@ -132,11 +132,11 @@ Let's denote output of the last command as `<STATEINIT_IN_BASE64>`.
 Call function `deployWalletUsingStateInit` to deploy a new `SimpleWallet` contract:
 
 ```bash
-tonos-cli call --sign key0.key --abi 17_ContractProducer.abi.json <PRODUCER_ADDRESS> deployWalletUsingStateInit '{"stateInit":"<STATEINIT_IN_BASE64>","publicKey1":"0x<PUBKEY_1>"}'
+ever-cli call --sign key0.key --abi 17_ContractProducer.abi.json <PRODUCER_ADDRESS> deployWalletUsingStateInit '{"stateInit":"<STATEINIT_IN_BASE64>","publicKey1":"0x<PUBKEY_1>"}'
 ```
 
 This call returns address of the new `SimpleWallet` contract.  Then the new contract is successfully deployed, that can be checked as in previous section.
 
 #  See also:
 
- * [Low level constructor message structure](https://github.com/tonlabs/samples/blob/master/solidity/17_low_level.md)
+ * [Low level constructor message structure](https://github.com/everx-labs/samples/blob/master/solidity/17_low_level.md)

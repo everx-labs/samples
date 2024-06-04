@@ -18,7 +18,6 @@ contract SimpleWallet {
     // Address of contract created this contract.
     address static public m_creator;
 
-
     // This constructor is called by internal message
     constructor(uint n, uint256 secondPubkey) {
         // Note: here static variables are already set.

@@ -8,6 +8,10 @@ contract DataBase {
 
 	uint64 constant ATTACHED_VALUE = 1 ever;
 
+	constructor () {
+		tvm.accept();
+	}
+
 	// Modifier that allows public function to accept all external messages.
 	modifier alwaysAccept {
 		// Runtime function that allows contract to process inbound messages spending

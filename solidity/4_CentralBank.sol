@@ -5,6 +5,10 @@ import "4_interfaces.sol";
 // This contract implements 'IBank' interface.
 contract CentralBank is ICentralBank {
 
+	constructor () {
+		tvm.accept();
+	}
+
 	// This function receives the code of currency and returns to the sender exchange rate
 	// via calling a callback function.
 	function getExchangeRate(uint16 currency) external override {

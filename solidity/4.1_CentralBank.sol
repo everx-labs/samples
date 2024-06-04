@@ -4,6 +4,10 @@ pragma AbiHeader expire;
 // This contract implements 'IBank' interface.
 contract CentralBank {
 
+	constructor () {
+		tvm.accept();
+	}
+
 	// This function receives the code of currency and returns to the sender exchange rate
 	// via callback function.
 	function getExchangeRate(uint16 currency) external pure responsible returns (uint32) {

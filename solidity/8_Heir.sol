@@ -7,6 +7,10 @@ contract Heir {
 	// State variable storing the number of times receive was called.
 	uint public heritageCounter;
 
+	constructor () {
+		tvm.accept();
+	}
+
 	// Receive function that will be called after Kamikaze contract self-destruction.
     receive() external {
 		heritageCounter++;

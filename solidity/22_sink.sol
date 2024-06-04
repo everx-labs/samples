@@ -6,7 +6,6 @@ contract Sink {
     uint public m_counter;
     uint public m_value;
 
-
     constructor() onlyOwnerAccept {
     }
 

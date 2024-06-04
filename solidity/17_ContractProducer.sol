@@ -65,5 +65,4 @@ contract WalletProducer {
 		++m_deployedNumber;
 	}
 
-
 }

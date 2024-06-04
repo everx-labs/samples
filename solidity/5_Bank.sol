@@ -17,7 +17,6 @@ contract Bank is IBank {
 	// State variable storing a credit information for addresses.
 	mapping(address => CreditInfo) clientDB;
 
-
 	constructor() {
 		// check that contract's public key is set
 		require(tvm.pubkey() != 0, 101);

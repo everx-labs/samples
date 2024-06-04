@@ -5,6 +5,10 @@ import "23_rawReserve.sol";
 
 contract MyContract {
 
+    constructor () {
+        tvm.accept();
+    }
+
     modifier onlyOwnerAccept {
         require(tvm.pubkey() != 0 && tvm.pubkey() == msg.pubkey());
         tvm.accept();
@@ -30,6 +34,5 @@ contract MyContract {
             revert(101);
         }
     }
-
 
 }

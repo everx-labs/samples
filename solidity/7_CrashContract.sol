@@ -7,6 +7,10 @@ contract CrashContract {
 	
 	uint public counter = 0;
 
+	constructor () {
+		tvm.accept();
+	}
+
 	receive() external {
 		++counter;
 	}

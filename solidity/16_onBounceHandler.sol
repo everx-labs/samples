@@ -6,7 +6,6 @@ interface AnotherContract {
 	function receiveValues(uint16 value1, bool value2, uint64 value3) external;
 }
 
-
 // Contract that can handle errors during intercontract communication.
 contract MyContract {
 

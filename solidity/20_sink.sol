@@ -9,6 +9,9 @@ contract Sink is ISink {
     uint a;
     uint b;
 
+    constructor () {
+        tvm.accept();
+    }
 
     receive() external {
         ++counter;
@@ -36,5 +39,3 @@ contract Sink is ISink {
     }
 
 }
-
-

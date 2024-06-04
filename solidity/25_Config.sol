@@ -20,7 +20,6 @@ struct Config {
     mapping(uint128 => address) map;
 }
 
-
 contract ConfigContract {
     
     // State variable that stores current config

@@ -50,7 +50,6 @@ contract MessageSender {
 										// because blockchain software will replace
 										// it with the current smart-contract address
 
-
 		// Function store() allows to store variable of arbitrary type in the builder.
 		builder.store(anotherContract); 	// dest:MsgAddressInt
 
@@ -66,7 +65,6 @@ contract MessageSender {
 		builder.storeUint(0, 4);		// fwd_fee:Grams
 		builder.storeUint(0, 64);		// created_lt:uint64
 		builder.storeUint(0, 32);		// created_at:uint32
-
 
 		builder.storeUint(0, 1);		// init:(Maybe (Either StateInit ^StateInit)) - we store 0, because we don't attach
 										// initial state of a contract.

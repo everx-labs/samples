@@ -20,7 +20,6 @@ contract Owner {
 		_;
 	}
 
-
 	// Function to deposit money to piggy bank.
 	function addToDeposit(PiggyBank bankAddress, coins amount) external view onlyOwner {
 		tvm.accept();

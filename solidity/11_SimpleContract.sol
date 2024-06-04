@@ -1,7 +1,6 @@
 pragma tvm-solidity >= 0.72.0;
 pragma AbiHeader expire;
 
-
 contract SimpleContract {
 
 	uint public m_a;
