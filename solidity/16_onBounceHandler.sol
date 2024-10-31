@@ -36,6 +36,9 @@ contract MyContract {
 	// external/internal message
 	// This function takes the body of the message as an argument.
 	onBounce(TvmSlice slice) external {
+		// The full original message in the first reference
+		slice = slice.loadRef().toSlice();
+
 		// Increase the counter.
 		bounceCounter++;
 

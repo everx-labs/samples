@@ -1,9 +1,11 @@
+# Deprecated
+
 ## Prerequisites
 
 To compile a contract, you first need to get the following libraries and tools.
-- [C++ for TVM compiler, C++ runtime, C++ SDK libraries, C++ driver](https://github.com/tonlabs/TON-Compiler). All libraries and tools are in the same repository.
-- [TVM linker](https://github.com/tonlabs/TVM-linker/).
-- [TONOS CLI](https://github.com/tonlabs/tonos-cli).
+- [C++ for TVM compiler, C++ runtime, C++ SDK libraries, C++ driver](https://github.com/everx-labs/TON-Compiler). All libraries and tools are in the same repository.
+- [TVM linker](https://github.com/everx-labs/TVM-linker/).
+- [TONOS CLI](https://github.com/everx-labs/tonos-cli).
 
 ## Contract in C++
 
@@ -83,7 +85,7 @@ Method's running is syntactically similar to deploying, but the name of the meth
 ```
 tonos-cli call --abi Contract.abi <RawAddress> '{<call arguments>}' --sign key
 ```
-Note that a contract method might also be called internally (i.e. by another contract), see [Giver](https://github.com/tonlabs/samples/blob/master/cpp/Giver) example to learn more.
+Note that a contract method might also be called internally (i.e. by another contract), see [Giver](https://github.com/everx-labs/samples/blob/master/cpp/Giver) example to learn more.
 
 ## Getting test Coins
 
@@ -178,24 +180,24 @@ If everything is OK, you get the following output:
 
 ## Contract examples
 
-The list of C++ examples is provided below. If you just started learning C++ for TVM we recommend to start with the [Tutorial](https://github.com/tonlabs/samples/blob/master/cpp/TUTORIAL.md) and then to study the examples in order. If you are familiar with TVM and smart contracts, however, jump to the contract you are interested in.
+The list of C++ examples is provided below. If you just started learning C++ for TVM we recommend to start with the [Tutorial](https://github.com/everx-labs/samples/blob/master/cpp/TUTORIAL.md) and then to study the examples in order. If you are familiar with TVM and smart contracts, however, jump to the contract you are interested in.
 
-1) [Hello, world!](https://github.com/tonlabs/samples/blob/master/cpp/HelloWorld): Introduces general concepts of the contract development.
+1) [Hello, world!](https://github.com/everx-labs/samples/blob/master/cpp/HelloWorld): Introduces general concepts of the contract development.
 
-This example is a part of [C++ Tutorial](https://github.com/tonlabs/samples/blob/master/cpp/TUTORIAL.md) which is a step by step guidance on how to create your first contract.
+This example is a part of [C++ Tutorial](https://github.com/everx-labs/samples/blob/master/cpp/TUTORIAL.md) which is a step by step guidance on how to create your first contract.
 
-2) [Authorization](https://github.com/tonlabs/samples/blob/master/cpp/Authorization): Demonstrate a message signature check.
+2) [Authorization](https://github.com/everx-labs/samples/blob/master/cpp/Authorization): Demonstrate a message signature check.
 
-This example is a part of [C++ Tutorial](https://github.com/tonlabs/samples/blob/master/cpp/TUTORIAL.md). The example extends [Hello, world!](https://github.com/tonlabs/samples/blob/master/cpp/HelloWorld) example by introducing signature cheching to prevent spam attack on a contract and make it run out of money.
+This example is a part of [C++ Tutorial](https://github.com/everx-labs/samples/blob/master/cpp/TUTORIAL.md). The example extends [Hello, world!](https://github.com/everx-labs/samples/blob/master/cpp/HelloWorld) example by introducing signature cheching to prevent spam attack on a contract and make it run out of money.
 
-3) [Giver](https://github.com/tonlabs/samples/blob/master/cpp/Giver): The contract sends the requested amount of money.
+3) [Giver](https://github.com/everx-labs/samples/blob/master/cpp/Giver): The contract sends the requested amount of money.
 
-This example is a part of [C++ Tutorial](https://github.com/tonlabs/samples/blob/master/cpp/TUTORIAL.md). It shows how to call a public method with parameters from another contract.
+This example is a part of [C++ Tutorial](https://github.com/everx-labs/samples/blob/master/cpp/TUTORIAL.md). It shows how to call a public method with parameters from another contract.
 
-4) [Wallet](https://github.com/tonlabs/samples/blob/master/cpp/Wallet): Simple contract to hold and spend money.
+4) [Wallet](https://github.com/everx-labs/samples/blob/master/cpp/Wallet): Simple contract to hold and spend money.
 
-5) [Piggybank](https://github.com/tonlabs/samples/blob/master/cpp/Piggybank): Contract for savings.
+5) [Piggybank](https://github.com/everx-labs/samples/blob/master/cpp/Piggybank): Contract for savings.
 
 The example consist of three contracts which exchange messages between each other. It shows simplest form of an internal call of a public method. It also show how a mechanism of internal authorization might work.
 
-6) [Kamikaze](https://github.com/tonlabs/samples/blob/master/cpp/Kamikaze): The example shows how a contract could be deleted from the network.
+6) [Kamikaze](https://github.com/everx-labs/samples/blob/master/cpp/Kamikaze): The example shows how a contract could be deleted from the network.

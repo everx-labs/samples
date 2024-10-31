@@ -1,1 +1,1 @@
-In case you don't find the example self-explainatory, please refer to [C++ Tutorial](https://github.com/tonlabs/samples/blob/master/cpp/HelloWorld) which contain extensive description on what is a contract in C++ and how this contract work.
+In case you don't find the example self-explainatory, please refer to [C++ Tutorial](https://github.com/everx-labs/samples/blob/master/cpp/HelloWorld) which contain extensive description on what is a contract in C++ and how this contract work.

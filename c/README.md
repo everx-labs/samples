@@ -1,12 +1,13 @@
-# C contract samples for TON
+# Deprecated
+# C contract samples for TON 
 This directory contains contracts that demonstrate how to use C to write contracts for TON blockchain. There is a separate subfolder for each file and its description.
 
 ## Prerequisites
 TVM Toolchain for C to build and test contracts locally. It includes:
-* Clang for TVM available in Node SE and at [https://github.com/tonlabs/TON-Compiler](https://github.com/tonlabs/TON-Compiler)
-  * C runtime library distributed with Clang [https://github.com/tonlabs/TON-Compiler/blob/master/stdlib/stdlib_c.tvm](https://github.com/tonlabs/TON-Compiler/blob/master/stdlib/stdlib_c.tvm)
-  * TON SDK for C distributed with Clang [https://github.com/tonlabs/TON-Compiler/tree/master/stdlib/ton-sdk](https://github.com/tonlabs/TON-Compiler/tree/master/stdlib/ton-sdk)
-  * ABI parser tool distributed with Clang [https://github.com/tonlabs/TON-Compiler/blob/master/stdlib/abi_parser.py](https://github.com/tonlabs/TON-Compiler/blob/master/stdlib/abi_parser.py)
+* Clang for TVM available in Node SE and at [https://github.com/everx-labs/TON-Compiler](https://github.com/everx-labs/TON-Compiler)
+  * C runtime library distributed with Clang [https://github.com/everx-labs/TON-Compiler/blob/master/stdlib/stdlib_c.tvm](https://github.com/everx-labs/TON-Compiler/blob/master/stdlib/stdlib_c.tvm)
+  * TON SDK for C distributed with Clang [https://github.com/everx-labs/TON-Compiler/tree/master/stdlib/ton-sdk](https://github.com/everx-labs/TON-Compiler/tree/master/stdlib/ton-sdk)
+  * ABI parser tool distributed with Clang [https://github.com/everx-labs/TON-Compiler/blob/master/stdlib/abi_parser.py](https://github.com/everx-labs/TON-Compiler/blob/master/stdlib/abi_parser.py)
 * Assembler & linker tool, tvm_linker; currently available as a binary in Node SE.
 
 To deploy contracts in testnet, you also need Lite Client tool available at [http://test.ton.org](http://test.ton.org)
@@ -55,7 +56,7 @@ tvm_linker test <contract address> --abi-json piggybank.abi --abi-method initial
 To learn more about ABI, refer to [https://docs.ton.dev/86757ecb2/p/15062d](https://docs.ton.dev/86757ecb2/p/15062d)
 
 ## Contract deployment
-Contract deploy guidelines do not depend on the language. You can use the one at [https://github.com/tonlabs/samples/tree/master/solidity](https://github.com/tonlabs/samples/tree/master/solidity).
+Contract deploy guidelines do not depend on the language. You can use the one at [https://github.com/everx-labs/samples/tree/master/solidity](https://github.com/everx-labs/samples/tree/master/solidity).
 
 ## C language limitations and performance issues
 * Each contract has a limited gas supply; once it is exceeded, a contract terminates with an error.

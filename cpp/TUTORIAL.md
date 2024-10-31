@@ -1,7 +1,7 @@
 Note: this tutorial is a work in progress. It updates once C++ for TVM gets a juicy new feature, so we recommend to return to it from time to time.
 
 ## Prerequisites
-To reproduce the tutorial, you need to get [TON-Compiler sources](https://github.com/tonlabs/TON-Compiler), [TONOS-CLI](https://github.com/tonlabs/tonos-cli), [TVM-linker sources](https://github.com/tonlabs/TVM-linker) and build `clang++`, `tvm_linker` and `tonos-cli`. Please follow `README` files from the corresponding repositories.
+To reproduce the tutorial, you need to get [TON-Compiler sources](https://github.com/everx-labs/TON-Compiler), [TONOS-CLI](https://github.com/everx-labs/tonos-cli), [TVM-linker sources](https://github.com/everx-labs/TVM-linker) and build `clang++`, `tvm_linker` and `tonos-cli`. Please follow `README` files from the corresponding repositories.
 
 ## The toolchain description
 C++ toolchain consists of the following libraries and tools:
@@ -180,7 +180,7 @@ DEFAULT_MAIN_ENTRY_FUNCTIONS(HelloWorld, IHelloWorld, DHelloWorld, 1800)
 ```
 
 ### Compilation and local testing
-The code we wrote so far can be found at [Hello, world!](https://github.com/tonlabs/samples/blob/master/cpp/HelloWorld).
+The code we wrote so far can be found at [Hello, world!](https://github.com/everx-labs/samples/blob/master/cpp/HelloWorld).
 Let’s assume that we put the contract interface into `HelloWorld.hpp` and its implementation into `HelloWorld.cpp`. Compilation consist of two steps:
 1.	Generating the ABI
 ```
@@ -217,7 +217,7 @@ tvm_linker test $ADDRESS \
 Here we use `--decode-c6` option (please refer to `tvm_tools –help` for a complete manual on its command-line options) to display the outgoing message and ensure that the contract indeed sends a message containing 42 as a payload. You will find the outgoing message at the end of the linker output. The message body is displayed in hexadecimal form, and 0x2a = 42.
 
 ### Deploying and testing in the network
-Testing in the network is somewhat similar to testing locally, but instead of the linker `tonos-cli` needs to be used and argument passing is a bit different. The deploying workflow is described in [README](https://github.com/tonlabs/samples/tree/master/cpp#contract-deployment) but we will repeat it once again here.
+Testing in the network is somewhat similar to testing locally, but instead of the linker `tonos-cli` needs to be used and argument passing is a bit different. The deploying workflow is described in [README](https://github.com/everx-labs/samples/tree/master/cpp#contract-deployment) but we will repeat it once again here.
 First, we need to recompile the contract since we used for linker tests.
 Then copy newly generated tvc file (and rename it to `HelloWorld.tvc` for simplicity) and abi file to `tonos-cli/target/<debug or release>/`
 After all the preparations, we can execute the following script
@@ -225,7 +225,7 @@ After all the preparations, we can execute the following script
 cd tonos-cli/target/<debug or release>/
 cargo run genaddr HelloWorld.tvc HelloWorld.abi --genkey hw.key
 ```
-The latter command returns the raw address of the contract. Now you can send (test) coins to it using any method described in [README](https://github.com/tonlabs/samples/tree/master/cpp#getting-test-coins). When contract balance is greater than 0, we can deploy the contract:
+The latter command returns the raw address of the contract. Now you can send (test) coins to it using any method described in [README](https://github.com/everx-labs/samples/tree/master/cpp#getting-test-coins). When contract balance is greater than 0, we can deploy the contract:
 ```
 cargo run deploy --abi HelloWorld.abi HelloWorld.tvc '{}' --sign hw.key
 ```
